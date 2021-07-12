@@ -29,4 +29,4 @@ knitr::opts_chunk$set(
 
 Below is a screenshot showing current functionality. 
 
-
+![shinymde in action](https://github.com/Nelson-Gon/shinymde/blob/98389ac96edad8f8bdf177b12235363ccfcfcb15/images/sample_ui.png?raw=true)

@@ -27,3 +27,6 @@ provide an even easier way to explore missing data.
 # `shinymde` in action
 
 Below is a screenshot showing current functionality.
+
+![shinymde in
+action](https://github.com/Nelson-Gon/shinymde/blob/98389ac96edad8f8bdf177b12235363ccfcfcb15/images/sample_ui.png?raw=true)
