@@ -24,6 +24,15 @@ programmed in the code only package
 [mde](https://github.com/Nelson-Gon/mde). It is hoped that this will
 provide an even easier way to explore missing data.
 
+# Installation
+
+To install, please `clone` the repository and run `app.R` in `RStudio`.
+
+``` shell
+git clone git@github.com:Nelson-Gon/shinymde.git
+cd shinymde 
+```
+
 # Currently Implemented features
 
 -   [x] Summary of missingness
@@ -45,7 +54,7 @@ missing values or convert `NA`s to some other value. It uses `mde`’s
 Below is a screenshot showing current functionality.
 
 ![shinymde in
-action](https://github.com/Nelson-Gon/shinymde/blob/98389ac96edad8f8bdf177b12235363ccfcfcb15/images/sample_ui.png?raw=true)
+action](https://github.com/Nelson-Gon/shinymde/blob/main/images/sample_ui.png?raw=true)
 
 # Features that need further development (help)
 

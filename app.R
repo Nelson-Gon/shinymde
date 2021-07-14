@@ -1,5 +1,6 @@
-if (any(!c("shiny", "mde") %in% installed.packages())){
-  stop("Please install shiny package >=1.6.0 and mde >= 0.3.1")
+if (any(!c("shiny", "mde", "vroom") %in% installed.packages())){
+  stop("Please install shiny package >=1.6.0, mde >= 0.3.1, 
+       vroom >=1.5.3, and readxl >=1.3.1")
 }
 library(shiny)
 library(mde)
@@ -39,15 +40,32 @@ library(mde)
 ))
  
 server <- function(input, output, session){
-  in_data <- reactive(
+  
+ 
+guess_input <- reactive({
+    return(gsub("(.*)(\\..*$)", "\\2", input$input_file$datapath, perl=TRUE)
+         )})
+in_data <- reactive(
     if(is.null(input$input_file$datapath)){
       stop("Please provide a valid dataset path")
     }
     else{
-      read.csv(input$input_file$datapath)
+      if(!guess_input() %in% c(".csv", ".xlsx", ".tsv")){
+        stop("Only csv, xlsx, and tsv are currently supported.")
+      }
+      switch(guess_input(),
+             ".csv"=vroom::vroom(input$input_file$datapath),
+             ".xlsx" = readxl::read_xlsx(input$input_file$datapath),
+             ".tsv" = vroom::vroom(input$input_file$datapath)
+             )
+        
+     
+      
     }
    
 )
+  
+
   
 # sort_by 
   
@@ -83,14 +101,24 @@ summary_na <- reactive(na_summary(in_data(),
                                          grouping_cols = input$group_by,
                                          exclude_cols = input$exclude_columns,
                                          descending = sort_order()))
+
 output$summary_na <- renderDataTable(summary_na(),
                                      options = list(pageLength=5))
 
+delimiters <- reactive({
+  switch(guess_input(),
+         ".csv" = ",",
+         ".tsv" = "\t",
+         ".xlsx" = ";")
+})
+
 output$downloadfile <- downloadHandler(
   filename = function() { paste0(substitute(in_data()),
-                               "_missingness_report_mde_", Sys.Date(), "_",
-                               ".csv") },
-  content = function(x) {write.csv(summary_na(), x) }
+                               "_missingness_report_mde", 
+                               format(Sys.time(), "%b-%d-%Y"),
+                               guess_input()) },
+  content = function(x) {vroom::vroom_write(summary_na(), x,
+                                            delim = delimiters()) }
 )
   
 
