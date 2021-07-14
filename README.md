@@ -1,6 +1,6 @@
 shinymde: A shiny interface to mde, the missing data explorer
 ================
-2021-07-12
+2021-07-14
 
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)
 [![lifecycle](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html)
@@ -24,9 +24,47 @@ programmed in the code only package
 [mde](https://github.com/Nelson-Gon/mde). It is hoped that this will
 provide an even easier way to explore missing data.
 
+# Currently Implemented features
+
+-   [x] Summary of missingness
+
+This uses [mde](https://nelson-gon.github.io/mde)’s `na_summary`
+function to generate a simple missingness report. The user can also
+download this report for use in other purposes.
+
+-   [x] Recoding as NA and recoding NA as
+
+This allows a user to recode a given value as `NA`, R’s handler of
+missing values or convert `NA`s to some other value. It uses `mde`’s
+`recode_*` functions.
+
+-   [ ] Missingness plots
+
 # `shinymde` in action
 
 Below is a screenshot showing current functionality.
 
 ![shinymde in
 action](https://github.com/Nelson-Gon/shinymde/blob/98389ac96edad8f8bdf177b12235363ccfcfcb15/images/sample_ui.png?raw=true)
+
+# Features that need further development (help)
+
+If you would like to work on this project, here is a features list that
+could be a good place to start.
+
+-   [ ] Add hovers to user input
+
+-   [ ] Switchable dark mode
+
+-   [ ] Control `pattern_type`/`subset_cols` choice in `na_summary`.
+
+-   [ ] Use cached filename in input filename if a user quits the
+    program.
+
+------------------------------------------------------------------------
+
+Thank you and keep building,
+
+Nelson
+
+2021-07-14

@@ -1,3 +1,6 @@
+if (any(!c("shiny", "mde") %in% installed.packages())){
+  stop("Please install shiny package >=1.6.0 and mde >= 0.3.1")
+}
 library(shiny)
 library(mde)
  ui <- fluidPage(
@@ -9,6 +12,7 @@ library(mde)
               )),
      tabPanel("Summarise Missingness",
               dataTableOutput("summary_na"),
+              column(2, downloadButton("downloadfile", "Download")),
               fluidRow(
                 column(2, uiOutput("sort_by")),
                 column(2, selectInput("sort_order", "Sort Order",
@@ -24,11 +28,12 @@ library(mde)
                                      choices = c("recode_as_na",
                                                  "recode_na_as"),
                                      selected="recode_na_as")),
+              column(2, textInput("value_to_recode", "Value"))
               # column(2, uiOutput("subset_cols")),
-              # column(2, textInput("pattern_type", "Pattern type", 
+              # column(2, textInput("pattern_type", "Pattern type",
               #                     value = NULL)),
               # column(2, textInput("pattern", "Pattern", value=NULL)),
-              column(2, textInput("value_to_recode", "Value"))
+              
      
    ))
 ))
@@ -65,30 +70,39 @@ output$exclude_columns <- renderUI({
                         choices = names(in_data()),
                          multiple=TRUE)})
 
+
+
 output$subset_cols <- renderUI({selectInput("subset_cols",
                                          "a subset to recode",
                                        choices=names(in_data()),
                                                  multiple=TRUE)})
 
-sort_order <- reactive({ifelse(input$sort_order=="descending", TRUE, FALSE)})   
-output$summary_na <- renderDataTable(na_summary(in_data(),
-                                                sort_by = input$sort_by,
-                                          grouping_cols = input$group_by,
-                                   exclude_cols = input$exclude_columns,
-                                   descending = sort_order()),
-                              options = list(pageLength=5))
+sort_order <- reactive({ifelse(input$sort_order=="descending", TRUE, FALSE)})
+summary_na <- reactive(na_summary(in_data(),
+                                         sort_by = input$sort_by,
+                                         grouping_cols = input$group_by,
+                                         exclude_cols = input$exclude_columns,
+                                         descending = sort_order()))
+output$summary_na <- renderDataTable(summary_na(),
+                                     options = list(pageLength=5))
+
+output$downloadfile <- downloadHandler(
+  filename = function() { paste0(substitute(in_data()),
+                               "_missingness_report_mde_", Sys.Date(), "_",
+                               ".csv") },
+  content = function(x) {write.csv(summary_na(), x) }
+)
   
-# Create a switch to select recode_type
+
 
 recode_type <- reactive({
   # optional arguments list 
   # Filter only non NULL elements 
+  # TODO: Figure out how to choose subset columns and pattern types. 
+  # Currently NULL is not recognized as NULL for some reason. 
   arguments = 
     Filter(function(x) !is.null(x), list(df=in_data(),
                 value=input$value_to_recode))
-                #    pattern_type=input$pattern_type,
-                # pattern = input$pattern,
-                # subset_cols = input$subset_cols))
  
   do.call(input$recode_type, arguments)
 })
@@ -105,4 +119,5 @@ options = list(pageLength=5)
 }
 
 shinyApp(ui, server)
+
 
