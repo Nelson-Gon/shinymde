@@ -51,12 +51,13 @@ in_data <- reactive(
     }
     else{
       if(!guess_input() %in% c(".csv", ".xlsx", ".tsv")){
-        stop("Only csv, xlsx, and tsv are currently supported.")
+        stop(paste0("Only .csv, .xlsx, and .tsv are currently supported, not ",
+                    guess_input(),"."))
       }
       switch(guess_input(),
-             ".csv"=vroom::vroom(input$input_file$datapath),
+             ".csv"=vroom::vroom(input$input_file$datapath, delim = ","),
              ".xlsx" = readxl::read_xlsx(input$input_file$datapath),
-             ".tsv" = vroom::vroom(input$input_file$datapath)
+             ".tsv" = vroom::vroom(input$input_file$datapath, delim="\t")
              )
         
      
@@ -105,20 +106,32 @@ summary_na <- reactive(na_summary(in_data(),
 output$summary_na <- renderDataTable(summary_na(),
                                      options = list(pageLength=5))
 
-delimiters <- reactive({
+delimiters <- reactive({ 
+  
   switch(guess_input(),
          ".csv" = ",",
          ".tsv" = "\t",
          ".xlsx" = ";")
+  
+
+
 })
+
+
 
 output$downloadfile <- downloadHandler(
   filename = function() { paste0(substitute(in_data()),
                                "_missingness_report_mde", 
                                format(Sys.time(), "%b-%d-%Y"),
                                guess_input()) },
-  content = function(x) {vroom::vroom_write(summary_na(), x,
-                                            delim = delimiters()) }
+  content = function(x) {
+    delim = switch(guess_input(),
+           ".csv" = ",",
+           ".xlsx" = ";",
+           ".tsv" = "\t")
+    vroom::vroom_write(summary_na(), x,
+                       delim = delim)
+    }
 )
   
 
@@ -147,5 +160,6 @@ options = list(pageLength=5)
 }
 
 shinyApp(ui, server)
+
 
 
