@@ -28,17 +28,22 @@ ui <- fluidPage(
              fluidRow(
                column(2, selectInput("recode_type", "Kind of recoding",
                                      choices = c("recode_as_na",
-                                                 "recode_na_as"),
-                                     selected="recode_na_as")),
-               column(2, textInput("value_to_recode", "Value"))
-               # column(2, uiOutput("subset_cols")),
+                                                 "recode_na_as",
+                                                 "recode_as_na_for",
+                                                 "recode_as_na_if"),
+                                     selected="recode_as_na")),
+               column(2, textInput("value_to_recode", "Value")),
+               column(2, uiOutput("criteria")),
+               column(2, uiOutput("subset_cols")),
+               column(2, uiOutput("percent_na")),
+               column(2, uiOutput("keep_columns"))
                # column(2, textInput("pattern_type", "Pattern type",
                #                     value = NULL)),
                # column(2, textInput("pattern", "Pattern", value=NULL)),
-               
+               # TODO: Automate ui creation. 
                
              )),
-    tabPanel("Visualize Missingness",
+    tabPanel("Visualise Missingness",
                 plotOutput("visual_summary"),
                 fluidRow(
                   column(4, uiOutput("y_variable")),
