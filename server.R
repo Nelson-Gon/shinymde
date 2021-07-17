@@ -37,7 +37,6 @@ server <- function(input, output, session){
   
   
   
-  # sort_by 
   
   output$sort_by <- renderUI({
     selectInput("sort_by", "Column to sort_by", 
@@ -102,14 +101,7 @@ server <- function(input, output, session){
   )
   
   
-  output$subset_cols <- renderUI({
-    conditionalPanel(condition="input.recode_type"=="recode_as_na",
-                                              selectInput("subset_cols",
-                                              "a subset to recode",
-                                              choices=names(in_data()),
-                                              multiple=TRUE))})
-  
-  recode_type <- reactive({
+
     # optional arguments list 
     # Filter only non NULL elements 
     # TODO: Figure out how to choose subset columns and pattern types. 
@@ -117,7 +109,7 @@ server <- function(input, output, session){
     # Allow multiple values in value --> convert to split
     values_to_recode <- reactive({
       # split and convert to numeric if applicable 
-      values = unlist(strsplit(req(input$value_to_recode), ","))
+      values = unlist(strsplit(input$value_to_recode, ","))
       if(any(grepl("[0-9]", values))){
         # TODO Show user warnings  
         # shinyFeedback::showFeedback("value_to_recode",
@@ -127,45 +119,81 @@ server <- function(input, output, session){
       values 
     })
     
-    arguments = list(df=in_data(),
-                     value=values_to_recode())
-    if(input$recode_type %in% c("recode_as_na_for", "recode_as_na_if")){
-      output$criteria <- renderUI({
-        selectInput("criteria", "Criteria",
-                    choices = c("gt", "gteq",
-                                "lt", "lteq",
-                                "eq"))
-      })
+   
+   
+   
+   
+        
       
-      arguments = append(arguments, c(criteria=input$criteria))
-      # if(input$recode_type == "recode_as_na_for"){
-      #  
-      #   arguments = append(arguments, c(subset_cols=input$subset_cols))
-      #   
-      # }
-      if(input$recode_type=="recode_as_na_if"){
       
-        output$keep_columns <- renderUI({
-          selectInput("keep_columns", "Keep Columns", 
-                      choices = names(in_data()), multiple=TRUE)
-        })
-        arguments = append(arguments, c(keep_columns=input$keep_columns,
-                                        percent_na=values_to_recode(),
-                                        sign=input$criteria))
-        
-        removeUI("subset_colums")
-        
-        arguments[["value"]]=NULL
-        arguments[["subset_cols"]]=NULL
-        arguments[["criteria"]]=NULL
-        
-      }
-    }
     
-    arguments = Filter(function(x) !is.null(x), arguments)
     
-    do.call(input$recode_type, arguments)
+  
+    recode_type <- reactive({
+      arguments = list(df=in_data(),
+                       value=values_to_recode())
+      
+      # recode_as_na_for() --> df, criteria, value, subset_cols 
+      # recode_as_na_if() --> df, sign , percent_na, keep_columns
+      # recode_na_if() --> df, grouping_cols, target_groups, replacement 
+      # recode_as_na() --> df, value, subset_cols, pattern_type, pattern 
+      # recode_na_as() --> df, value, subset_cols, pattern_type, pattern 
+      # dict_recode() --> df, use_func, pattern_type, patterns, values 
+      
+if(input$recode_type %in% c("recode_as_na", "recode_na_as")){
+  output$subset_cols <- renderUI({
+    
+    selectInput("subset_cols",
+                "A subset to recode",
+                choices=names(in_data()),
+                multiple=TRUE)})
+  arguments = append(arguments, c(subset_cols=input$subest_cols,
+                                  pattern_type=input$pattern_type,
+                                  pattern = input$pattern))
+}      
+      
+if(input$recode_type %in% c("recode_as_na_for", "recode_as_na_if")){
+  output$criteria <- renderUI({
+    
+    textInput("criteria", "Criteria",
+              value="gt")
   })
+  
+arguments = append(arguments, c(criteria=input$criteria,
+                                        subset_cols=input$subset_cols)) 
+  if(input$recode_type=="recode_as_na_if"){
+    output$keep_columns <- renderUI({
+      selectInput("keep_columns", "Keep Columns", 
+                  choices = names(in_data()), multiple=TRUE)
+    })
+          
+          arguments = append(arguments, c(keep_columns=input$keep_columns,
+                                        percent_na=as.numeric(values_to_recode()),
+                                          sign=input$criteria))
+          arguments[["value"]]=NULL
+          arguments[["criteria"]] = NULL
+          arguments[["subset_cols"]] = NULL 
+          
+          observeEvent(input$value_to_recode,
+                       {updateTextInput(inputId = "value_to_recode",
+                                        label = "Percent NA")
+                         updateTextInput(inputId = "criteria",
+                                         label = "Sign")}
+                       
+          )
+          
+          
+        }
+      }
+     
+      
+     
+      
+      
+     
+      arguments = Filter(function(x) !is.null(x), arguments)
+      do.call(input$recode_type, arguments)
+    })
   
   output$recode_values <- renderDataTable({
     recode_type()

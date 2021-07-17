@@ -33,13 +33,22 @@ ui <- fluidPage(
                                                  "recode_as_na_if"),
                                      selected="recode_as_na")),
                column(2, textInput("value_to_recode", "Value")),
+              
                column(2, uiOutput("criteria")),
-               column(2, uiOutput("subset_cols")),
-               column(2, uiOutput("percent_na")),
-               column(2, uiOutput("keep_columns"))
-               # column(2, textInput("pattern_type", "Pattern type",
-               #                     value = NULL)),
-               # column(2, textInput("pattern", "Pattern", value=NULL)),
+               column(2, uiOutput("subset_cols"))
+               
+              #  column(2, conditionalPanel("input.recode_type!=recode_as_na",
+              #                     uiOutput("percent_na"))),
+              #  column(2, conditionalPanel("input.recode_type!=recode_as_na",
+              #                             uiOutput("keep_columns"))),
+              # conditionalPanel("input.recode_type==recode_as_na",
+              #    selectInput("pattern_type", "Pattern type",
+              #                       choices = c("starts_with",
+              #                       "ends_with","contains",
+              #                       "regex"),
+              #                       selected = "regex")),
+              #  column(2, conditionalPanel("input.recode_type==recode_as_na",
+              #                   textInput("pattern", "Pattern", value=".*")))
                # TODO: Automate ui creation. 
                
              )),
