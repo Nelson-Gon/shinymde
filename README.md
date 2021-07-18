@@ -1,6 +1,6 @@
 shinymde: A shiny interface to mde, the missing data explorer
 ================
-2021-07-14
+2021-07-18
 
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)
 [![lifecycle](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html)
@@ -47,7 +47,13 @@ This allows a user to recode a given value as `NA`, R’s handler of
 missing values or convert `NA`s to some other value. It uses `mde`’s
 `recode_*` functions.
 
--   [ ] Missingness plots
+-   [x] Conditional recoding
+
+This allows one to recode values condtionally. This supports
+`recode_as_na_for`, `recode_as_na_if`, and other conditional recoding
+functions.
+
+-   [x] Missingness plots
 
 # `shinymde` in action
 
@@ -65,7 +71,7 @@ could be a good place to start.
 
 -   [ ] Switchable dark mode
 
--   [ ] Control `pattern_type`/`subset_cols` choice in `na_summary`.
+-   [x] Control `pattern_type`/`subset_cols` choice in `na_summary`.
 
 -   [ ] Use cached filename in input filename if a user quits the
     program.
@@ -76,4 +82,8 @@ Thank you and keep building,
 
 Nelson
 
-2021-07-14
+2021-07-18
+
+Please note that the ‘shinymde’ project is released with a [Contributor
+Code of Conduct](CODE_OF_CONDUCT.md). By contributing to this project,
+you agree to abide by its terms.

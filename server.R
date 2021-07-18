@@ -1,7 +1,8 @@
 if (any(!c("shiny", "mde", "vroom", "dplyr", "ggplot2",
-           "forcats") %in% installed.packages())){
+           "forcats", "readxl", "shinyjs") %in% installed.packages())){
   stop("Please install shiny package >=1.6.0, mde >= 0.3.1, 
-       vroom >=1.5.3, dplyr >=1.0.7, ggplot2 >= 3.3.4, forcats>=0.5.1  
+       vroom >=1.5.3, dplyr >=1.0.7, ggplot2 >= 3.3.4, forcats>=0.5.1,
+       shinyjs >= 2.0.0,
        and readxl >=1.3.1")
 }
 library(shiny)
@@ -118,86 +119,87 @@ server <- function(input, output, session){
       }
       values 
     })
-    
-   
-   
-   
-   
-        
-      
-      
-    
-    
+
+output$subset_cols <- renderUI(  
+                   selectInput("subset_cols",
+                               "A subset to recode",
+                               choices=names(in_data()),
+                               multiple=TRUE))
+
+output$criteria <- renderUI(selectInput("criteria", 
+                                      "Criteria",
+                                      choices=c("gt", "lt",
+                                                "lteq", "gteq", "eq"),
+                                      selected = "gt"))
+
+output$keep_columns <- renderUI(
+                   selectInput("keep_columns", "Keep Columns", 
+                               choices = names(in_data()),
+                               multiple=TRUE))
+
+
+recode_switch <- reactive({
+  # recode_as_na_for() --> df, criteria, value, subset_cols 
+  # recode_as_na_if() --> df, sign , percent_na, keep_columns
+  # recode_na_if() --> df, grouping_cols, target_groups, replacement 
+  # recode_as_na() --> df, value, subset_cols, pattern_type, pattern 
+  # recode_na_as() --> df, value, subset_cols, pattern_type, pattern 
+  # dict_recode() --> df, use_func, pattern_type, patterns, values
   
-    recode_type <- reactive({
-      arguments = list(df=in_data(),
-                       value=values_to_recode())
-      
-      # recode_as_na_for() --> df, criteria, value, subset_cols 
-      # recode_as_na_if() --> df, sign , percent_na, keep_columns
-      # recode_na_if() --> df, grouping_cols, target_groups, replacement 
-      # recode_as_na() --> df, value, subset_cols, pattern_type, pattern 
-      # recode_na_as() --> df, value, subset_cols, pattern_type, pattern 
-      # dict_recode() --> df, use_func, pattern_type, patterns, values 
-      
-if(input$recode_type %in% c("recode_as_na", "recode_na_as")){
-  output$subset_cols <- renderUI({
-    
-    selectInput("subset_cols",
-                "A subset to recode",
-                choices=names(in_data()),
-                multiple=TRUE)})
-  arguments = append(arguments, c(subset_cols=input$subest_cols,
-                                  pattern_type=input$pattern_type,
-                                  pattern = input$pattern))
-}      
-      
-if(input$recode_type %in% c("recode_as_na_for", "recode_as_na_if")){
-  output$criteria <- renderUI({
-    
-    textInput("criteria", "Criteria",
-              value="gt")
-  })
+  # NOTES
+  # This could be done with do.call or some switch but for whatever reason
+  # Such calls fail with bugs that I could not identify readily. 
+  # See https://github.com/Nelson-Gon/shinymde/issues/1 and 
+  # https://github.com/Nelson-Gon/shinymde/issues/2 
+ 
+  shinyjs::hide("criteria")
   
-arguments = append(arguments, c(criteria=input$criteria,
-                                        subset_cols=input$subset_cols)) 
-  if(input$recode_type=="recode_as_na_if"){
-    output$keep_columns <- renderUI({
-      selectInput("keep_columns", "Keep Columns", 
-                  choices = names(in_data()), multiple=TRUE)
-    })
-          
-          arguments = append(arguments, c(keep_columns=input$keep_columns,
-                                        percent_na=as.numeric(values_to_recode()),
-                                          sign=input$criteria))
-          arguments[["value"]]=NULL
-          arguments[["criteria"]] = NULL
-          arguments[["subset_cols"]] = NULL 
-          
-          observeEvent(input$value_to_recode,
-                       {updateTextInput(inputId = "value_to_recode",
-                                        label = "Percent NA")
-                         updateTextInput(inputId = "criteria",
-                                         label = "Sign")}
-                       
-          )
-          
-          
-        }
-      }
-     
-      
-     
-      
-      
-     
-      arguments = Filter(function(x) !is.null(x), arguments)
-      do.call(input$recode_type, arguments)
-    })
+  shinyjs::hide("pattern_type")
+  shinyjs::hide("pattern")
+  if(input$recode_type %in% c("recode_as_na", "recode_na_as")){
+    shinyjs::toggle("pattern_type")
+    shinyjs::toggle("pattern")
+    
+  }
+  if(input$recode_type=="recode_as_na"){
+    # NOTE This requires explcit returns unlike in "normal"
+    # R programming mode. 
+   
+    return(mde::recode_as_na(df = in_data(), value = values_to_recode(),
+                      subset_cols = input$subset_cols, 
+                      pattern_type = input$pattern_type,
+                      pattern = input$pattern))
+  }
   
-  output$recode_values <- renderDataTable({
-    recode_type()
-  },
+  if(input$recode_type=="recode_na_as"){
+    return(mde::recode_na_as(df = in_data(), value = values_to_recode(),
+                      subset_cols = input$subset_cols, 
+                      pattern_type = input$pattern_type,
+                      pattern = input$pattern)) 
+  }
+
+  if(input$recode_type == "recode_as_na_if"){
+    shinyjs::hide("subset_cols")
+    shinyjs::show("criteria")
+    return(mde::recode_as_na_if(df = in_data(), 
+                         percent_na = values_to_recode(),
+                         sign=input$criteria,
+                         keep_columns=input$keep_columns))
+  }
+  if(input$recode_type == "recode_as_na_for"){
+    shinyjs::show("criteria")
+    shinyjs::show("subset_cols")
+    return(mde::recode_as_na_for(df=in_data(), criteria=input$criteria,
+                          value = values_to_recode(),
+                          subset_cols = input$subset_cols))
+  }
+ 
+})
+  
+
+  
+  output$recode_values <- renderDataTable(
+    recode_switch(),
   options = list(pageLength=5)
   )
   

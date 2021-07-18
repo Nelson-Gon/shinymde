@@ -47,8 +47,13 @@ use in other purposes.
 This allows a user to recode a given value as `NA`, R's handler of missing values
 or convert `NA`s to some other value. It uses `mde`'s `recode_*` functions. 
 
+- [x] Conditional recoding 
 
-- [ ] Missingness plots
+This allows one to recode values condtionally. This supports `recode_as_na_for`,
+`recode_as_na_if`, and other conditional recoding functions. 
+
+
+- [x] Missingness plots
 
 
 
@@ -69,7 +74,7 @@ be a good place to start.
 
 - [ ] Switchable dark mode 
 
-- [ ] Control `pattern_type`/`subset_cols` choice in `na_summary`.
+- [x] Control `pattern_type`/`subset_cols` choice in `na_summary`.
 
 - [ ] Use cached filename in input filename if a user quits the program. 
 
