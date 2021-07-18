@@ -1,10 +1,27 @@
-if (any(!c("shiny", "mde", "vroom", "dplyr", "ggplot2",
-           "forcats", "readxl", "shinyjs") %in% installed.packages())){
-  stop("Please install shiny package >=1.6.0, mde >= 0.3.1, 
+packages_list <- c("shiny", "mde", "vroom", "dplyr", "ggplot2",
+                   "forcats", "readxl", "shinyjs") 
+if (any(!packages_list %in% installed.packages())){
+  warning("shinymde requires shiny >=1.6.0, mde >= 0.3.1, 
        vroom >=1.5.3, dplyr >=1.0.7, ggplot2 >= 3.3.4, forcats>=0.5.1,
        shinyjs >= 2.0.0,
        and readxl >=1.3.1")
+  message("Now installing missing packages")
+  
+  bool_logic <- which(packages_list %in% installed.packages())
+  if(length(bool_logic)>0){
+    # Get packages not installed 
+    not_installed <-packages_list[bool_logic]
+    if("mde" %in% not_installed){
+      # Install mde from github 
+      not_installed <- not_installed[-grep("mde",not_installed)]
+      devtools::install_github("Nelson-Gon/mde")
+    }
+    install.packages(not_installed, dependencies = TRUE)
+  }
+  
 }
+
+
 library(shiny)
 library(mde)
 library(ggplot2)
@@ -84,8 +101,6 @@ server <- function(input, output, session){
   
  
   
-  
-  
   output$downloadfile <- downloadHandler(
     filename = function() { paste0(substitute(in_data()),
                                    "_missingness_report_mde", 
@@ -162,7 +177,7 @@ recode_switch <- reactive({
     
   }
   if(input$recode_type=="recode_as_na"){
-    # NOTE This requires explcit returns unlike in "normal"
+    # NOTE This requires explicit returns unlike in "normal"
     # R programming mode. 
    
     return(mde::recode_as_na(df = in_data(), value = values_to_recode(),
@@ -202,6 +217,78 @@ recode_switch <- reactive({
     recode_switch(),
   options = list(pageLength=5)
   )
+  
+  
+  # Dropping NAs 
+  output$group_by_drop <- renderUI({
+    selectInput("group_by_drop", "Grouping Columns", 
+                choices = names(in_data()),
+                multiple = TRUE)
+  })
+  
+  output$keep_columns_drop <- renderUI(
+    selectInput("keep_columns_drop", "Keep Columns", 
+                choices = names(in_data()),
+                multiple=TRUE))
+  output$target_cols <- renderUI(
+    selectInput("target_cols", "Target Columns", 
+                choices = names(in_data()),
+                multiple=TRUE))
+  output$sign <- renderUI(
+    selectInput("sign", "Sign", 
+                choices = c("gt", "gteq", "lt", "lteq", "eq"),
+                selected = "gt",
+                multiple=FALSE))
+  
+  drop_switch <- reactive({
+    
+    shinyjs::hide("pattern_type_drop")
+    shinyjs::hide("pattern_drop")
+    shinyjs::hide("keep_columns_drop")
+    shinyjs::hide("target_cols")
+    shinyjs::hide("percent_na_drop")
+    shinyjs::hide("sign")
+    shinyjs::show("group_by_drop")
+    
+    
+    # mde::drop_all_na() --> df, grouping_cols 
+    # mde::drop_na_at() --> df, pattern_type, pattern, case_sensitivity, ...
+    # mde::drop_na_if() --> df, sign, percent_na, keep_columns, grouping_cols,
+    # target_columns 
+    if(input$drop_type=="drop_all_na"){
+     return(mde::drop_all_na(df = in_data(), 
+                             grouping_cols = input$group_by_drop))
+    }
+    
+    if(input$drop_type == "drop_na_at"){
+      shinyjs::toggle("pattern_type_drop")
+      shinyjs::toggle("pattern_drop")
+      shinyjs::toggle("group_by_drop")
+      return(mde::drop_na_at(df=in_data(), 
+                             pattern_type = input$pattern_type_drop,
+                             pattern = input$pattern_drop))
+    }
+    
+    if(input$drop_type=="drop_na_if"){
+      shinyjs::toggle("percent_na_drop")
+     shinyjs::toggle("sign")
+     shinyjs::toggle("keep_columns_drop")
+     shinyjs::toggle("target_cols")
+    
+     mde::drop_na_if(df = in_data(),
+                     sign = input$sign,
+                     percent_na = input$percent_na_drop,
+                     keep_columns = input$keep_columns_drop,
+                     grouping_cols = input$group_by_drop,
+                     target_columns = input$target_cols)
+    }
+  }
+    
+  )
+  
+  output$drop_na <- renderDataTable(drop_switch(),
+                                    
+                                    options = list(pageLength=5))
   
   # Visual summaries 
   output$y_variable <- renderUI(

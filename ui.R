@@ -47,6 +47,31 @@ ui <- fluidPage(
                # TODO: Automate ui creation. 
                
              )),
+    tabPanel("Drop Values",
+             dataTableOutput("drop_na"),
+             fluidRow(
+               column(2, selectInput("drop_type", "Kind of drop",
+                                     choices = c("drop_all_na",
+                                                 "drop_na_if",
+                                                 "drop_na_at"),
+                                     selected="drop_all_na")),
+               
+               column(2, numericInput("percent_na_drop",
+                                      "Percent NA", value=20)),
+               column(2, uiOutput("sign")),
+               column(2, uiOutput("group_by_drop")),
+               column(2, uiOutput("keep_columns_drop")),
+               column(2, uiOutput("target_cols")),
+              
+               column(2,
+                      selectInput("pattern_type_drop", "Pattern type",
+                                  choices = c("starts_with",
+                                              "ends_with","contains",
+                                              "regex"),
+                                  selected = "regex")),
+               column(2,textInput("pattern_drop", "Pattern", value="^O"))
+
+             )),
     tabPanel("Visualise Missingness",
                 plotOutput("visual_summary"),
                 fluidRow(

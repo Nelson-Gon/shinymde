@@ -49,9 +49,13 @@ missing values or convert `NA`s to some other value. It uses `mde`’s
 
 -   [x] Conditional recoding
 
-This allows one to recode values condtionally. This supports
+This allows one to recode values conditionally. This supports
 `recode_as_na_for`, `recode_as_na_if`, and other conditional recoding
 functions.
+
+-   [x] Drop based on missingness
+
+This uses `mde`’s `drop_na_*` functions.
 
 -   [x] Missingness plots
 
