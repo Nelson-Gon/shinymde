@@ -32,31 +32,30 @@ server <- function(input, output, session){
   
 
   output$input_file <- renderUI({
-    fileInput("input_file",
+   
+    
+                     fileInput("input_file",
               label = "Please provide a file path")
     })
   
   output$dataset <- renderUI(
-    {
-      textInput("dataset", "Dataset", 
+    {textInput("dataset", "Dataset", 
                 value = "mtcars")
     }
   )
+  
+ 
 
   in_data <- reactive({
     
-   
-          # shinyjs::hide("dataset")
-    # shinyjs::hide("input_file")
+ 
    
     if(input$data_source=="inbuilt"){
-      # shinyjs::hide("dataset")
       return(get(input$dataset, "package:datasets"))
 
     }
     
     if(input$data_source=="user_data"){
-      # shinyjs::toggle("input_file")
 
       if(is.null(input$input_file$datapath)){
         stop("Please provide a valid dataset path")
@@ -86,6 +85,8 @@ server <- function(input, output, session){
         
       }
 })
+  
+
   
   
   

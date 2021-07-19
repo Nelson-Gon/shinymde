@@ -17,8 +17,12 @@ ui <- fluidPage(
                                                  "remote",
                                                  "user_data"),
                                      selected = "inbuilt")),
-               column(6, uiOutput("input_file")),
-               column(6, uiOutput("dataset")))),
+               column(6, conditionalPanel(condition =
+                                    "input.data_source == 'user_data'",
+                                          uiOutput("input_file"))),
+               column(6,  conditionalPanel(condition=
+                                  "input.data_source=='inbuilt'",
+                      uiOutput("dataset"))))),
             
     tabPanel("Summarise Missingness",
              dataTableOutput("summary_na"),
