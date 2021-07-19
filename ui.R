@@ -5,14 +5,21 @@ if (any(!c("shiny", "mde", "vroom", "dplyr", "ggplot2",
        and readxl >=1.3.1")
 }
 library(shiny)
+
 ui <- fluidPage(
+  # theme=bslib::bs_theme(bootswatch = "darkly"),
   shinyjs::useShinyjs(),
   tabsetPanel(
     tabPanel("Input Data",
              fluidRow(
-               column(4, fileInput("input_file",
-                                   label = "Please provide a file path"))
-             )),
+               column(6, selectInput("data_source", "Data Source",
+                                     choices = c("inbuilt",
+                                                 "remote",
+                                                 "user_data"),
+                                     selected = "inbuilt")),
+               column(6, uiOutput("input_file")),
+               column(6, uiOutput("dataset")))),
+            
     tabPanel("Summarise Missingness",
              dataTableOutput("summary_na"),
              column(2, downloadButton("downloadfile", "Download")),
@@ -38,12 +45,18 @@ ui <- fluidPage(
                column(2, uiOutput("criteria")),
                column(2, uiOutput("subset_cols")),
                column(2,
+                # need pattern_type and subset_cols not both so need
+                # to set one to NULL
+                # This in shiny is done like so 
+                # see stackoverflow.com/a/53698788/10323798
                  selectInput("pattern_type", "Pattern type",
                                     choices = c("starts_with",
                                     "ends_with","contains",
                                     "regex"),
-                                    selected = "regex")), 
-               column(2,textInput("pattern", "Pattern", value=".*"))
+                             selected = FALSE,
+                             selectize = FALSE,
+                             size = 4)), 
+               column(2,textInput("pattern", "Pattern", value=NULL))
                # TODO: Automate ui creation. 
                
              )),
@@ -68,8 +81,10 @@ ui <- fluidPage(
                                   choices = c("starts_with",
                                               "ends_with","contains",
                                               "regex"),
-                                  selected = "regex")),
-               column(2,textInput("pattern_drop", "Pattern", value="^O"))
+                                  selected = FALSE,
+                                  selectize = FALSE, 
+                                  size = 4)),
+               column(2,textInput("pattern_drop", "Pattern", value=NULL))
 
              )),
     tabPanel("Visualise Missingness",

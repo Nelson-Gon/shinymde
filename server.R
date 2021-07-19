@@ -28,36 +28,71 @@ library(ggplot2)
 library(dplyr)
 server <- function(input, output, session){
   
+ 
   
-  guess_input <- reactive({
-    return(gsub("(.*)(\\..*$)", "\\2", input$input_file$datapath, perl=TRUE)
-    )})
-  in_data <- reactive(
-    if(is.null(input$input_file$datapath)){
-      stop("Please provide a valid dataset path")
+
+  output$input_file <- renderUI({
+    fileInput("input_file",
+              label = "Please provide a file path")
+    })
+  
+  output$dataset <- renderUI(
+    {
+      textInput("dataset", "Dataset", 
+                value = "mtcars")
     }
-    else{
-      if(!guess_input() %in% c(".csv", ".xlsx", ".tsv")){
-        stop(paste0("Only .csv, .xlsx, and .tsv are currently supported, not ",
-                    guess_input(),"."))
-      }
-      switch(guess_input(),
-             ".csv"=vroom::vroom(input$input_file$datapath, delim = ","),
-             ".xlsx" = readxl::read_xlsx(input$input_file$datapath),
-             ".tsv" = vroom::vroom(input$input_file$datapath, delim="\t")
-      )
-      
-      
-      
+  )
+
+  in_data <- reactive({
+    
+   
+          # shinyjs::hide("dataset")
+    # shinyjs::hide("input_file")
+   
+    if(input$data_source=="inbuilt"){
+      # shinyjs::hide("dataset")
+      return(get(input$dataset, "package:datasets"))
+
     }
     
-  )
+    if(input$data_source=="user_data"){
+      # shinyjs::toggle("input_file")
+
+      if(is.null(input$input_file$datapath)){
+        stop("Please provide a valid dataset path")
+      }
+      
+      
+     guess_input <- reactive({
+         gsub("(.*)(\\..*$)", "\\2",
+                      input$input_file$datapath, perl=TRUE)
+          })
+     
+      if(!guess_input() %in% c(".csv", ".xlsx", ".tsv")){
+     stop(paste0("Only .csv, .xlsx, and .tsv are currently supported, not ",
+                      guess_input(),"."))
+        }
+        switch(guess_input(),
+               ".csv"=vroom::vroom(input$input_file$datapath, 
+                                   delim = ",",
+                                   show_col_types = FALSE),
+               ".xlsx" = readxl::read_xlsx(input$input_file$datapath),
+               ".tsv" = vroom::vroom(input$input_file$datapath, 
+                                     delim="\t",
+                                     show_col_types = FALSE)
+        )
+        
+        
+        
+      }
+})
   
   
   
   
   output$sort_by <- renderUI({
-    selectInput("sort_by", "Column to sort_by", 
+    selectInput("sort_by", 
+                "Column to sort_by", 
                 choices = names(na_summary(in_data())))
   })
   
@@ -78,7 +113,8 @@ server <- function(input, output, session){
   
 
   
-  sort_order <- reactive({ifelse(input$sort_order=="descending", TRUE, FALSE)})
+  sort_order <- reactive({ifelse(input$sort_order=="descending",
+                                 TRUE, FALSE)})
   summary_na <- reactive(na_summary(in_data(),
                                     sort_by = input$sort_by,
                                     grouping_cols = input$group_by,
