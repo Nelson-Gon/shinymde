@@ -7,7 +7,7 @@ if (any(!packages_list %in% installed.packages())){
        and readxl >=1.3.1")
   message("Now installing missing packages")
   
-  bool_logic <- which(packages_list %in% installed.packages())
+  bool_logic <- which(!packages_list %in% installed.packages())
   if(length(bool_logic)>0){
     # Get packages not installed 
     not_installed <-packages_list[bool_logic]
