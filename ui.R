@@ -22,7 +22,13 @@ ui <- fluidPage(
                                           uiOutput("input_file"))),
                column(6,  conditionalPanel(condition=
                                   "input.data_source=='inbuilt'",
-                      uiOutput("dataset"))))),
+                      uiOutput("dataset"))),
+               column(3, conditionalPanel(condition = 
+                                  "input.data_source == 'remote'",
+                                  uiOutput("remote"))),
+               column(3, conditionalPanel(condition = 
+                                            "input.data_source == 'remote'",
+                                          uiOutput("file_type"))))),
             
     tabPanel("Summarise Missingness",
              dataTableOutput("summary_na"),

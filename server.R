@@ -44,6 +44,15 @@ server <- function(input, output, session){
     }
   )
   
+  output$remote <- renderUI({
+    textInput("remote", "Remote Dataset Link", 
+              value = "https://github.com/Nelson-Gon/shinymde/blob/c6cd1b8b3acc28225a907e00f80ac4031b755966/testdata/airquality.csv?raw=TRUE")
+  })
+  
+  output$file_type <- renderUI({
+    textInput("file_type", "File Extension", value = "csv")
+  })
+  
  
 
   in_data <- reactive({
@@ -53,6 +62,21 @@ server <- function(input, output, session){
     if(input$data_source=="inbuilt"){
       return(get(input$dataset, "package:datasets"))
 
+    }
+    
+    
+    if(input$data_source=="remote"){
+      stopifnot("Only csv, tsv, xlsx currently supported not" = 
+                input$file_type %in% c("csv", "xlsx", "tsv")
+               
+                )
+      sep_switch = switch(input$file_type,
+                    "csv" = read.table(url(input$remote), sep=",",
+                                       header=TRUE),
+                    "tsv" = read.table(url(input$remote), sep="\t",
+                                       header=TRUE),
+                    "xlsx" = readxl::read_xlsx(input$remote))
+      return(sep_switch)
     }
     
     if(input$data_source=="user_data"){
