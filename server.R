@@ -54,6 +54,22 @@ server <- function(input, output, session){
   })
   
  
+  guess_input <- reactive({
+    
+    if(input$data_source=="user_data"){
+      return(gsub("(.*)(\\..*$)", "\\2",
+                  input$input_file$datapath, perl=TRUE))
+    }
+    
+    if(input$data_source=="remote"){
+      return(input$file_type)
+    }
+    else{
+      warning("Cannot guess input type, defaulting to csv")
+      return("csv")
+    }
+    
+  })
 
   in_data <- reactive({
     
@@ -86,10 +102,7 @@ server <- function(input, output, session){
       }
       
       
-     guess_input <- reactive({
-         gsub("(.*)(\\..*$)", "\\2",
-                      input$input_file$datapath, perl=TRUE)
-          })
+    
      
       if(!guess_input() %in% c(".csv", ".xlsx", ".tsv")){
      stop(paste0("Only .csv, .xlsx, and .tsv are currently supported, not ",
@@ -164,7 +177,7 @@ server <- function(input, output, session){
   
   output$downloadfile <- downloadHandler(
     filename = function() { paste0(substitute(in_data()),
-                                   "_missingness_report_mde", 
+                                   "_missingness_report_mde_", 
                                    format(Sys.time(), "%b-%d-%Y"),
                                    guess_input()) },
     content = function(x) {
@@ -176,14 +189,7 @@ server <- function(input, output, session){
                          delim = delim)
     }
   )
-  
-  
 
-    # optional arguments list 
-    # Filter only non NULL elements 
-    # TODO: Figure out how to choose subset columns and pattern types. 
-    # Currently NULL is not recognized as NULL for some reason. 
-    # Allow multiple values in value --> convert to split
     values_to_recode <- reactive({
       # split and convert to numeric if applicable 
       values = unlist(strsplit(input$value_to_recode, ","))
