@@ -39,8 +39,9 @@ server <- function(input, output, session){
     })
   
   output$dataset <- renderUI(
-    {textInput("dataset", "Dataset", 
-                value = "mtcars")
+    {selectInput("dataset", "Dataset", 
+                choices = ls("package:datasets"),
+                selected = "airquality")
     }
   )
   
