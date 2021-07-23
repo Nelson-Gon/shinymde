@@ -67,7 +67,7 @@ server <- function(input, output, session){
     }
     else{
       warning("Cannot guess input type, defaulting to csv")
-      return("csv")
+      return(".csv")
     }
     
   })
