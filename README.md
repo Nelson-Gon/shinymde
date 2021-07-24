@@ -1,8 +1,9 @@
 shinymde: A shiny interface to mde, the missing data explorer
 ================
-2021-07-18
+2021-07-24
 
-[![license](https://img.shields.io/badge/license-MIT-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)
+![R-CMD-check-devel](https://github.com/Nelson-Gon/shinymde/workflows/R-CMD-check-devel/badge.svg)
+[![license](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![lifecycle](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/Nelson-Gon/shinymde/graphs/commit-activity)
 [![Project
@@ -26,11 +27,19 @@ provide an even easier way to explore missing data.
 
 # Installation
 
-To install, please `clone` the repository and run `app.R` in `RStudio`.
+To install, please run the following in `R`.
 
-``` shell
-git clone git@github.com:Nelson-Gon/shinymde.git
-cd shinymde 
+``` r
+devtools::install_github("Nelson-Gon/shinymde")
+# provide branches for dev version  
+devtools::install_github("Nelson-Gon/shinymde@dev")
+```
+
+# Running the App
+
+``` r
+library(shinymde)
+run_app()
 ```
 
 # Currently Implemented features
@@ -86,7 +95,7 @@ Thank you and keep building,
 
 Nelson
 
-2021-07-18
+2021-07-24
 
 Please note that the ‘shinymde’ project is released with a [Contributor
 Code of Conduct](CODE_OF_CONDUCT.md). By contributing to this project,
