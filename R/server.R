@@ -1,8 +1,31 @@
+packages_list <- c("shiny", "mde", "vroom", "dplyr", "ggplot2",
+                   "forcats", "readxl", "shinyjs") 
+if (any(!packages_list %in% installed.packages())){
+  warning("shinymde requires shiny >=1.6.0, mde >= 0.3.1, 
+       vroom >=1.5.3, dplyr >=1.0.7, ggplot2 >= 3.3.4, forcats>=0.5.1,
+       shinyjs >= 2.0.0,
+       and readxl >=1.3.1")
+  message("Now installing missing packages")
+  
+  bool_logic <- which(!packages_list %in% installed.packages())
+  if(length(bool_logic)>0){
+    # Get packages not installed 
+    not_installed <-packages_list[bool_logic]
+    if("mde" %in% not_installed){
+      # Install mde from github 
+      not_installed <- not_installed[-grep("mde",not_installed)]
+      devtools::install_github("Nelson-Gon/mde")
+    }
+    install.packages(not_installed, dependencies = TRUE)
+  }
+  
+}
 
-#' @import shiny 
-#' @import ggplot2
-#' @importFrom dplyr %>% 
 
+library(shiny)
+library(mde)
+library(ggplot2)
+library(dplyr)
 server <- function(input, output, session){
   
  

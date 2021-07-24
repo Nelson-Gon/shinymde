@@ -1,10 +1,3 @@
-if (any(!c("shiny", "mde", "vroom", "dplyr", "ggplot2",
-           "forcats") %in% installed.packages())){
-  stop("Please install shiny package >=1.6.0, mde >= 0.3.1, 
-       vroom >=1.5.3, dplyr >=1.0.7, ggplot2 >= 3.3.4, forcats>=0.5.1  
-       and readxl >=1.3.1")
-}
-library(shiny)
 
 ui <- fluidPage(
   # theme=bslib::bs_theme(bootswatch = "darkly"),
@@ -37,6 +30,8 @@ ui <- fluidPage(
                column(2, uiOutput("sort_by")),
                column(2, selectInput("sort_order", "Sort Order",
                                      choices=c("ascending", "descending"))),
+               column(2, numericInput("round_to", "Round to", 
+                                      value = options("digits"))),
                column(2, uiOutput("group_by")),
                column(2, uiOutput("exclude_columns"))
                
@@ -102,7 +97,9 @@ ui <- fluidPage(
                 fluidRow(
                   column(4, uiOutput("y_variable")),
                   column(4, uiOutput("x_variable")),
-                  column(4, uiOutput("fill_variable"))
+                  column(2, uiOutput("fill_variable")),
+                  column(2, numericInput("round_to_visual", "Round to", 
+                                         value = 2))
                 ))
   ))
 

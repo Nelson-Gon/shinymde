@@ -1,0 +1,13 @@
+^\.github$
+^\.RData$
+^\.Rhistory$
+^README.* 
+README.rmd
+app.R
+server.R
+ui.R
+images
+testdata
+rsconnect
+LICENSE
+
