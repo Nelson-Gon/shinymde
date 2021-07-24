@@ -1,5 +1,7 @@
-
-ui <- fluidPage(
+#' Builds the user interface for shinymde. 
+#' @return shinymde's user interface. 
+#' @export
+shinymde_ui <- fluidPage(
   # theme=bslib::bs_theme(bootswatch = "darkly"),
   shinyjs::useShinyjs(),
   tabsetPanel(
