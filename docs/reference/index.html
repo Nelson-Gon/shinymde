@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Contributing to shinymde • A shiny interface to mde, the missing data explorer</title>
+<title>Function reference • A shiny interface to mde, the missing data explorer</title>
 
 
 <!-- jquery -->
@@ -18,8 +18,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
 
 <!-- bootstrap-toc -->
-<link rel="stylesheet" href="bootstrap-toc.css">
-<script src="bootstrap-toc.js"></script>
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
@@ -33,13 +33,13 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
-<link href="pkgdown.css" rel="stylesheet">
-<script src="pkgdown.js"></script>
+<link href="../pkgdown.css" rel="stylesheet">
+<script src="../pkgdown.js"></script>
 
 
 
 
-<meta property="og:title" content="Contributing to shinymde" />
+<meta property="og:title" content="Function reference" />
 
 
 
@@ -58,7 +58,7 @@
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    <div class="container template-title-body">
+    <div class="container template-reference-index">
       <header>
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
   <div class="container">
@@ -70,7 +70,7 @@
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="index.html">A shiny interface to mde, the missing data explorer</a>
+        <a class="navbar-link" href="../index.html">A shiny interface to mde, the missing data explorer</a>
         <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0.9000</span>
       </span>
     </div>
@@ -78,13 +78,13 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="articles/shinymde_introduction.html">
+  <a href="../articles/shinymde_introduction.html">
     <span class="fa fa-home"></span>
      
   </a>
 </li>
 <li>
-  <a href="news/index.html">Changelog</a>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -107,30 +107,44 @@
 <div class="row">
   <div class="contents col-md-9">
     <div class="page-header">
-      <h1>Contributing to shinymde</h1>
+      <h1>Reference</h1>
     </div>
 
-<div id="contributing-to-shinymde" class="section level1">
+    <table class="ref-index">
 
-<p>This document provides guidelines for contributions to shinymde.</p>
-<p><strong>Kinds of contribution</strong></p>
-<ul>
-<li>Typo fixes</li>
-<li>Documentantion enhancements</li>
-<li>Pull requests</li>
-</ul>
-<p><strong>Fixing typos and enhancing documentation</strong></p>
-<p>To fix typos and/or grammatical errors, please edit the corresponding <code>.R</code> or <code>.md</code> file that generates the documentation.</p>
-<p>If edited via an <code>.R</code> file, please also update the docs using <code>roxygen2</code> to generate the associated <code>.Rd</code> file.</p>
-<p><strong>Pull Requests</strong></p>
-<ul>
-<li><p>Please raise an issue for discussion and reproducibility checks at <a href="https://github.com/Nelson-Gon/shinymde/issues">issues</a></p></li>
-<li><p>Once the bug/enhancement is approved, please create a Git branch for the pull request.</p></li>
-<li><p>Make changes and ensure that builds are passing the necessary checks on Travis.</p></li>
-</ul>
-<p>Please note that the ‘shinymde’ project is released with a <a href="CODE_OF_CONDUCT.html">Contributor Code of Conduct</a>. By contributing to this project, you agree to abide by its terms.</p>
-</div>
+    <colgroup>
+      
+      <col class="alias" />
+      <col class="title" />
+    </colgroup>
 
+    <tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-exported-functions" class="hasAnchor"><a href="#section-exported-functions" class="anchor"></a>Exported Functions</h2>
+          <p class="section-desc"><p>Functions exported by shinymde</p></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="shinymde_server.html">shinymde_server()</a></code> </p>
+        </td>
+        <td><p>Server ("backend") for shinymde</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="shinymde_ui.html">shinymde_ui</a></code> </p>
+        </td>
+        <td><p>Builds the user interface for shinymde.</p></td>
+      </tr>
+    </tbody>
+    </table>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -138,9 +152,7 @@
       <h2 data-toc-skip>Contents</h2>
     </nav>
   </div>
-
 </div>
-
 
 
       <footer>

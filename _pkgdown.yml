@@ -14,8 +14,6 @@ navbar:
   left:
     - icon: fa-home
       href: articles/shinymde_introduction.html
-    - text: "Tutorials"
-      menu:
-        - text: Changes
-          href: news/index.html
+    - text: "Changelog"
+      href: news/index.html
           

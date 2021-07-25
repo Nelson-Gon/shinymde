@@ -2,7 +2,7 @@
 title: "shinymde: A shiny interface to mde, the missing data explorer"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{shinymde_introduction}
+  %\VignetteIndexEntry{shinymde: A shiny interface to mde, the missing data explorer}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
