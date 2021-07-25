@@ -1,0 +1,21 @@
+title: A shiny interface to mde, the missing data explorer
+url: https://nelson-gon.github.io/shinymde/
+template:
+   params:
+      bootswatch: darkly
+reference:
+  - title: Exported Functions
+    desc: Functions exported by shinymde
+    contents:
+       - "`shinymde_server`"
+       - "`shinymde_ui`"
+navbar:
+  type: inverse
+  left:
+    - icon: fa-home
+      href: articles/shinymde_introduction.html
+    - text: "Tutorials"
+      menu:
+        - text: Changes
+          href: news/index.html
+          
