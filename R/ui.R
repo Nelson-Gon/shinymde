@@ -2,7 +2,6 @@
 #' @return shinymde's user interface. 
 #' @export
 shinymde_ui <- fluidPage(
-  # theme=bslib::bs_theme(bootswatch = "darkly"),
   shinyjs::useShinyjs(),
   tabsetPanel(
     tabPanel("Input Data",
@@ -24,10 +23,15 @@ shinymde_ui <- fluidPage(
                column(3, conditionalPanel(condition = 
                                             "input.data_source == 'remote'",
                                           uiOutput("file_type"))))),
+             # tags$h5("shinymde, freely brought to you by"),
+             # div(
+             #   strong(tags$p("Nelson Gonzabato")), 
+             #   style="text-align: left;"),
+             # div(tags$a("https://nelson-gon.github.io"),
+             #     style="text-align: left")),
             
     tabPanel("Summarise Missingness",
              dataTableOutput("summary_na"),
-             column(2, downloadButton("downloadfile", "Download")),
              fluidRow(
                column(2, uiOutput("sort_by")),
                column(2, selectInput("sort_order", "Sort Order",
@@ -37,7 +41,8 @@ shinymde_ui <- fluidPage(
                column(2, uiOutput("group_by")),
                column(2, uiOutput("exclude_columns"))
                
-             )),
+             ), 
+             downloadButton("downloadfile", "Download this summary")),
     tabPanel("Recode Values",
              dataTableOutput("recode_values"),
              fluidRow(
