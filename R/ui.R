@@ -3,7 +3,8 @@
 #' @export
 shinymde_ui <- fluidPage(
   shinyjs::useShinyjs(),
-  tabsetPanel(
+  tabsetPanel(id="shinymde",
+              selected = "Input Data",
     tabPanel("Input Data",
              fluidRow(
                column(6, selectInput("data_source", "Data Source",
@@ -42,7 +43,7 @@ shinymde_ui <- fluidPage(
                column(2, uiOutput("exclude_columns"))
                
              ), 
-             downloadButton("downloadfile", "Download this summary")),
+             downloadButton("downloadfile", "Download this report")),
     tabPanel("Recode Values",
              dataTableOutput("recode_values"),
              fluidRow(
@@ -69,9 +70,8 @@ shinymde_ui <- fluidPage(
                              selectize = FALSE,
                              size = 4)), 
                column(2,textInput("pattern", "Pattern", value=NULL))
-               # TODO: Automate ui creation. 
-               
-             )),
+               ),
+             downloadButton("downloadfile_recode", "Download this report")),
     tabPanel("Drop Values",
              dataTableOutput("drop_na"),
              fluidRow(
@@ -98,7 +98,8 @@ shinymde_ui <- fluidPage(
                                   size = 4)),
                column(2,textInput("pattern_drop", "Pattern", value=NULL))
 
-             )),
+             ),
+             downloadButton("downloadfile_drop", "Download this report")),
     tabPanel("Visualise Missingness",
                 plotOutput("visual_summary"),
                 fluidRow(

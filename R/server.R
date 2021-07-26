@@ -159,21 +159,7 @@ shinymde_server <- function(input, output, session){
   })
   
  
-  
-  output$downloadfile <- downloadHandler(
-    filename = function() { paste0(substitute(in_data()),
-                                   "_missingness_report_mde_", 
-                                   format(Sys.time(), "%b-%d-%Y"),
-                                   guess_input()) },
-    content = function(x) {
-      delim = switch(guess_input(),
-                     ".csv" = ",",
-                     ".xlsx" = ";",
-                     ".tsv" = "\t")
-      vroom::vroom_write(summary_na(), x,
-                         delim = delim)
-    }
-  )
+
 
     values_to_recode <- reactive({
       # split and convert to numeric if applicable 
@@ -270,6 +256,49 @@ recode_switch <- reactive({
   options = list(pageLength=5)
   )
   
+  downloader <- reactive(switch(input$shinymde,
+                               "Summarise Missingness"=summary_na(),
+                               "Recode Values" = recode_switch(),
+                               "Drop Values" = drop_switch()))
+  output$downloadfile <- downloadHandler(
+    filename = function() { paste0(substitute(in_data()),
+                                   "_missingness_report_mde_", 
+                                   format(Sys.time(), "%b-%d-%Y"),
+                                   guess_input()) },
+    content = function(x) {
+      delim = switch(guess_input(),
+                     ".csv" = ",",
+                     ".xlsx" = ";",
+                     ".tsv" = "\t")
+      vroom::vroom_write(downloader(), 
+                         x, delim = delim)
+    })
+  output$downloadfile_drop <- downloadHandler(
+    filename = function() { paste0(substitute(in_data()),
+                                   "_missingness_report_mde_", 
+                                   format(Sys.time(), "%b-%d-%Y"),
+                                   guess_input()) },
+    content = function(x) {
+      delim = switch(guess_input(),
+                     ".csv" = ",",
+                     ".xlsx" = ";",
+                     ".tsv" = "\t")
+      vroom::vroom_write(downloader(), 
+                         x, delim = delim)
+    })
+  output$downloadfile_recode <-downloadHandler(
+    filename = function() { paste0(substitute(in_data()),
+                                   "_missingness_report_mde_", 
+                                   format(Sys.time(), "%b-%d-%Y"),
+                                   guess_input()) },
+    content = function(x) {
+      delim = switch(guess_input(),
+                     ".csv" = ",",
+                     ".xlsx" = ";",
+                     ".tsv" = "\t")
+      vroom::vroom_write(downloader(), 
+                         x, delim = delim)
+    })
   
   # Dropping NAs 
   output$group_by_drop <- renderUI({

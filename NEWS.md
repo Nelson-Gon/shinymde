@@ -1,5 +1,8 @@
 # shinymde 0.1.0.9000
 
+
+* It is now possible to download a summary of missingness, a data set with values recoded as requested, or one where values have been dropped. 
+
 * Initially supported operations
 
 - Data input supports either user data, an inbuilt data set, or a remote data set provided as a web link. For user data, only ".csv", ".xlsx", and ".tsv" are supported. 
