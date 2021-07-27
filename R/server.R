@@ -37,6 +37,7 @@ shinymde_server <- function(input, output, session){
     textInput("file_type", "File Extension", value = "csv")
   })
   
+
  
   guess_input <- reactive({
     
@@ -109,7 +110,9 @@ shinymde_server <- function(input, output, session){
   
 
   
-  
+  output$data_summary <- renderPrint({
+    summary(in_data())
+  })
   
   
   output$sort_by <- renderUI({
@@ -425,3 +428,4 @@ recode_switch <- reactive({
   
   
 }
+

@@ -1,5 +1,9 @@
 # shinymde 0.1.0.9000
 
+* Users now receive a summary of the input data on uploading/selecting a data set. The Input Data tab also now includes a sidebar layout. 
+
+* Visual summaries are now shown in a sidebar layout. 
+
 
 * It is now possible to download a summary of missingness, a data set with values recoded as requested, or one where values have been dropped. 
 

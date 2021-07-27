@@ -6,24 +6,28 @@ shinymde_ui <- fluidPage(
   tabsetPanel(id="shinymde",
               selected = "Input Data",
     tabPanel("Input Data",
-             fluidRow(
-               column(6, selectInput("data_source", "Data Source",
+            sidebarLayout(
+              sidebarPanel(
+              radioButtons("data_source", "Data Source",
                                      choices = c("inbuilt",
                                                  "remote",
                                                  "user_data"),
-                                     selected = "inbuilt")),
-               column(6, conditionalPanel(condition =
+                                     selected = "inbuilt"),
+               conditionalPanel(condition =
                                     "input.data_source == 'user_data'",
-                                          uiOutput("input_file"))),
-               column(6,  conditionalPanel(condition=
+                                          uiOutput("input_file")),
+               conditionalPanel(condition=
                                   "input.data_source=='inbuilt'",
-                      uiOutput("dataset"))),
-               column(3, conditionalPanel(condition = 
+                      uiOutput("dataset")),
+               conditionalPanel(condition = 
                                   "input.data_source == 'remote'",
-                                  uiOutput("remote"))),
-               column(3, conditionalPanel(condition = 
+                                  uiOutput("remote")),
+               conditionalPanel(condition = 
                                             "input.data_source == 'remote'",
-                                          uiOutput("file_type"))))),
+                                          uiOutput("file_type"))),
+            mainPanel(
+              verbatimTextOutput("data_summary")
+            ))),
              # tags$h5("shinymde, freely brought to you by"),
              # div(
              #   strong(tags$p("Nelson Gonzabato")), 
@@ -101,14 +105,14 @@ shinymde_ui <- fluidPage(
              ),
              downloadButton("downloadfile_drop", "Download this report")),
     tabPanel("Visualise Missingness",
-                plotOutput("visual_summary"),
-                fluidRow(
-                  column(4, uiOutput("y_variable")),
-                  column(4, uiOutput("x_variable")),
-                  column(2, uiOutput("fill_variable")),
-                  column(2, numericInput("round_to_visual", "Round to", 
+    sidebarLayout(
+      sidebarPanel(uiOutput("y_variable"),
+                  uiOutput("x_variable"),
+                  uiOutput("fill_variable"),
+                  numericInput("round_to_visual", "Round to", 
                                          value = 2))
-                ))
+                ,
+      mainPanel(plotOutput("visual_summary"))))
   ))
 
 
