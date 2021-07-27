@@ -114,6 +114,9 @@ shinymde_server <- function(input, output, session){
     summary(in_data())
   })
   
+#   output$author_kudos <- renderText(
+# print("shinymde is freely provided to you by Nelson Gonzabato\nhttps://nelson-gon.github.io"))
+  
   
   output$sort_by <- renderUI({
     selectInput("sort_by", 

@@ -28,12 +28,7 @@ shinymde_ui <- fluidPage(
             mainPanel(
               verbatimTextOutput("data_summary")
             ))),
-             # tags$h5("shinymde, freely brought to you by"),
-             # div(
-             #   strong(tags$p("Nelson Gonzabato")), 
-             #   style="text-align: left;"),
-             # div(tags$a("https://nelson-gon.github.io"),
-             #     style="text-align: left")),
+    
             
     tabPanel("Summarise Missingness",
              dataTableOutput("summary_na"),
