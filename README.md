@@ -1,6 +1,6 @@
 shinymde: A shiny interface to mde, the missing data explorer
 ================
-2021-07-24
+2021-07-27
 
 ![R-CMD-check-devel](https://github.com/Nelson-Gon/shinymde/workflows/R-CMD-check-devel/badge.svg)
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
@@ -95,7 +95,7 @@ Thank you and keep building,
 
 Nelson
 
-2021-07-24
+2021-07-27
 
 Please note that the ‘shinymde’ project is released with a [Contributor
 Code of Conduct](CODE_OF_CONDUCT.md). By contributing to this project,
