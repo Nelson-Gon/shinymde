@@ -128,7 +128,18 @@ shinymde_ui <- fluidPage(
                   numericInput("round_to_visual", "Round to", 
                                          value = 2))
                 ,
-      mainPanel(plotOutput("visual_summary"))))
-  ))
+      mainPanel(plotOutput("visual_summary"),
+               
+                fluidRow(
+                
+              column(4,textInput("extension", "Save Format", value="png")),
+                
+              column(4,textInput("dims", "Dimensions", 
+                                   value="1137x720")),
+              column(4,downloadButton("download_plot", 
+                             "Save Plot"))
+    
+  )))
+)))
 
 

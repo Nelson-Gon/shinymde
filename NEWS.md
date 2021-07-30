@@ -1,5 +1,10 @@
 # shinymde 0.1.0.9000
 
+
+* Grouped summaries now support exclusion following a fix in [mde](https://nelson-gon.github.io/mde). 
+
+* There is now a download button to allow saving of plots.
+
 * All tabs now use a sidebar style which also makes it more easier to navigate and also makes the download button appear more uniform on the app's page. 
 
 * Users now receive a summary of the input data on uploading/selecting a data set. The Input Data tab also now includes a sidebar layout. 

@@ -151,7 +151,7 @@ shinymde_server <- function(input, output, session){
                                     round_to=input$round_to))
   
   output$summary_na <- renderDataTable(summary_na(),
-                                       options = list(pageLength=5))
+                                       options = list(pageLength=10))
   
   delimiters <- reactive({ 
     
@@ -414,8 +414,7 @@ output$recode_values <- renderDataTable(
     }
   )
   
-  
-  output$visual_summary <- renderPlot(
+  visual_plot <- reactive(
     {
       summary_na() %>% 
         ggplot(aes(forcats::fct_reorder(.data[[req(input$x_variable)]],
@@ -426,13 +425,44 @@ output$recode_values <- renderDataTable(
         geom_label(aes(label=round(.data[[input$y_variable]], 
                                    input$round_to_visual)))+
         theme_minimal() +
+        guides(fill="none") + 
         labs(x=input$x_variable)
-  
+      
     }
+    
+  )
+  output$visual_summary <- renderPlot(
+    visual_plot()
   )
   
+  output$download_plot <- downloadHandler(
+      
+    
+    
+    filename = function(){
+     
+      paste0("shinymde_plot_",
+             ".", input$extension)
+      
+    },
+    content = function(file){
+      dims = as.numeric(strsplit(input$dims, "x")[[1]])
+     # stopifnot("Only png is currently supported."=
+     #              input$extension =="png")
+      png(file,
+             width = dims[1], height = dims[2])
+      print(visual_plot())
+      dev.off()
+    }
+    
   
+   
+    
+  )
   
-  
+
 }
+  
+
+
 
