@@ -1,5 +1,7 @@
 # shinymde 0.1.0.9000
 
+* All tabs now use a sidebar style which also makes it more easier to navigate and also makes the download button appear more uniform on the app's page. 
+
 * Users now receive a summary of the input data on uploading/selecting a data set. The Input Data tab also now includes a sidebar layout. 
 
 * Visual summaries are now shown in a sidebar layout. 

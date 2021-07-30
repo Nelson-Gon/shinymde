@@ -61,7 +61,7 @@ shinymde_server <- function(input, output, session){
  
    
     if(input$data_source=="inbuilt"){
-      return(get(input$dataset, "package:datasets"))
+      return(get(req(input$dataset), "package:datasets"))
 
     }
     
@@ -71,7 +71,7 @@ shinymde_server <- function(input, output, session){
                 input$file_type %in% c("csv", "xlsx", "tsv")
                
                 )
-      sep_switch = switch(input$file_type,
+      sep_switch = switch(req(input$file_type),
                     "csv" = read.table(url(input$remote), sep=",",
                                        header=TRUE),
                     "tsv" = read.table(url(input$remote), sep="\t",
@@ -94,11 +94,11 @@ shinymde_server <- function(input, output, session){
                       guess_input(),"."))
         }
         switch(guess_input(),
-               ".csv"=vroom::vroom(input$input_file$datapath, 
+               ".csv"=vroom::vroom(req(input$input_file$datapath), 
                                    delim = ",",
                                    show_col_types = FALSE),
-               ".xlsx" = readxl::read_xlsx(input$input_file$datapath),
-               ".tsv" = vroom::vroom(input$input_file$datapath, 
+               ".xlsx" = readxl::read_xlsx(req(input$input_file$datapath)),
+               ".tsv" = vroom::vroom(req(input$input_file$datapath), 
                                      delim="\t",
                                      show_col_types = FALSE)
         )
@@ -256,11 +256,18 @@ recode_switch <- reactive({
 })
   
 
-  
-  output$recode_values <- renderDataTable(
-    recode_switch(),
+output$recode_values <- renderDataTable(
+    
+    recode_switch()
+ 
+    
+    ,
   options = list(pageLength=5)
   )
+
+# observeEvent(input$reset, {shinyjs::reset("recoded")})
+  
+  
   
   downloader <- reactive(switch(input$shinymde,
                                "Summarise Missingness"=summary_na(),
@@ -416,14 +423,11 @@ recode_switch <- reactive({
                    .data[[req(input$y_variable)]], 
                    fill=.data[[req(input$fill_variable)]]))+
         geom_col()+
-        coord_flip()+
-        
-        guides(fill="none")+
         geom_label(aes(label=round(.data[[input$y_variable]], 
                                    input$round_to_visual)))+
         theme_minimal() +
         labs(x=input$x_variable)
-        #      y =substitute(input$y_variable) )
+  
     }
   )
   
