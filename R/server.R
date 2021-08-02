@@ -11,14 +11,15 @@
 #' @export 
 shinymde_server <- function(input, output, session){
   
- 
-  
+
+
 
   output$input_file <- renderUI({
    
     
                      fileInput("input_file",
-              label = "Please provide a file path")
+                  label="Input File", 
+              placeholder =  "Please provide a file path")
     })
   
   output$dataset <- renderUI(
@@ -37,8 +38,6 @@ shinymde_server <- function(input, output, session){
     textInput("file_type", "File Extension", value = "csv")
   })
   
-
- 
   guess_input <- reactive({
     
     if(input$data_source=="user_data"){
@@ -82,9 +81,10 @@ shinymde_server <- function(input, output, session){
     
     if(input$data_source=="user_data"){
 
-      if(is.null(input$input_file$datapath)){
+      if(!file.exists(req(input$input_file$datapath))){
         stop("Please provide a valid dataset path")
       }
+     
       
       
     
@@ -121,7 +121,8 @@ shinymde_server <- function(input, output, session){
   output$sort_by <- renderUI({
     selectInput("sort_by", 
                 "Column to sort_by", 
-                choices = names(na_summary(in_data())))
+                choices = names(na_summary(in_data())),
+                selected = "percent_missing")
   })
   
   
@@ -459,6 +460,17 @@ output$recode_values <- renderDataTable(
    
     
   )
+  # This resets plot save preferences to the default. 
+  observeEvent(input$reset_opts, {
+    shinyjs::reset("dims")
+    shinyjs::reset("extension")})
+  
+  observeEvent(input$extension, {
+    if(input$extension != "png"){
+      shinyFeedback::showFeedbackDanger("extension",
+                            text="Only PNG is currently supported.")
+    }
+  })
   
 
 }

@@ -1,6 +1,13 @@
 # shinymde 0.1.0.9000
 
 
+* Missingness summaries now default to a percent_missing sort that is provided in descending order. The user can always change this. 
+
+* User feedback is now provided via `shinyFeedback` which is a more helpful way for users to view feedback directly within the application. 
+
+
+* A reset button now exists to enable a user to restore default values for plot save preferences. 
+
 * Grouped summaries now support exclusion following a fix in [mde](https://nelson-gon.github.io/mde). 
 
 * There is now a download button to allow saving of plots.

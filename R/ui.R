@@ -2,7 +2,8 @@
 #' @return shinymde's user interface. 
 #' @export
 shinymde_ui <- fluidPage(
-  shinyjs::useShinyjs(),
+  shinyjs::useShinyjs(), 
+  shinyFeedback::useShinyFeedback(), 
   tabsetPanel(id="shinymde",
               selected = "Input Data",
     tabPanel("Input Data",
@@ -38,7 +39,8 @@ shinymde_ui <- fluidPage(
                uiOutput("sort_by"),
                selectInput("sort_order", "Sort Order",
                                      choices=c("ascending", 
-                                               "descending")),
+                                               "descending"),
+                           selected="descending"),
                numericInput("round_to", "Round to", 
                                       value = options("digits")),
                uiOutput("group_by"),
@@ -137,7 +139,8 @@ shinymde_ui <- fluidPage(
               column(4,textInput("dims", "Dimensions", 
                                    value="1137x720")),
               column(4,downloadButton("download_plot", 
-                             "Save Plot"))
+                             "Save Plot")),
+              actionButton("reset_opts", "Restore Defaults")
     
   )))
 )))
