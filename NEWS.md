@@ -1,5 +1,8 @@
 # shinymde 0.1.0.9000
 
+* Tabs except Input Data are now hidden on app startup. 
+
+* Code refactoring was done to allow for easier showing/hiding of elements, conditionally. 
 
 * Missingness summaries now default to a percent_missing sort that is provided in descending order. The user can always change this. 
 

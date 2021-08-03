@@ -25,7 +25,8 @@ shinymde_ui <- fluidPage(
                                   uiOutput("remote")),
                conditionalPanel(condition = 
                                             "input.data_source == 'remote'",
-                                          uiOutput("file_type"))),
+                                          uiOutput("file_type")),
+              actionButton("confirm","Confirm")),
             mainPanel(
               verbatimTextOutput("data_summary")
             ))),
