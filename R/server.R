@@ -11,37 +11,7 @@
 #' @export
 shinymde_server <- function(input, output, session) {
  
-  # Hide Tabs on start 
-  hidden_on_start <- c("Summarise Missingness", "Drop Values",
-                       "Recode Values", "Visualise Missingness")
-  show_hide_tab <- function(id, tabs, kind="hide"){
-    switch(kind,
-           hide =  lapply(tabs, function(tab)
-             shiny::hideTab(inputId=id,
-                            target=tab)),
-             show = lapply(tabs, function(tab)
-               shiny::showTab(inputId=id,
-                              target=tab)))
-    
-  }
- 
-  show_hide_tab(tabs=hidden_on_start, id="shinymde", kind="hide")
-  # if user confirms input, show the above tabs 
-  observeEvent(input$confirm,
-               {
-                
-                 show_hide_tab(tabs=hidden_on_start, 
-                               id="shinymde", kind="show")
-               })
-  
-  on_off_toggle <- function(elements, kind = "hide") {
-    switch(
-      kind,
-      hide = lapply(elements, shinyjs::hide),
-      toggle = lapply(elements, shinyjs::toggle),
-      show = lapply(elements, shinyjs::show)
-    )
-  }
+
   
   
 output$input_file <- renderUI({
@@ -146,12 +116,49 @@ output$input_file <- renderUI({
     }
   })
   
+  # Hide Tabs on start 
+  hidden_on_start <- c("Summarise Missingness", "Drop Values",
+                       "Recode Values", "Visualise Missingness")
   
+  show_hide_tab <- function(id, tabs, kind="hide"){
+    switch(kind,
+           hide =  lapply(tabs, function(tab)
+             shiny::hideTab(inputId=id,
+                            target=tab)),
+           show = lapply(tabs, function(tab)
+             shiny::showTab(inputId=id,
+                            target=tab)))
+    
+  }
+  
+  show_hide_tab(tabs=hidden_on_start, id="shinymde", kind="hide")
+  # if user confirms input, show the above tabs 
+  observeEvent(input$confirm,
+               {
+                 
+                 show_hide_tab(tabs=hidden_on_start, 
+                               id="shinymde", kind="show")
+               })
+  
+  on_off_toggle <- function(elements, kind = "hide") {
+    switch(
+      kind,
+      hide = lapply(elements, shinyjs::hide),
+      toggle = lapply(elements, shinyjs::toggle),
+      show = lapply(elements, shinyjs::show)
+    )
+  }
+  on_off_toggle("data_summary", kind = "hide")
   
   output$data_summary <- renderPrint({
     summary(in_data())
   })
-  
+  observeEvent(input$confirm,
+               {
+                 on_off_toggle("data_summary", kind="show")
+                 on_off_toggle("help_text", kind="hide")
+               })
+
   output$sort_by <- renderUI({
     selectInput(
       "sort_by",

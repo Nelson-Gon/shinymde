@@ -3,6 +3,6 @@
 #' @import shiny 
 #' @export 
 
-run_app <- function(){
+launch_app <- function(){
   shinyApp(ui=shinymde_ui, server=shinymde_server)
 }

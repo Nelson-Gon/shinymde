@@ -1,5 +1,9 @@
 # shinymde 0.1.0.9000
 
+* `run_app` was renamed `launch_app` to avoid name conflicts for example with `golem::run_app`. 
+
+* A simple welcome message was added to ensure that users have something visible as they select a dataset. It also serves as a form of credit to the author(s). 
+
 * Tabs except Input Data are now hidden on app startup. 
 
 * Code refactoring was done to allow for easier showing/hiding of elements, conditionally. 

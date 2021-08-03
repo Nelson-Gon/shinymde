@@ -9,7 +9,7 @@ reference:
     contents:
        - "`shinymde_server`"
        - "`shinymde_ui`"
-       - "`run_app`"
+       - "`launch_app`"
 navbar:
   type: inverse
   left:

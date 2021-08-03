@@ -28,8 +28,20 @@ shinymde_ui <- fluidPage(
                                           uiOutput("file_type")),
               actionButton("confirm","Confirm")),
             mainPanel(
-              verbatimTextOutput("data_summary")
-            ))),
+              verbatimTextOutput("data_summary"),
+            div(id="help_text",
+                tags$body(
+                  tags$br(), 
+                strong(tags$p("Welcome to shinymde!"),
+                    tags$br(),
+                tags$p("Please provide a dataset that you would like to explore 
+                       and click confirm."),
+                tags$br(), 
+                tags$p("Thank you, NelsonGon"),
+                tags$br(), 
+                tags$a(tags$em("https://nelson-gon.github.io"),
+                       href="https://nelson-gon.github.io")))
+            )))),
     
             
     tabPanel("Summarise Missingness",

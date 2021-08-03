@@ -41,3 +41,4 @@ rsconnect/
 # Only use LICENSE for github
 LICENSE.md
 inst/doc
+Rpof.out
