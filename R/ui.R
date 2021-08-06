@@ -26,7 +26,8 @@ shinymde_ui <- fluidPage(
                conditionalPanel(condition = 
                                             "input.data_source == 'remote'",
                                           uiOutput("file_type")),
-              actionButton("confirm","Confirm")),
+              actionButton("confirm","Confirm"),
+              actionButton("reset_input", "Reset")),
             mainPanel(
               verbatimTextOutput("data_summary"),
             div(id="help_text",
@@ -36,8 +37,17 @@ shinymde_ui <- fluidPage(
                     tags$br(),
                 tags$p("Please provide a dataset that you would like to explore 
                        and click confirm."),
+                tags$p("Upon confirmation, a number of tabs will 
+                       appear for further dataset analysis."),
+                tags$p("Such analyses include missingness summaries, data recoding,
+                       missingness based column drops, and a visual summary of 
+                       missingness."),
+                tags$p("You can request for 
+                       more features at https://github.com/Nelson-Gon/shinymde/issues"), 
                 tags$br(), 
-                tags$p("Thank you, NelsonGon"),
+                tags$p("Thank you,"),
+                tags$br(), 
+                tags$p("Nelson Gonzabato (NelsonGon)"),
                 tags$br(), 
                 tags$a(tags$em("https://nelson-gon.github.io"),
                        href="https://nelson-gon.github.io")))

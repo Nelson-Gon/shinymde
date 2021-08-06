@@ -139,6 +139,15 @@ output$input_file <- renderUI({
                  show_hide_tab(tabs=hidden_on_start, 
                                id="shinymde", kind="show")
                })
+  observeEvent(input$reset_input,{
+    # TODO: Only reset data at current location not the entire UI 
+    # Why not the entire UI? Seems like a waste of resources. 
+    lapply(c("data_source", "input_file",
+             "file_type", "remote", "dataset"), shinyjs::reset)
+   
+    
+  }
+               )
   
   on_off_toggle <- function(elements, kind = "hide") {
     switch(
