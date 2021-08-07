@@ -24,7 +24,8 @@ Imports:
     shinyjs (>= 2.0.0),
     vroom (>= 1.5.3),
     mde (>= 0.3.1),
-    shinyFeedback (>= 0.3.0)
+    shinyFeedback (>= 0.3.0),
+    shinydashboard (>= 0.7.1)
 Depends:
     shiny (>= 1.6.0)
 Remotes: 

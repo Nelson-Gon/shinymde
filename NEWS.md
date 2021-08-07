@@ -1,5 +1,7 @@
 # shinymde 0.1.0.9000
 
+* Massive UI changes to improve user experience. In particular, the layout is now based on `shinydashboard`. 
+
 * Users now have a reset button at the "Input Data" stage that may be useful in case of mind changes. 
 
 * `run_app` was renamed `launch_app` to avoid name conflicts for example with `golem::run_app`. 
