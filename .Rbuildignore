@@ -3,7 +3,6 @@
 .git
 .gitignore
 LICENSE.md
-LICENSE
 README.md
 .travis.yml
 README.Rmd
@@ -20,5 +19,8 @@ _config.yml
 ^docs$
 ^pkgdown$
 ^CRAN-RELEASE$
-
-Rpof.out
+^images
+images/
+testdata/
+^Rprof\.out$
+^NEWS\.html$
