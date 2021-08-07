@@ -5,7 +5,7 @@
 \alias{shinymde_ui}
 \title{Builds the user interface for shinymde.}
 \format{
-An object of class \code{shiny.tag.list} (inherits from \code{list}) of length 3.
+An object of class \code{shiny.tag} of length 3.
 }
 \usage{
 shinymde_ui

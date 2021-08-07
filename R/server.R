@@ -3,17 +3,18 @@
 #' @import ggplot2
 #' @importFrom dplyr %>%
 #' @importFrom mde na_summary
+#' @importFrom grDevices dev.off
+#' @importFrom grDevices png
 #' @importFrom utils read.table
 #' @param input input as defined in the ui
 #' @param output output of a defined ui tag.
 #' @param session Session under which the app is running.
 #' @return Server for the user interface.
 #' @export
+
 shinymde_server <- function(input, output, session) {
  
 
-  
-  
 output$input_file <- renderUI({
     fileInput("input_file",
               label = "Input File",
