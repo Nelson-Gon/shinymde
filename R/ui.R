@@ -1,13 +1,15 @@
 #' Builds the user interface for shinymde. 
-#' @return shinymde's user interface. 
 #' @import shinydashboard 
+#' @importFrom utils packageVersion
+#' @return shinymde's user interface. 
 #' @export
-shinymde_ui <- dashboardPage(
-  
-  dashboardHeader(title="shinymde"),
-  dashboardSidebar(
-    # menuItem("Home", tabName = "home"), 
+
+shinymde_ui <- shinydashboard::dashboardPage(
+  header = shinydashboard::dashboardHeader(title="shinymde"),
+  sidebar= shinydashboard::dashboardSidebar(
+    
     sidebarMenu(
+      menuItem("Home", tabName = "home", icon=shiny::icon("home")),
       menuItem("Input Data", tabName = "input", 
                icon = shiny::icon("database")),
       menuItem("Summarise Missingness", tabName = "missingness_summary",
@@ -16,48 +18,69 @@ shinymde_ui <- dashboardPage(
                icon = shiny::icon("exchange")),
       menuItem("Drop Values", tabName = "drop_values",
                icon = shiny::icon("eraser")),
-      menuItem("Visual Summary", tabName = "visual_summary",
+      menuItem("Visualise Missingness", tabName = "visual_summary",
                icon = shiny::icon("chart-bar") )
       
     )
   
   ),
-  dashboardBody(
+  body=dashboardBody(
     shinyjs::useShinyjs(), 
     shinyFeedback::useShinyFeedback(), 
-    
-    # div(id="help_text",
-    #     tags$body(
-    #       tags$br(), 
-    #       strong(tags$p("Welcome to shinymde!"),
-    #              tags$br(),
-    #              tags$p("Please provide a dataset that you would like to explore 
-    #                    and click confirm."),
-    #              tags$p("Upon confirmation, a number of tabs will 
-    #                    appear for further dataset analysis."),
-    #              tags$p("Such analyses include missingness summaries, data recoding,
-    #                    missingness based column drops, and a visual summary of 
-    #                    missingness."),
-    #              tags$p("You can request for 
-    #                    more features at https://github.com/Nelson-Gon/shinymde/issues"), 
-    #              tags$br(), 
-    #              tags$p("Thank you,"),
-    #              tags$br(), 
-    #              tags$p("Nelson Gonzabato (NelsonGon)"),
-    #              tags$br(), 
-    #              tags$a(tags$em("https://nelson-gon.github.io"),
-    #                     href="https://nelson-gon.github.io")))
-    # ), 
+    # TODO: Make page selection same color as app skin. 
+    # tags$head(tags$style(shiny::HTML(
+    #   ".dataTables_paginate .paginate_button.active {background-color: #dd4b39;}"
+    # ))), 
+   
+    tags$head(tags$style(HTML(".info-box:hover,
+    .btn:hover, .info-box-icon, .radio:hover,
+    .option:hover{
+    background-color: #0073b7 !important; 
+    color: white;
+    }
+    "))), 
+
     tabItems(
-    #   tabItem(tabName = "home",
-    #           infoBox("Welcome to shinymde, a shiny interface to mde, 
-    #                   the missingness explorer R package."),
-    #           infoBox("For project documentation, 
-    #                   please visit https://nelson-gon.github.io/shinymde",
-    #                   href = "https://nelson-gon.github.io/shinymde")
-    #           ),
-      tabItem(tabName = "input",
+      tabItem(tabName = "home",
+              div(id="welcome",
+                  strong(tags$p("Welcome to shinymde!",
+                                style="font-size:20px;"))),
               
+              fluidRow(
+                infoBox(title="Documentation",
+                        value = "Read Project Documentation",
+                        href = "https://nelson-gon.github.io/shinymde",
+                        icon = shiny::icon("book"),
+                        color = "blue", width = 6), 
+                
+                infoBox(title="Contribute",
+                        value = "Nelson-Gon/shinymde",
+                        href = "https://github.com/Nelson-Gon/shinymde",
+                        icon = shiny::icon("laptop"),
+                        color = "blue", width = 5)
+              )
+              ,
+              fluidRow(
+                tags$br(), 
+                tags$br(),
+                tags$br(),
+               
+                infoBox(title = "Author", value="Nelson Gonzabato",
+                        icon = shiny::icon("robot"),
+                        href="https://nelson-gon.github.io", 
+                        color = "blue", width = 6),
+               
+                infoBox(title="Related projects",
+                        value = "View related projects",
+                        href="https://nelson-gon.github.io/projects",
+                        icon = shiny::icon("tools"),
+                        color = "blue", width = 5)
+                
+              )
+              
+              ),
+      tabItem(tabName = "input",
+             
               sidebarLayout(
               
               sidebarPanel(
@@ -81,6 +104,22 @@ shinymde_ui <- dashboardPage(
                 actionButton("confirm","Confirm"),
                 actionButton("reset_input", "Reset")),
               mainPanel(
+                div(id="sys_details",
+                  
+                   infoBox(title="Date of Analysis",
+                            icon = shiny::icon("calendar"),
+                            value = format(Sys.Date(), "%A %b %d %Y"),
+                           width = 12),
+                    infoBox(title="R version", value = 
+                              R.version.string,
+                            icon=shiny::icon("gear"),
+                            width = 12),
+                   infoBox(title="mde version", value = 
+                             as.character(packageVersion("mde")),
+                           icon=shiny::icon("tools"),
+                           width = 12)
+                    ), 
+              
                 verbatimTextOutput("data_summary")
                ))),
               tabItem(

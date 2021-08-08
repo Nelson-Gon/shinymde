@@ -45,5 +45,5 @@ devtools::install_github("Nelson-Gon/shinymde@dev")
 
 ```{r, eval=FALSE}
 library(shinymde)
-run_app()
+launch_app()
 ```

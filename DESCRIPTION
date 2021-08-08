@@ -25,10 +25,10 @@ Imports:
     vroom (>= 1.5.3),
     mde (>= 0.3.1),
     shinyFeedback (>= 0.3.0),
-    shinydashboard (>= 0.7.1),
     grDevices (>= 4.1.0)
 Depends:
-    shiny (>= 1.6.0)
+    shiny (>= 1.6.0),
+    shinydashboard (>= 0.7.1)
 Remotes: 
     Nelson-Gon/mde
 Suggests:
