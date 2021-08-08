@@ -1,5 +1,12 @@
 # shinymde 0.1.0.9000
 
+* Hovers are now more "obvious" with target highlighted. 
+
+* The `Reset` button at the input tab now resets the initial text too. The input tab now also provides a user with system details prior to dataset confirmation. 
+
+* There is now a homepage that can direct users to project homepage, project
+documentation, and author homepage.
+
 * Massive UI changes to improve user experience. In particular, the layout is now based on `shinydashboard`. 
 
 * Users now have a reset button at the "Input Data" stage that may be useful in case of mind changes. 

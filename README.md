@@ -1,6 +1,6 @@
 shinymde: A shiny interface to mde, the missing data explorer
 ================
-2021-08-07
+2021-08-08
 
 ![R-CMD-check-devel](https://github.com/Nelson-Gon/shinymde/workflows/R-CMD-check-devel/badge.svg)
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
@@ -80,7 +80,7 @@ action](https://github.com/Nelson-Gon/shinymde/blob/main/images/sample_ui.png?ra
 If you would like to work on this project, here is a features list that
 could be a good place to start.
 
--   [ ] Add hovers to user input
+-   [x] Add hovers to user input
 
 -   [ ] Switchable dark mode
 
@@ -95,7 +95,7 @@ Thank you and keep building,
 
 Nelson
 
-2021-08-07
+2021-08-08
 
 Please note that the ‘shinymde’ project is released with a [Contributor
 Code of Conduct](CODE_OF_CONDUCT.md). By contributing to this project,

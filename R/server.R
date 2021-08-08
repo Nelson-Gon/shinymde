@@ -118,8 +118,8 @@ output$input_file <- renderUI({
   })
   
   # Hide Tabs on start 
-  hidden_on_start <- c("Summarise Missingness", "Drop Values",
-                       "Recode Values", "Visualise Missingness")
+  # hidden_on_start <- c("Summarise Missingness", "Drop Values",
+  #                      "Recode Values", "Visualise Missingness")
   
   show_hide_tab <- function(id, tabs, kind="hide"){
     switch(kind,
@@ -132,23 +132,15 @@ output$input_file <- renderUI({
     
   }
   
-  show_hide_tab(tabs=hidden_on_start, id="shinymde", kind="hide")
+  # show_hide_tab(tabs=hidden_on_start, id="shinymde", kind="hide")
   # if user confirms input, show the above tabs 
-  observeEvent(input$confirm,
-               {
-                 
-                 show_hide_tab(tabs=hidden_on_start, 
-                               id="shinymde", kind="show")
-               })
-  observeEvent(input$reset_input,{
-    # TODO: Only reset data at current location not the entire UI 
-    # Why not the entire UI? Seems like a waste of resources. 
-    lapply(c("data_source", "input_file",
-             "file_type", "remote", "dataset"), shinyjs::reset)
-   
-    
-  }
-               )
+  # observeEvent(input$confirm,
+  #              {
+  #                
+  #                show_hide_tab(tabs=hidden_on_start, 
+  #                              id="shinymde", kind="show")
+  #              })
+ 
   
   on_off_toggle <- function(elements, kind = "hide") {
     switch(
@@ -166,8 +158,19 @@ output$input_file <- renderUI({
   observeEvent(input$confirm,
                {
                  on_off_toggle("data_summary", kind="show")
-                 on_off_toggle("help_text", kind="hide")
+                 on_off_toggle("sys_details", kind="hide")
                })
+  observeEvent(input$reset_input,{
+    # TODO: Only reset data at current location not the entire UI 
+    # Why not the entire UI? Seems like a waste of resources. 
+    lapply(c("data_source", "input_file",
+             "file_type", "remote", "dataset"), shinyjs::reset)
+    
+    on_off_toggle("sys_details", kind="show")
+    on_off_toggle("data_summary", kind="hide")
+    
+  }
+  )
 
   output$sort_by <- renderUI({
     selectInput(
