@@ -115,6 +115,22 @@
 <h1 class="page-header" data-toc-text="0.1.0.9000">
 <a href="#shinymde-0109000" class="anchor"></a>shinymde 0.1.0.9000</h1>
 <ul>
+<li><p>There is now a highlight when a user hovers over a table row.</p></li>
+<li><p>Hovers are now more “obvious” with target highlighted.</p></li>
+<li><p>The <code>Reset</code> button at the input tab now resets the initial text too. The input tab now also provides a user with system details prior to dataset confirmation.</p></li>
+<li><p>There is now a homepage that can direct users to project homepage, project documentation, and author homepage.</p></li>
+<li><p>Massive UI changes to improve user experience. In particular, the layout is now based on <code>shinydashboard</code>.</p></li>
+<li><p>Users now have a reset button at the “Input Data” stage that may be useful in case of mind changes.</p></li>
+<li><p><code>run_app</code> was renamed <code>launch_app</code> to avoid name conflicts for example with <code>golem::run_app</code>.</p></li>
+<li><p>A simple welcome message was added to ensure that users have something visible as they select a dataset. It also serves as a form of credit to the author(s).</p></li>
+<li><p>Tabs except Input Data are now hidden on app startup.</p></li>
+<li><p>Code refactoring was done to allow for easier showing/hiding of elements, conditionally.</p></li>
+<li><p>Missingness summaries now default to a percent_missing sort that is provided in descending order. The user can always change this.</p></li>
+<li><p>User feedback is now provided via <code>shinyFeedback</code> which is a more helpful way for users to view feedback directly within the application.</p></li>
+<li><p>A reset button now exists to enable a user to restore default values for plot save preferences.</p></li>
+<li><p>Grouped summaries now support exclusion following a fix in <a href="https://nelson-gon.github.io/mde">mde</a>.</p></li>
+<li><p>There is now a download button to allow saving of plots.</p></li>
+<li><p>All tabs now use a sidebar style which also makes it more easier to navigate and also makes the download button appear more uniform on the app’s page.</p></li>
 <li><p>Users now receive a summary of the input data on uploading/selecting a data set. The Input Data tab also now includes a sidebar layout.</p></li>
 <li><p>Visual summaries are now shown in a sidebar layout.</p></li>
 <li><p>It is now possible to download a summary of missingness, a data set with values recoded as requested, or one where values have been dropped.</p></li>
