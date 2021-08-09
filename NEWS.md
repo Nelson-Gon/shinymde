@@ -1,5 +1,7 @@
 # shinymde 0.1.0.9000
 
+* There is now a highlight when a user hovers over a table row. 
+
 * Hovers are now more "obvious" with target highlighted. 
 
 * The `Reset` button at the input tab now resets the initial text too. The input tab now also provides a user with system details prior to dataset confirmation. 
