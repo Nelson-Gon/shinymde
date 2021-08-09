@@ -34,7 +34,7 @@ shinymde_ui <- shinydashboard::dashboardPage(
    
     tags$head(tags$style(HTML(".info-box:hover,
     .btn:hover, .info-box-icon, .radio:hover,
-    .option:hover{
+    .option:hover, .odd:hover, .even:hover{
     background-color: #0073b7 !important; 
     color: white;
     }
