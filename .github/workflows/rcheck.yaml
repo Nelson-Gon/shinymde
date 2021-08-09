@@ -12,7 +12,7 @@ name: R-CMD-check-devel
 
 jobs:
   R-CMD-check:
-    runs-on: Ubuntu-latest
+    runs-on: macOS-latest
     steps:
       - uses: actions/checkout@v2
       - uses: r-lib/actions/setup-r@master
