@@ -20,12 +20,12 @@ output$input_file <- renderUI({
               label = "Input File",
               placeholder =  "Please provide a file path")
   })
-  
+  # Get only data.frame objects since that's all mde supports. 
   output$dataset <- renderUI({
     selectInput(
       "dataset",
       "Dataset",
-      choices = ls("package:datasets"),
+      choices = Filter(function(x) is.data.frame(get(x)),ls("package:datasets")),
       selected = "airquality"
     )
   })
@@ -54,7 +54,7 @@ output$input_file <- renderUI({
     }
     
   })
-  
+ 
   in_data <- reactive({
     if (input$data_source == "inbuilt") {
       return(get(req(input$dataset), "package:datasets"))
@@ -80,15 +80,28 @@ output$input_file <- renderUI({
     }
     
     if (input$data_source == "user_data") {
-      if (!file.exists(req(input$input_file$datapath))) {
-        stop("Please provide a valid dataset path")
-      }
+      
+     
+      # It is unlikely that this would happen since a user has to choose a 
+      # file that exists anyway. 
+      # observeEvent(input$input_file$datapath, {
+      #   if (any(is.null(input$input_file$data_path),
+      #           !file.exists(req(input$input_file$datapath)))) {
+      #     
+      # shinyFeedback::showFeedbackDanger("input_file",
+      #                     text = "Please provide a valid data path.")
+      #     
+      #   }
+      # 
+      #   })
+      # 
       
       
       
       
       
       if (!guess_input() %in% c(".csv", ".xlsx", ".tsv")) {
+      
         stop(
           paste0(
             "Only .csv, .xlsx, and .tsv are currently supported, not ",

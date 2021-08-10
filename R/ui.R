@@ -5,7 +5,10 @@
 #' @export
 
 shinymde_ui <- shinydashboard::dashboardPage(
-  header = shinydashboard::dashboardHeader(title="shinymde"),
+  header = shinydashboard::dashboardHeader(title=
+                                             paste0("shinymde ",
+                                                    "v",
+                                              packageVersion("shinymde"))),
   sidebar= shinydashboard::dashboardSidebar(
     
     sidebarMenu(

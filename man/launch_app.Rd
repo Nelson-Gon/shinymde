@@ -12,3 +12,6 @@ A runnable shiny application
 \description{
 shinymde App Launcher
 }
+\examples{
+if(interactive()) launch_app()
+}

@@ -1,5 +1,11 @@
 # shinymde 0.1.0.9000
 
+* For inbuilt datasets, only `data.frame` objects are supported. 
+
+* The title at the header now includes the package version. 
+
+* There are now runnable examples (essentially one example to launch the app).
+
 * There is now a highlight when a user hovers over a table row. 
 
 * Hovers are now more "obvious" with target highlighted. 
