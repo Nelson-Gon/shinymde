@@ -1,5 +1,7 @@
 # shinymde 0.1.0.9000
 
+* There are now tooltips to aid users with the navigation process. This also adds `shinyBS` to the list of app dependencies. 
+
 * For inbuilt datasets, only `data.frame` objects are supported. 
 
 * The title at the header now includes the package version. 

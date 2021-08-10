@@ -85,6 +85,9 @@ Below is a screenshot showing current functionality.
 If you would like to work on this project, here is a features list that could
 be a good place to start.
 
+- [ ] Add user guides in the form of tooltips wherever possible. 
+- [ ] Add unit tests. 
+
 - [x] Add hovers to user input 
 
 - [ ] Switchable dark mode 

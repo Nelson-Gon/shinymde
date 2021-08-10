@@ -77,8 +77,8 @@ shinymde_ui <- shinydashboard::dashboardPage(
                         value = "View related projects",
                         href="https://nelson-gon.github.io/projects",
                         icon = shiny::icon("tools"),
-                        color = "blue", width = 5)
-                
+                        color = "blue", width = 5),
+               
               )
               
               ),
@@ -103,9 +103,33 @@ shinymde_ui <- shinydashboard::dashboardPage(
                                  uiOutput("remote")),
                 conditionalPanel(condition = 
                                    "input.data_source == 'remote'",
-                                 uiOutput("file_type")),
+                                 uiOutput("file_type")), 
+                        
                 actionButton("confirm","Confirm"),
-                actionButton("reset_input", "Reset")),
+                actionButton("reset_input", "Reset"),
+                shinyBS::bsTooltip(id="data_source",
+                                   title = "Choose a dataset source."), 
+                shinyBS::bsTooltip(
+                  id = "confirm",
+                  title = "Click to confirm input.",
+                  trigger = "hover",
+                  placement = "bottom"
+                ),
+                shinyBS::bsTooltip(
+                  id = "reset_input",
+                  title = "Click to reset input to defaults.",
+                  trigger = "hover",
+                  placement = "bottom"
+                ),
+                
+                shinyBS::bsTooltip(
+                  id = "input_file",
+                  title = "Click to select a csv, tsv, or xlsx file.",
+                  trigger = "hover",
+                  placement = "bottom"
+                )
+                
+                ),
               mainPanel(
                 div(id="sys_details",
                   
@@ -140,7 +164,9 @@ shinymde_ui <- shinydashboard::dashboardPage(
                 mainPanel( 
                   dataTableOutput("summary_na"),
                   
-                  downloadButton("downloadfile", "Download this report"))
+                  downloadButton("downloadfile", "Download this report"),
+                  shinyBS::bsTooltip(id="downloadfile",
+                                      title = "Click to save file in input format."))
               )),
               
               tabItem(
@@ -173,7 +199,9 @@ shinymde_ui <- shinydashboard::dashboardPage(
                   mainPanel(
                     dataTableOutput("recode_values"),
                     
-                    downloadButton("downloadfile_recode", "Download this report") 
+                    downloadButton("downloadfile_recode", "Download this report"),
+                    shinyBS::bsTooltip(id="downloadfile_recode",
+                                       title = "Click to save file in input format.")
                   )
                 )),
               
@@ -203,7 +231,9 @@ shinymde_ui <- shinydashboard::dashboardPage(
                         mainPanel(
                           dataTableOutput("drop_na"),
                           downloadButton("downloadfile_drop", 
-                                         "Download this report")
+                                         "Download this report"),
+                          shinyBS::bsTooltip(id="downloadfile_drop",
+                                             title = "Click to save file in input format.")
                         )
                       )), 
               
@@ -227,7 +257,15 @@ shinymde_ui <- shinydashboard::dashboardPage(
                                                            "Save Plot")),
                                    actionButton("reset_opts", "Restore Defaults")
                                    
-                                 )))
+                                 ),
+                                 shinyBS::bsTooltip(id="reset_opts",
+                                            title = "Click to restore defaults."),
+                                 shinyBS::bsTooltip(id="download_plot",
+                                                  title = "Click to save plot."),
+                                 shinyBS::bsTooltip(id="dims",
+                                 title = "Input save dimensions as WidthxHeight."),
+                                 
+                                 ))
                      ))))
                 
              
