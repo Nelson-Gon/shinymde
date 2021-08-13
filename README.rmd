@@ -85,7 +85,7 @@ Below is a screenshot showing current functionality.
 If you would like to work on this project, here is a features list that could
 be a good place to start.
 
-- [ ] Add user guides in the form of tooltips wherever possible. 
+- [x] Add user guides in the form of tooltips wherever possible. 
 - [ ] Add unit tests. 
 
 - [x] Add hovers to user input 
@@ -95,6 +95,10 @@ be a good place to start.
 - [x] Control `pattern_type`/`subset_cols` choice in `na_summary`.
 
 - [ ] Use cached filename in input filename if a user quits the program. 
+
+- [ ] Add user help pages that link to `mde` documentation on click or as an independent tab. 
+
+- [ ] Add tests of functionality. 
 
 
 ---
