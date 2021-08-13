@@ -374,11 +374,11 @@ output$input_file <- renderUI({
   
   
   downloader <- reactive(switch(
-    input$shinymde,
-    "Summarise Missingness" = summary_na(),
+    input$shiny_mde,
+    "missingness_summary" = summary_na(),
     
-    "Recode Values" = recode_switch(),
-    "Drop Values" = drop_switch()
+    "recode_values" = recode_switch(),
+    "drop_values" = drop_switch()
   ))
   output$downloadfile <- downloadHandler(
     filename = function() {

@@ -12,6 +12,8 @@ shinymde_ui <- shinydashboard::dashboardPage(
   sidebar= shinydashboard::dashboardSidebar(
     
     sidebarMenu(
+      # This id allows us to access the currently active tab as in tabsetpanel
+      id = "shiny_mde", 
       menuItem("Home", tabName = "home", icon=shiny::icon("home")),
       menuItem("Input Data", tabName = "input", 
                icon = shiny::icon("database")),
@@ -43,7 +45,7 @@ shinymde_ui <- shinydashboard::dashboardPage(
     }
     "))), 
 
-    tabItems(
+    tabItems( 
       tabItem(tabName = "home",
               div(id="welcome",
                   strong(tags$p("Welcome to shinymde!",

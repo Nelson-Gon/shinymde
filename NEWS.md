@@ -1,5 +1,9 @@
 # shinymde 0.1.0.9000
 
+* Fixed issues with downloading reports after the move to `shinydashboard`. 
+
+* `shinyBS` is now in the `Depends` field to ensure that tootltips work as expected. This is presumably because some other functions should be loaded first for tooltip adders to work. 
+
 * There are now tooltips to aid users with the navigation process. This also adds `shinyBS` to the list of app dependencies. 
 
 * For inbuilt datasets, only `data.frame` objects are supported. 

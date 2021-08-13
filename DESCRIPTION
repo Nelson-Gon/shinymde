@@ -24,11 +24,11 @@ Imports:
     vroom (>= 1.5.3),
     mde (>= 0.3.1),
     shinyFeedback (>= 0.3.0),
-    grDevices (>= 4.1.0),
-    shinyBS (>= 0.61)
+    grDevices (>= 4.1.0)
 Depends:
     shiny (>= 1.6.0),
-    shinydashboard (>= 0.7.1)
+    shinydashboard (>= 0.7.1),
+    shinyBS (>= 0.61)
 Remotes: 
     Nelson-Gon/mde
 Suggests:
