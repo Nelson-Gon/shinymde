@@ -578,7 +578,29 @@ output$input_file <- renderUI({
       labs(x = input$x_variable)
     
   })
-  output$visual_summary <- renderPlot(visual_plot())
+  
+  visual_plot_lollipop <- reactive({
+    summary_na() %>%
+      ggplot(aes(forcats::fct_reorder(.data[[req(input$x_variable)]],
+                                      .data[[req(input$y_variable)]]),
+                 .data[[req(input$y_variable)]],
+                 col  = .data[[req(input$fill_variable)]])) + 
+      geom_point() +
+      geom_segment(aes(x=.data[[req(input$x_variable)]],
+                       
+                       
+                       xend=.data[[req(input$x_variable)]], y=0, 
+                       yend=.data[[req(input$y_variable)]], )) +
+      coord_flip() +
+      theme_minimal() +
+      guides(fill = "none") +
+      labs(x = input$x_variable)
+    
+  })
+  output$visual_summary <- renderPlot(
+    switch(input$plot_type,
+           "bar" = visual_plot(),
+           "lollipop" = visual_plot_lollipop()))
   
   output$download_plot <- downloadHandler(
     filename = function() {
@@ -590,7 +612,10 @@ output$input_file <- renderUI({
       dims = as.numeric(strsplit(input$dims, "x")[[1]])
       png(file,
           width = dims[1], height = dims[2])
-      print(visual_plot())
+      
+      switch(input$plot_type,
+             "bar" = print(visual_plot()),
+             "lollipop" = print(visual_plot_lollipop())) 
       dev.off()
     }
     

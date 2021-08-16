@@ -281,23 +281,35 @@ shinymde_ui <- shinydashboard::dashboardPage(
               
              tabItem(tabName = "visual_summary",
                      sidebarLayout(
-                       sidebarPanel(uiOutput("y_variable"),
+                       sidebarPanel(
+                         selectInput("plot_type",
+                                     "Type of plot",
+                                     choices = c("bar",
+                                                 "lollipop"),
+                                     selected = "bar"),
+                         uiOutput("y_variable"),
                                     shinyBS::bsTooltip(id="y_variable",
                                     title = "Variable to use on the Y axis"),
                                     uiOutput("x_variable"),
-                                    shinyBS::bsTooltip(id = "x_variable",
-                                   title = "Variable to use on the x-axis."),
                                     uiOutput("fill_variable"),
-                                   shinyBS::bsTooltip(id ="fill_variable",
-                                             title = "Variable to 'color' bars."),
                                     numericInput("round_to_visual", "Round to", 
-                                                 value = 2),
-                                   shinyBS::bsTooltip(id="round_to",
-                                title = "Number of decimal places for text."))
+                                                 value = 2))
                        ,
                        mainPanel(plotOutput("visual_summary"),
                                  shinyBS::bsTooltip(id="visual_summary",
                                   title = "A visual summary of missingness."),
+                                 shinyBS::bsTooltip(id = "plot_type",
+                                            title="Type of plot to render."), 
+                                 
+                                 shinyBS::bsTooltip(id="x_variable",
+                                                    title="Value on  X axis"),
+                                 shinyBS::bsTooltip(id="y_variable",
+                                                    title="Value on Y axis"),
+                                 shinyBS::bsTooltip(id = "fill_variable",
+                                               title="Value to colour bars."),
+                                 shinyBS::bsTooltip(id="round_to_visual",
+                                  title="For text, number of decimal places."), 
+                                 
                                  
                                  fluidRow(
                                    
@@ -321,6 +333,7 @@ shinymde_ui <- shinydashboard::dashboardPage(
                                    shinyBS::bsTooltip(id="reset_opts",
                                           title = "Click to restore defaults.")
                                    
+                              
                                  )
                                  ))
                      ))))

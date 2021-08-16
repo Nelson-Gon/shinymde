@@ -1,5 +1,7 @@
 # shinymde 0.1.0.9000
 
+* Users can now choose to either use a bar plot or a lollipop plot. 
+
 * Fixed issues with downloading reports after the move to `shinydashboard`. 
 
 * `shinyBS` is now in the `Depends` field to ensure that tootltips work as expected. This is presumably because some other functions should be loaded first for tooltip adders to work. 
