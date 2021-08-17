@@ -564,38 +564,37 @@ output$input_file <- renderUI({
     }
   })
   
+  base_plot <- reactive(summary_na() %>%
+                          ggplot(aes(
+                            forcats::fct_reorder(.data[[req(input$x_variable)]],
+                                                 .data[[req(input$y_variable)]]),
+                            .data[[req(input$y_variable)]],
+                            fill = .data[[req(input$fill_variable)]]
+                          )) +
+                          theme_minimal() +
+                          guides(fill = "none") +
+                          labs(x = input$x_variable)
+                        )
+  
   visual_plot <- reactive({
-    summary_na() %>%
-      ggplot(aes(forcats::fct_reorder(.data[[req(input$x_variable)]],
-                                      .data[[req(input$y_variable)]]),
-                 .data[[req(input$y_variable)]],
-                 fill = .data[[req(input$fill_variable)]])) +
+     base_plot() + 
       geom_col() +
       geom_label(aes(label = round(.data[[input$y_variable]],
-                                   input$round_to_visual))) +
-      theme_minimal() +
-      guides(fill = "none") +
-      labs(x = input$x_variable)
+                                   input$round_to_visual))) 
     
   })
   
   visual_plot_lollipop <- reactive({
-    summary_na() %>%
-      ggplot(aes(forcats::fct_reorder(.data[[req(input$x_variable)]],
-                                      .data[[req(input$y_variable)]]),
-                 .data[[req(input$y_variable)]],
-                 col  = .data[[req(input$fill_variable)]])) + 
-      geom_point() +
+   base_plot() + 
+      geom_point(aes( 
+                 col = .data[[req(input$fill_variable)]])) +
       geom_segment(aes(x=.data[[req(input$x_variable)]],
                        
                        
                        xend=.data[[req(input$x_variable)]], y=0, 
-                       yend=.data[[req(input$y_variable)]], )) +
-      coord_flip() +
-      theme_minimal() +
-      guides(fill = "none") +
-      labs(x = input$x_variable)
-    
+                       yend=.data[[req(input$y_variable)]],
+                       
+                       col = .data[[req(input$fill_variable)]])) 
   })
   output$visual_summary <- renderPlot(
     switch(input$plot_type,
@@ -627,6 +626,16 @@ output$input_file <- renderUI({
   observeEvent(input$reset_opts, {
     shinyjs::reset("dims")
     shinyjs::reset("extension")
+  })
+  
+  # Hide text labels if plot_type is set to lollipop 
+  observeEvent(input$plot_type,{
+    if(input$plot_type=="lollipop"){
+      on_off_toggle("round_to_visual", kind="hide")
+      # This does not work as expected. IT should vary whenever one 
+      # changes plot type.
+      # updateTextInput(inputId = "fill_variable", label="Colour Variable")
+    }
   })
   
   observeEvent(input$extension, {

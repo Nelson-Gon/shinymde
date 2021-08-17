@@ -1,5 +1,7 @@
 # shinymde 0.1.0.9000
 
+* For plot type "lollipop", `fill_variable` is now hidden. The plot is also now not flipped. 
+
 * Users can now choose to either use a bar plot or a lollipop plot. 
 
 * Fixed issues with downloading reports after the move to `shinydashboard`. 
