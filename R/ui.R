@@ -97,7 +97,8 @@ shinymde_ui <- shinydashboard::dashboardPage(
                 conditionalPanel(condition =
                                    "input.data_source == 'user_data'",
                                  uiOutput("input_file")),
-                uiOutput("sheet"), 
+                conditionalPanel(condition="input.data_source == 'user_data'",
+                                 numericInput("sheet", "Sheet", value=1)), 
                 conditionalPanel(condition=
                                    "input.data_source=='inbuilt'",
                                  uiOutput("dataset")),

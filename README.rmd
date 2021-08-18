@@ -100,6 +100,12 @@ be a good place to start.
 
 - [ ] Add tests of functionality. 
 
+- [ ] Allow user to choose bar plot type.
+
+- [ ] Support Dates in [mde](https://nelson-gon.github.io/mde)
+
+- [ ] Allow control over visible text on visual summaries. 
+
 
 ---
 

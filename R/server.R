@@ -48,10 +48,6 @@ output$input_file <- renderUI({
     textInput("file_type", "File Extension", value = "csv")
   })
   
-  output$sheet <- renderUI({
-    conditionalPanel(condition="input.data_source == 'user_data'",
-                     numericInput("sheet", "Sheet", value=1))
-  })
 
   on_off_toggle("sheet", kind="hide")
   guess_input <- reactive({
