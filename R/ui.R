@@ -50,7 +50,7 @@ shinymde_ui <- shinydashboard::dashboardPage(
               div(id="welcome",
                   strong(tags$p("Welcome to shinymde!",
                                 style="font-size:20px;"))),
-              
+              tags$br(), 
               fluidRow(
                 infoBox(title="Documentation",
                         value = "Read Project Documentation",
