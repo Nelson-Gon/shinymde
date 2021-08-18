@@ -1,5 +1,9 @@
 # shinymde 0.1.0.9000
 
+* Users can now choose a sheet number for "xlsx" files. 
+
+* There is now a slider input to choose size of arrows and points for lollipop plots.
+
 * For plot type "lollipop", `fill_variable` is now hidden. The plot is also now not flipped. 
 
 * Users can now choose to either use a bar plot or a lollipop plot. 

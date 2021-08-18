@@ -97,6 +97,7 @@ shinymde_ui <- shinydashboard::dashboardPage(
                 conditionalPanel(condition =
                                    "input.data_source == 'user_data'",
                                  uiOutput("input_file")),
+                uiOutput("sheet"), 
                 conditionalPanel(condition=
                                    "input.data_source=='inbuilt'",
                                  uiOutput("dataset")),
@@ -287,6 +288,10 @@ shinymde_ui <- shinydashboard::dashboardPage(
                                      choices = c("bar",
                                                  "lollipop"),
                                      selected = "bar"),
+                         conditionalPanel(condition="input.plot_type=='lollipop'",
+                                          sliderInput("size", "Size",min=0,
+                                                      max = 5, step = 0.2,
+                                                      value = 2)), 
                          uiOutput("y_variable"),
                                     shinyBS::bsTooltip(id="y_variable",
                                     title = "Variable to use on the Y axis"),

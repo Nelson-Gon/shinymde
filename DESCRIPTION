@@ -29,8 +29,6 @@ Depends:
     shiny (>= 1.6.0),
     shinydashboard (>= 0.7.1),
     shinyBS (>= 0.61)
-Remotes: 
-    Nelson-Gon/mde
 Suggests:
     knitr,
     rmarkdown,

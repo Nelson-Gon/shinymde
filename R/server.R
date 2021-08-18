@@ -13,6 +13,15 @@
 #' @export
 
 shinymde_server <- function(input, output, session) {
+  
+  on_off_toggle <- function(elements, kind = "hide") {
+    switch(
+      kind,
+      hide = lapply(elements, shinyjs::hide),
+      toggle = lapply(elements, shinyjs::toggle),
+      show = lapply(elements, shinyjs::show)
+    )
+  }
  
 
 output$input_file <- renderUI({
@@ -39,10 +48,18 @@ output$input_file <- renderUI({
     textInput("file_type", "File Extension", value = "csv")
   })
   
+  output$sheet <- renderUI({
+    conditionalPanel(condition="input.data_source == 'user_data'",
+                     numericInput("sheet", "Sheet", value=1))
+  })
+
+  on_off_toggle("sheet", kind="hide")
   guess_input <- reactive({
-    if (input$data_source == "user_data") {
-      return(gsub("(.*)(\\..*$)", "\\2",
-                  input$input_file$datapath, perl = TRUE))
+    if (req(input$data_source == "user_data")){
+      file_extension <-gsub("(.*)(\\..*$)(.*)", "\\2",
+                  input$input_file$datapath, perl = TRUE)
+      
+      return(file_extension)
     }
     
     if (input$data_source == "remote") {
@@ -55,6 +72,13 @@ output$input_file <- renderUI({
     
   })
  
+  
+
+
+
+ 
+  
+
   in_data <- reactive({
     if (input$data_source == "inbuilt") {
       return(get(req(input$dataset), "package:datasets"))
@@ -117,7 +141,13 @@ output$input_file <- renderUI({
           delim = ",",
           show_col_types = FALSE
         ),
-        ".xlsx" = readxl::read_xlsx(req(input$input_file$datapath)),
+        ".xlsx" = {
+          
+          on_off_toggle("sheet", kind="show")
+          readxl::read_xlsx(req(input$input_file$datapath),
+                            sheet = req(input$sheet))
+          
+          },
         ".tsv" = vroom::vroom(
           req(input$input_file$datapath),
           delim = "\t",
@@ -155,14 +185,7 @@ output$input_file <- renderUI({
   #              })
  
   
-  on_off_toggle <- function(elements, kind = "hide") {
-    switch(
-      kind,
-      hide = lapply(elements, shinyjs::hide),
-      toggle = lapply(elements, shinyjs::toggle),
-      show = lapply(elements, shinyjs::show)
-    )
-  }
+
   on_off_toggle("data_summary", kind = "hide")
   
   output$data_summary <- renderPrint({
@@ -584,17 +607,22 @@ output$input_file <- renderUI({
     
   })
   
+  
+  
   visual_plot_lollipop <- reactive({
    base_plot() + 
       geom_point(aes( 
-                 col = .data[[req(input$fill_variable)]])) +
+                 col = .data[[req(input$fill_variable)]]),
+                 size = input$size) +
       geom_segment(aes(x=.data[[req(input$x_variable)]],
                        
                        
                        xend=.data[[req(input$x_variable)]], y=0, 
                        yend=.data[[req(input$y_variable)]],
                        
-                       col = .data[[req(input$fill_variable)]])) 
+                       col = .data[[req(input$fill_variable)]]),
+                   
+                   size = input$size) 
   })
   output$visual_summary <- renderPlot(
     switch(input$plot_type,
