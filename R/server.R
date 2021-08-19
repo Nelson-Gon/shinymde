@@ -45,8 +45,14 @@ output$input_file <- renderUI({
   })
   
   output$file_type <- renderUI({
-    textInput("file_type", "File Extension", value = "csv")
+    selectInput("file_type", "File Extension", 
+                choices = c("csv", "tsv", "xlsx"),
+                selected = "csv", multiple = FALSE)
   })
+  shinyBS::addTooltip(session=session,
+                      id="file_type", 
+                     title="Select the remote dataset's file type.")
+ 
   
 
   on_off_toggle("sheet", kind="hide")

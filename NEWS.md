@@ -1,5 +1,7 @@
 # shinymde 0.1.0.9000
 
+* For remote datasets, the file extension is now accepted via a selection from a list of currently supported file types. 
+
 * Users can now choose a sheet number for "xlsx" files. 
 
 * There is now a slider input to choose size of arrows and points for lollipop plots.

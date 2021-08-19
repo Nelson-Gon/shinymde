@@ -107,12 +107,15 @@ shinymde_ui <- shinydashboard::dashboardPage(
                                  uiOutput("remote")),
                 conditionalPanel(condition = 
                                    "input.data_source == 'remote'",
-                                 uiOutput("file_type")), 
+                                 uiOutput("file_type")),
+                 
                         
                 actionButton("confirm","Confirm"),
                 actionButton("reset_input", "Reset"),
                 shinyBS::bsTooltip(id = "data_source",
                                    title = "Choose a dataset source."),
+                shinyBS::bsTooltip(id="remote", 
+                                    title="Link to a remote dataset."), 
                 shinyBS::bsTooltip(id="confirm", 
                                    title="Click to confirm input."),
                 shinyBS::bsTooltip(id="reset_input", 
@@ -194,13 +197,13 @@ shinymde_ui <- shinydashboard::dashboardPage(
                     
                     textInput("value_to_recode", "Value"),
                     shinyBS::bsTooltip(id="value_to_recode",
-                                      title = "Provide a value to recode."),
+                          title = "Comma separated values to recode."),
                     uiOutput("criteria"),
                     shinyBS::bsTooltip(id="criteria",
                             title ="Criteria to use e.g. gt ~ greater than."),
                     uiOutput("subset_cols"),
                     shinyBS::bsTooltip(id="subset_cols",
-                                title ="Select a subset of columns to recode."),
+                                title ="A subset of columns to recode."),
                     # need pattern_type and subset_cols not both so need
                     # to set one to NULL
                     # This in shiny is done like so 
