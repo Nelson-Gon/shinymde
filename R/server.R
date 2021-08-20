@@ -603,9 +603,19 @@ output$input_file <- renderUI({
   
   visual_plot <- reactive({
      base_plot() + 
-      geom_col() +
-      geom_label(aes(label = round(.data[[input$y_variable]],
-                                   input$round_to_visual))) 
+      geom_col() -> res 
+    if(input$plot_type=="bar"){
+      res<-switch(
+        input$show_text,
+        "yes" = res + geom_label(aes(label = round(.data[[input$y_variable]],
+                                                   input$round_to_visual))),
+        "no" = res
+      )
+    }
+    
+    return(res)
+    
+      
     
   })
   

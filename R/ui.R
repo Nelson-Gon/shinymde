@@ -5,6 +5,7 @@
 #' @export
 
 shinymde_ui <- shinydashboard::dashboardPage(
+  skin = "blue", 
   header = shinydashboard::dashboardHeader(title=
                                              paste0("shinymde ",
                                                     "v",
@@ -43,6 +44,7 @@ shinymde_ui <- shinydashboard::dashboardPage(
     background-color: #0073b7 !important; 
     color: white;
     }
+   
     "))), 
 
     tabItems( 
@@ -292,6 +294,12 @@ shinymde_ui <- shinydashboard::dashboardPage(
                                      choices = c("bar",
                                                  "lollipop"),
                                      selected = "bar"),
+                         conditionalPanel(condition="input.plot_type=='bar'",
+                                          selectInput("show_text",
+                                                      "Show Text?",
+                                                      choices = c("yes",
+                                                                  "no"),
+                                                      selected = "no")), 
                          conditionalPanel(condition="input.plot_type=='lollipop'",
                                           sliderInput("size", "Size",min=0,
                                                       max = 5, step = 0.2,
@@ -309,6 +317,10 @@ shinymde_ui <- shinydashboard::dashboardPage(
                                   title = "A visual summary of missingness."),
                                  shinyBS::bsTooltip(id = "plot_type",
                                             title="Type of plot to render."), 
+                                 shinyBS::bsTooltip(id="show_text",
+                                        title="Should bars have text labels?"),
+                                 shinyBS::bsTooltip(id="size",
+                                                    title="Lollipop size"), 
                                  
                                  shinyBS::bsTooltip(id="x_variable",
                                                     title="Value on  X axis"),

@@ -1,5 +1,7 @@
 # shinymde 0.1.0.9000
 
+* For visual summaries, users can now choose to turn off the text labels on bar plots. 
+
 * For remote datasets, the file extension is now accepted via a selection from a list of currently supported file types. 
 
 * Users can now choose a sheet number for "xlsx" files. 
