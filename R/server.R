@@ -503,7 +503,7 @@ output$input_file <- renderUI({
         "pattern_drop",
         "keep_columns_drop",
         "target_cols",
-        "parcent_na_drop",
+        "percent_na_drop",
         "sign"
       ),
       kind = "hide"

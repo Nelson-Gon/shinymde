@@ -1,5 +1,9 @@
 # shinymde 0.1.0.9000
 
+* Tool tips are now shown above not below a given widget. 
+
+* For the dropping tab, "Percent NA" is now hidden for `drop_all_na` as expected.
+
 * For visual summaries, users can now choose to turn off the text labels on bar plots. 
 
 * For remote datasets, the file extension is now accepted via a selection from a list of currently supported file types. 
