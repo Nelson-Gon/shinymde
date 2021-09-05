@@ -1,5 +1,7 @@
 #' The application User-Interface
-#' 
+#' @import shinydashboard
+#' @import shinyBS
+#' @importFrom utils packageVersion
 #' @param request Internal parameter for `{shiny}`. 
 #'     DO NOT REMOVE.
 #' @import shiny
