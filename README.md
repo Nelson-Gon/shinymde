@@ -1,6 +1,6 @@
 shinymde: A shiny interface to mde, the missing data explorer
 ================
-2021-08-18
+2021-09-05
 
 ![R-CMD-check-devel](https://github.com/Nelson-Gon/shinymde/workflows/R-CMD-check-devel/badge.svg)
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
@@ -42,6 +42,13 @@ library(shinymde)
 launch_app()
 ```
 
+# Test the app
+
+`shinymde` is currently deployed at
+<https://nelson-gon.shinyapps.io/shinymde/> where users can use the app
+via a browser. Please test the app there and let us know what you think.
+Thank you!
+
 # Currently Implemented features
 
 -   [x] Summary of missingness
@@ -75,6 +82,8 @@ Below is a screenshot showing current functionality.
 ![shinymde in
 action](https://github.com/Nelson-Gon/shinymde/blob/main/images/sample_ui.png?raw=true)
 
+View the full app at <https://nelson-gon.shinyapps.io/shinymde/>.
+
 # Features that need further development (help)
 
 If you would like to work on this project, here is a features list that
@@ -96,13 +105,11 @@ could be a good place to start.
 -   [ ] Add user help pages that link to `mde` documentation on click or
     as an independent tab.
 
--   [ ] Add tests of functionality.
+-   [x] Allow user to choose plot type.
 
--   [ ] Allow user to choose bar plot type.
+-   [x] Support dates in [mde](https://nelson-gon.github.io/mde)
 
--   [ ] Support Dates in [mde](https://nelson-gon.github.io/mde)
-
--   [ ] Allow control over visible text on visual summaries.
+-   [x] Allow control over visible text on visual summaries.
 
 ------------------------------------------------------------------------
 
@@ -110,7 +117,7 @@ Thank you and keep building,
 
 Nelson
 
-2021-08-18
+2021-09-05
 
 Please note that the ‘shinymde’ project is released with a [Contributor
 Code of Conduct](CODE_OF_CONDUCT.md). By contributing to this project,
