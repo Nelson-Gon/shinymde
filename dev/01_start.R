@@ -19,13 +19,13 @@
 ## to change the name in the app_sys() function in app_config.R /!\
 ## 
 golem::fill_desc(
-  pkg_name = "tempshinymde", # The Name of the package containing the App 
-  pkg_title = "PKG_TITLE", # The Title of the package containing the App 
-  pkg_description = "PKG_DESC.", # The Description of the package containing the App 
-  author_first_name = "AUTHOR_FIRST", # Your First Name
-  author_last_name = "AUTHOR_LAST", # Your Last Name
-  author_email = "AUTHOR@MAIL.COM", # Your Email
-  repo_url = NULL # The URL of the GitHub Repo (optional) 
+  pkg_name = "shinymde", # The Name of the package containing the App 
+  pkg_title = "A shiny interface to mde: the missing data explorer.", # The Title of the package containing the App 
+  pkg_description = "Missing data exploration using mde, via a GUI.", # The Description of the package containing the App 
+  author_first_name = "Nelson", # Your First Name
+  author_last_name = "Gonzabato", # Your Last Name
+  author_email = "gonzabato@hotmail.com", # Your Email
+  repo_url = "https://github.com/Nelson-Gon/shinymde"
 )     
 
 usethis::use_pipe()
