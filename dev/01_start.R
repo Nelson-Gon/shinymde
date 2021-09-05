@@ -28,6 +28,8 @@ golem::fill_desc(
   repo_url = NULL # The URL of the GitHub Repo (optional) 
 )     
 
+usethis::use_pipe()
+
 ## Set {golem} options ----
 golem::set_golem_options()
 
