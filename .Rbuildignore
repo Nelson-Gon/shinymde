@@ -24,3 +24,5 @@ images/
 testdata/
 ^Rprof\.out$
 ^NEWS\.html$
+
+
