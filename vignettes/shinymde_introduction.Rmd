@@ -45,5 +45,11 @@ devtools::install_github("Nelson-Gon/shinymde@dev")
 
 ```{r, eval=FALSE}
 library(shinymde)
-launch_app()
+run_app()
 ```
+
+# Test the app
+
+`shinymde` is currently deployed at https://nelson-gon.shinyapps.io/shinymde/ where users can use the app via a browser. Please test the app there and let us know what you think. Thank you! 
+
+

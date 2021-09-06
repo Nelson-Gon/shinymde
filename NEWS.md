@@ -1,5 +1,7 @@
 # shinymde 0.1.0.9000
 
+* shinymde can now be browsed at https://nelson-gon.shinyapps.io/shinymde.
+
 * Tool tips are now shown above not below a given widget. 
 
 * For the dropping tab, "Percent NA" is now hidden for `drop_all_na` as expected.

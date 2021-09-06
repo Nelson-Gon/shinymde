@@ -1,6 +1,5 @@
 #' The application User-Interface
 #' @import shinydashboard
-#' @import shinyBS
 #' @importFrom utils packageVersion
 #' @param request Internal parameter for `{shiny}`. 
 #'     DO NOT REMOVE.
@@ -411,7 +410,7 @@ golem_add_external_resources <- function(){
     favicon(),
     bundle_resources(
       path = app_sys('app/www'),
-      app_title = 'tempshinymde'
+      app_title = 'shinymde'
     )
     # Add here other external resources
     # for example, you can add shinyalert::useShinyalert() 

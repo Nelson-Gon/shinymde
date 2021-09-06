@@ -24,5 +24,7 @@ images/
 testdata/
 ^Rprof\.out$
 ^NEWS\.html$
-
-
+^R_archive$
+^R/rsconnect$
+^app\.R$
+^dev$

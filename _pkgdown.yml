@@ -7,9 +7,11 @@ reference:
   - title: Exported Functions
     desc: Functions exported by shinymde
     contents:
-       - "`shinymde_server`"
-       - "`shinymde_ui`"
-       - "`launch_app`"
+       - "`app_server`"
+       - "`app_ui`"
+       - "`run_app`"
+       - "`utils-pipe`"
+       - "`app_config`"
 navbar:
   type: inverse
   left:
