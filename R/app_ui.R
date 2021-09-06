@@ -1,6 +1,7 @@
 #' The application User-Interface
 #' @import shinydashboard
 #' @importFrom utils packageVersion
+#' @importFrom shinyBS bsTooltip 
 #' @param request Internal parameter for `{shiny}`. 
 #'     DO NOT REMOVE.
 #' @import shiny
@@ -121,17 +122,17 @@ app_ui <- function(request) {
                   
                   actionButton("confirm","Confirm"),
                   actionButton("reset_input", "Reset"),
-                  shinyBS::bsTooltip(id = "data_source",
+                  bsTooltip(id = "data_source",
                                      title = "Choose a dataset source."),
-                  shinyBS::bsTooltip(id="remote", 
+                  bsTooltip(id="remote", 
                                      title="Link to a remote dataset."), 
-                  shinyBS::bsTooltip(id="confirm", 
+                  bsTooltip(id="confirm", 
                                      title="Click to confirm input."),
-                  shinyBS::bsTooltip(id="reset_input", 
+                  bsTooltip(id="reset_input", 
                                      title = "Click to restore defaults."),
-                  shinyBS::bsTooltip(id="dataset", title="Choose a dataset.",
+                  bsTooltip(id="dataset", title="Choose a dataset.",
                                      placement = "top"),
-                  shinyBS::bsTooltip(id="input_file",
+                  bsTooltip(id="input_file",
                                      title="Path to a csv, tsv, or xlsx file."
                   )
                   
@@ -155,7 +156,7 @@ app_ui <- function(request) {
                   ), 
                   
                   verbatimTextOutput("data_summary"),
-                  shinyBS::bsTooltip(id="data_summary", 
+                  bsTooltip(id="data_summary", 
                                      title = "A statistical summary of input data.")
                 ))),
       tabItem(
@@ -170,28 +171,28 @@ app_ui <- function(request) {
                                      value = options("digits")),
                         uiOutput("group_by"),
                         uiOutput("exclude_columns"),
-                        shinyBS::bsTooltip("sort_by",
+                        bsTooltip("sort_by",
                                            title = "Select sort column.",
                                            placement = "top"),
-                        shinyBS::bsTooltip(id="sort_order",
+                        bsTooltip(id="sort_order",
                                            title="Choose sort order.",
                                            placement = "top"),
-                        shinyBS::bsTooltip(id="round_to",
+                        bsTooltip(id="round_to",
                                            title = "Number of decimal places"),
-                        shinyBS::bsTooltip(id="group_by",
+                        bsTooltip(id="group_by",
                                            title = "Choose columns to group by.",
                                            placement = "top"),
-                        shinyBS::bsTooltip(id="exclude_columns",
+                        bsTooltip(id="exclude_columns",
                                            title = "Columns to exclude from analysis.",
                                            placement = "top")
           ),
           mainPanel( 
             dataTableOutput("summary_na"),
-            shinyBS::bsTooltip(id="summary_na",
+            bsTooltip(id="summary_na",
                                title = "A tabular summary of missingness."), 
             
             downloadButton("downloadfile", "Download this report"),
-            shinyBS::bsTooltip(id="downloadfile",
+            bsTooltip(id="downloadfile",
                                title = "Click to save this report.")
             
           ))),
@@ -206,20 +207,20 @@ app_ui <- function(request) {
                                     "recode_as_na_for",
                                     "recode_as_na_if"),
                         selected="recode_as_na"),
-            shinyBS::bsTooltip(id="recode_type",
+            bsTooltip(id="recode_type",
                                title = "Select the kind of recoding.",
                                placement = "top"),
             
             textInput("value_to_recode", "Value"),
-            shinyBS::bsTooltip(id="value_to_recode",
+            bsTooltip(id="value_to_recode",
                                title = "Comma separated values to recode.",
                                placement = "top"),
             uiOutput("criteria"),
-            shinyBS::bsTooltip(id="criteria",
+            bsTooltip(id="criteria",
                                title ="Criteria to use e.g. gt ~ greater than.",
                                placement = "top"),
             uiOutput("subset_cols"),
-            shinyBS::bsTooltip(id="subset_cols",
+            bsTooltip(id="subset_cols",
                                title ="A subset of columns to recode.",
                                placement = "top"),
             # need pattern_type and subset_cols not both so need
@@ -234,21 +235,21 @@ app_ui <- function(request) {
                         selectize = FALSE,
                         size = 4), 
             # This would only work if we set selectize to TRUE? 
-            # shinyBS::bsTooltip(id="pattern_type",
+            # bsTooltip(id="pattern_type",
             #                    title ="Pattern type to use for 
             #                    RegEX subset.",
             #                    placement = "top"), 
             textInput("pattern", "Pattern", value=NULL),
-            shinyBS::bsTooltip(id="pattern",
+            bsTooltip(id="pattern",
                                title ="Pattern to use for RegEx subsets.")
           ),
           mainPanel(
             dataTableOutput("recode_values"),
-            shinyBS::bsTooltip(id="recode_values",
+            bsTooltip(id="recode_values",
                                title = "A table with recoded values."),
             
             downloadButton("downloadfile_recode", "Download this report"),
-            shinyBS::bsTooltip(id="downloadfile_recode",
+            bsTooltip(id="downloadfile_recode",
                                title = "Click to save the recoded dataset.")
           )
         )),
@@ -261,27 +262,27 @@ app_ui <- function(request) {
                                           "drop_na_if",
                                           "drop_na_at"),
                               selected="drop_all_na"),
-                  shinyBS::bsTooltip(id="drop_type",
+                  bsTooltip(id="drop_type",
                                      title = "Select the kind of drop.",
                                      placement = "top"),
                   numericInput("percent_na_drop",
                                "Percent NA", value=20),
-                  shinyBS::bsTooltip(id="percent_na_drop",
+                  bsTooltip(id="percent_na_drop",
                                      title ="Input percent NA criteria."),
                   uiOutput("sign"),
-                  shinyBS::bsTooltip("sign",
+                  bsTooltip("sign",
                                      title = "Criteria e.g. gt ~ greater than.",
                                      placement = "top"), 
                   uiOutput("group_by_drop"),
-                  shinyBS::bsTooltip(id="group_by_drop",
+                  bsTooltip(id="group_by_drop",
                                      title ="Columns to group by.",
                                      placement = "top"), 
                   uiOutput("keep_columns_drop"),
-                  shinyBS::bsTooltip(id="keep_columns_drop",
+                  bsTooltip(id="keep_columns_drop",
                                      title = "Keep these columns regardless of criteria",
                                      placement = "top"),
                   uiOutput("target_cols"),
-                  shinyBS::bsTooltip(id="target_cols",
+                  bsTooltip(id="target_cols",
                                      title ="Target columns to drop at.",
                                      placement = "top"),
                   selectInput("pattern_type_drop", "Pattern type",
@@ -291,20 +292,20 @@ app_ui <- function(request) {
                               selected = FALSE,
                               selectize = FALSE, 
                               size = 4),
-                  shinyBS::bsTooltip(id = "pattern_type_drop",
+                  bsTooltip(id = "pattern_type_drop",
                                      title = "Pattern type for RegEx drop.",
                                      placement = "top"), 
                   textInput("pattern_drop", "Pattern", value=NULL),
-                  shinyBS::bsTooltip(id ="pattern_drop",
+                  bsTooltip(id ="pattern_drop",
                                      title = "Pattern for RegEx drop.")
                 ),
                 mainPanel(
                   dataTableOutput("drop_na"),
-                  shinyBS::bsTooltip(id="drop_na",
+                  bsTooltip(id="drop_na",
                                      title = "Table with NAs dropped."),
                   downloadButton("downloadfile_drop", 
                                  "Download this report"),
-                  shinyBS::bsTooltip(id="downloadfile_drop",
+                  bsTooltip(id="downloadfile_drop",
                                      title ="Click to save this table.")
                   
                 )
@@ -329,7 +330,7 @@ app_ui <- function(request) {
                                                max = 5, step = 0.2,
                                                value = 2)), 
                   uiOutput("y_variable"),
-                  shinyBS::bsTooltip(id="y_variable",
+                  bsTooltip(id="y_variable",
                                      title = "Variable to use on the Y axis"),
                   uiOutput("x_variable"),
                   uiOutput("fill_variable"),
@@ -337,27 +338,27 @@ app_ui <- function(request) {
                                value = 2))
                 ,
                 mainPanel(plotOutput("visual_summary"),
-                          shinyBS::bsTooltip(id="visual_summary",
+                          bsTooltip(id="visual_summary",
                                              title = "A visual summary of missingness."),
-                          shinyBS::bsTooltip(id = "plot_type",
+                          bsTooltip(id = "plot_type",
                                              title="Type of plot to render.",
                                              placement = "top"), 
-                          shinyBS::bsTooltip(id="show_text",
+                          bsTooltip(id="show_text",
                                              title="Should bars have text labels?",
                                              placement = "top"),
-                          shinyBS::bsTooltip(id="size",
+                          bsTooltip(id="size",
                                              title="Lollipop size"), 
                           
-                          shinyBS::bsTooltip(id="x_variable",
+                          bsTooltip(id="x_variable",
                                              title="Value on  X axis",
                                              placement = "top"),
-                          shinyBS::bsTooltip(id="y_variable",
+                          bsTooltip(id="y_variable",
                                              title="Value on Y axis",
                                              placement = "top"),
-                          shinyBS::bsTooltip(id = "fill_variable",
+                          bsTooltip(id = "fill_variable",
                                              title="Value to colour bars.",
                                              placement = "top"),
-                          shinyBS::bsTooltip(id="round_to_visual",
+                          bsTooltip(id="round_to_visual",
                                              title="For text, number of decimal places."), 
                           
                           
@@ -366,21 +367,21 @@ app_ui <- function(request) {
                             column(4,textInput("extension", "Save Format", 
                                                value="png")),
                             
-                            shinyBS::bsTooltip(id="extension",
+                            bsTooltip(id="extension",
                                                title = "Save plot in this format"),
                             
                             column(4,textInput("dims", "Dimensions", 
                                                value="1137x720")),
-                            shinyBS::bsTooltip(id="dims",
+                            bsTooltip(id="dims",
                                                title = "Plot save dimensions."),
                             column(4,downloadButton("download_plot", 
                                                     "Save Plot")),
-                            shinyBS::bsTooltip(id = "download_plot",
+                            bsTooltip(id = "download_plot",
                                                
                                                title = "Click to save plot."),
                             actionButton("reset_opts", 
                                          "Restore Defaults"),
-                            shinyBS::bsTooltip(id="reset_opts",
+                            bsTooltip(id="reset_opts",
                                                title = "Click to restore defaults.")
                             
                             

@@ -1,4 +1,20 @@
-# shinymde 0.1.0.9000
+---
+date: "09/06/2021"
+author: "Nelson Gonzabato"
+title: "Changes to shinymde"
+---
+
+---
+
+**shinymde 0.1.1.9000**
+
+* `bsTooltip` is now imported explicitly from `shinyBS`. This is a workaround to allow `R CMD check` passes. 
+
+* Non-needed directories for build were removed from the shipped package/app. 
+
+---
+
+**shinymde 0.1.0**
 
 * shinymde can now be browsed at https://nelson-gon.shinyapps.io/shinymde.
 

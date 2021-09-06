@@ -38,7 +38,12 @@ vignettes/*.pdf
 # R Environment Variables
 .Renviron
 rsconnect/
+R_archive/
+R/rsconnect
 # Only use LICENSE for github
 LICENSE.md
 inst/doc
 Rprof.out
+
+# random test files
+testdata/

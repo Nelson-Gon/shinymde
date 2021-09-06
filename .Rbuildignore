@@ -25,6 +25,7 @@ testdata/
 ^Rprof\.out$
 ^NEWS\.html$
 ^R_archive$
+^rsconnect$
 ^R/rsconnect$
 ^app\.R$
 ^dev$
