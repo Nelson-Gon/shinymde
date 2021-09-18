@@ -8,6 +8,8 @@ title: "Changes to shinymde"
 
 **shinymde 0.1.1.9000**
 
+* Following changes in `mde`, users can now filter columns in `na_summary` based on regular expression matches. 
+
 * `bsTooltip` is now imported explicitly from `shinyBS`. This is a workaround to allow `R CMD check` passes. 
 
 * Non-needed directories for build were removed from the shipped package/app. 

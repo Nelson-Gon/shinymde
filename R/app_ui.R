@@ -157,7 +157,7 @@ app_ui <- function(request) {
                   
                   verbatimTextOutput("data_summary"),
                   bsTooltip(id="data_summary", 
-                                     title = "A statistical summary of input data.")
+                            title = "A statistical summary of input data.")
                 ))),
       tabItem(
         tabName = "missingness_summary",
@@ -171,6 +171,34 @@ app_ui <- function(request) {
                                      value = options("digits")),
                         uiOutput("group_by"),
                         uiOutput("exclude_columns"),
+                        selectInput("regex_based",
+                                    "Select columns based on RegEx?",
+                                    choices = c("yes", "no"),
+                                    selected = "no"), 
+                        
+                                  selectInput("select_kind",
+                                                     "Nature of selection",
+                                                     choices = c("exclusion",
+                                                                 "inclusion"),
+                                                     selected = FALSE,
+                                              selectize = FALSE,
+                                              size = 2),
+                        
+                        
+                                    selectInput("pattern_type_summary",
+                                    label="Pattern type for regex",
+                                    choices = c("contains", "starts_with",
+                                                "ends_with", "regex"),
+                                    selected = FALSE,
+                                    selectize = FALSE,
+                                    size = 4),
+  
+                        
+                                  textInput("pattern_summary", 
+                                  label="Pattern to use for regex", 
+                                  value=NULL),
+
+        
                         bsTooltip("sort_by",
                                            title = "Select sort column.",
                                            placement = "top"),
@@ -184,7 +212,20 @@ app_ui <- function(request) {
                                            placement = "top"),
                         bsTooltip(id="exclude_columns",
                                            title = "Columns to exclude from analysis.",
-                                           placement = "top")
+                                           placement = "top"),
+                        bsTooltip(id="regex_based",
+                                  title = "Are you filtering using regex?",
+                                  placement = "top"),
+                        bsTooltip(id="select_kind",
+                                  title = "Select kind of regex filter",
+                                  placement = "top"),
+                        bsTooltip(id="pattern_type_summary",
+                                  title = "Pattern type for regex filter",
+                                  placement = "top"),
+                        bsTooltip(id="pattern_summary",
+                                  title = "Pattern for regex filter.",
+                                  placement = "top"),
+                        
           ),
           mainPanel( 
             dataTableOutput("summary_na"),

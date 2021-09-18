@@ -227,14 +227,28 @@ app_server <- function( input, output, session ) {
       multiple = TRUE
     )
   })
+  # Hide on app start
+  on_off_toggle(c("pattern_type_summary", "pattern_summary",
+                   "select_kind"),
+                kind="hide")
+  observeEvent(input$regex_based,
+               {
+                 if(input$regex_based == "yes"){
+                   on_off_toggle("select_kind", kind="show")
+                   on_off_toggle("pattern_type_summary", kind="show")
+                   on_off_toggle("pattern_summary", kind="show")
+
+                 }
+               })
   
   output$exclude_columns <- renderUI({
-    selectInput(
+    conditionalPanel("input.regex_based=='no'",
+                     selectInput(
       "exclude_columns",
       "Columns to exclude",
       choices = names(in_data()),
       multiple = TRUE
-    )
+    ))
   })
   
   
@@ -245,15 +259,22 @@ app_server <- function( input, output, session ) {
            TRUE, FALSE)
   })
   summary_na <- reactive(
+   
     na_summary(
-      in_data(),
-      sort_by = input$sort_by,
-      grouping_cols = input$group_by,
-      exclude_cols = input$exclude_columns,
-      descending = sort_order(),
-      round_to = input$round_to
-    )
-  )
+        in_data(),
+        sort_by = input$sort_by,
+        grouping_cols = input$group_by,
+        exclude_cols = input$exclude_columns,
+        descending = sort_order(),
+        round_to = input$round_to,
+        regex_kind = input$select_kind, 
+        pattern_type = input$pattern_type_summary,
+        pattern = input$pattern_summary
+        
+      ))
+      
+    
+   
   
   output$summary_na <- renderDataTable(summary_na(),
                                        options = list(pageLength = 10))

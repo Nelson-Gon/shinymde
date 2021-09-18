@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">A shiny interface to mde, the missing data explorer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1.9000</span>
       </span>
     </div>
 
@@ -111,53 +111,6 @@
       <small>Source: <a href='https://github.com/Nelson-Gon/shinymde/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div id="shinymde-0109000" class="section level1">
-<h1 class="page-header" data-toc-text="0.1.0.9000">
-<a href="#shinymde-0109000" class="anchor"></a>shinymde 0.1.0.9000</h1>
-<ul>
-<li><p>shinymde can now be browsed at <a href="https://nelson-gon.shinyapps.io/shinymde" class="uri">https://nelson-gon.shinyapps.io/shinymde</a>.</p></li>
-<li><p>Tool tips are now shown above not below a given widget.</p></li>
-<li><p>For the dropping tab, “Percent NA” is now hidden for <code>drop_all_na</code> as expected.</p></li>
-<li><p>For visual summaries, users can now choose to turn off the text labels on bar plots.</p></li>
-<li><p>For remote datasets, the file extension is now accepted via a selection from a list of currently supported file types.</p></li>
-<li><p>Users can now choose a sheet number for “xlsx” files.</p></li>
-<li><p>There is now a slider input to choose size of arrows and points for lollipop plots.</p></li>
-<li><p>For plot type “lollipop”, <code>fill_variable</code> is now hidden. The plot is also now not flipped.</p></li>
-<li><p>Users can now choose to either use a bar plot or a lollipop plot.</p></li>
-<li><p>Fixed issues with downloading reports after the move to <code>shinydashboard</code>.</p></li>
-<li><p><code>shinyBS</code> is now in the <code>Depends</code> field to ensure that tootltips work as expected. This is presumably because some other functions should be loaded first for tooltip adders to work.</p></li>
-<li><p>There are now tooltips to aid users with the navigation process. This also adds <code>shinyBS</code> to the list of app dependencies.</p></li>
-<li><p>For inbuilt datasets, only <code>data.frame</code> objects are supported.</p></li>
-<li><p>The title at the header now includes the package version.</p></li>
-<li><p>There are now runnable examples (essentially one example to launch the app).</p></li>
-<li><p>There is now a highlight when a user hovers over a table row.</p></li>
-<li><p>Hovers are now more “obvious” with target highlighted.</p></li>
-<li><p>The <code>Reset</code> button at the input tab now resets the initial text too. The input tab now also provides a user with system details prior to dataset confirmation.</p></li>
-<li><p>There is now a homepage that can direct users to project homepage, project documentation, and author homepage.</p></li>
-<li><p>Massive UI changes to improve user experience. In particular, the layout is now based on <code>shinydashboard</code>.</p></li>
-<li><p>Users now have a reset button at the “Input Data” stage that may be useful in case of mind changes.</p></li>
-<li><p><code>run_app</code> was renamed <code>launch_app</code> to avoid name conflicts for example with <code>golem::run_app</code>.</p></li>
-<li><p>A simple welcome message was added to ensure that users have something visible as they select a dataset. It also serves as a form of credit to the author(s).</p></li>
-<li><p>Tabs except Input Data are now hidden on app startup.</p></li>
-<li><p>Code refactoring was done to allow for easier showing/hiding of elements, conditionally.</p></li>
-<li><p>Missingness summaries now default to a percent_missing sort that is provided in descending order. The user can always change this.</p></li>
-<li><p>User feedback is now provided via <code>shinyFeedback</code> which is a more helpful way for users to view feedback directly within the application.</p></li>
-<li><p>A reset button now exists to enable a user to restore default values for plot save preferences.</p></li>
-<li><p>Grouped summaries now support exclusion following a fix in <a href="https://nelson-gon.github.io/mde">mde</a>.</p></li>
-<li><p>There is now a download button to allow saving of plots.</p></li>
-<li><p>All tabs now use a sidebar style which also makes it more easier to navigate and also makes the download button appear more uniform on the app’s page.</p></li>
-<li><p>Users now receive a summary of the input data on uploading/selecting a data set. The Input Data tab also now includes a sidebar layout.</p></li>
-<li><p>Visual summaries are now shown in a sidebar layout.</p></li>
-<li><p>It is now possible to download a summary of missingness, a data set with values recoded as requested, or one where values have been dropped.</p></li>
-<li><p>Initially supported operations</p></li>
-<li><p>Data input supports either user data, an inbuilt data set, or a remote data set provided as a web link. For user data, only “.csv”, “.xlsx”, and “.tsv” are supported.</p></li>
-<li><p>A tabular missingness summary is provided that can be downloaded by the user. The file format to write to is guessed from the user’s input.</p></li>
-<li><p>Recoding values supports <code>recode_as_na</code>, <code>recode_na_as</code>, <code>recode_na_if</code>, <code>recode_as_na_for</code> and other recode functions from package <code>mde</code>.</p></li>
-<li><p>Dropping values using <code>drop_</code> from <code>mde</code>.</p></li>
-<li><p>A visual summary of missingness is also available. This is currently “just” a visual alternative to the tabular summary of missingness.</p></li>
-<li><p>Added a <code>NEWS.md</code> file to track changes to the package.</p></li>
-</ul>
-</div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
