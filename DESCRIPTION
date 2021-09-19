@@ -23,7 +23,6 @@ Imports:
     shinyjs (>= 2.0.0),
     vroom (>= 1.5.3),
     shinyFeedback (>= 0.3.0),
-    grDevices (>= 4.1.0),
     magrittr (>= 2.0.1),
     golem (>= 0.3.1),
     config (>= 0.3.1),
