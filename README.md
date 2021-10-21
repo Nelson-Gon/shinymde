@@ -1,6 +1,6 @@
 shinymde: A shiny interface to mde, the missing data explorer
 ================
-2021-09-19
+2021-10-21
 
 [![R-CMD-check](https://github.com/Nelson-Gon/shinymde/actions/workflows/rcheck.yaml/badge.svg)](https://github.com/Nelson-Gon/shinymde/actions/workflows/rcheck.yaml)
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
@@ -75,6 +75,9 @@ This uses `mde`’s `drop_na_*` functions.
 
 -   [x] Missingness plots
 
+-   [ ] Gear icon that allows users to customize plot options e.g. plot
+    themes, axis labels, legends, etc.
+
 # `shinymde` in action
 
 Below is a screenshot showing current functionality.
@@ -117,7 +120,7 @@ Thank you and keep building,
 
 Nelson
 
-2021-09-19
+2021-10-21
 
 Please note that the ‘shinymde’ project is released with a [Contributor
 Code of Conduct](CODE_OF_CONDUCT.md). By contributing to this project,

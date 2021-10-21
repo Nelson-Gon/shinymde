@@ -73,7 +73,8 @@ This uses `mde`'s `drop_na_*` functions.
 
 - [x] Missingness plots
 
-
+- [ ] Gear icon that allows users to customize plot options e.g. plot themes,
+axis labels, legends, etc. 
 
 # `shinymde` in action
 

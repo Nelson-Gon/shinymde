@@ -499,7 +499,10 @@ app_ui <- function(request) {
                                        value = 2),
                         ),
                         # Resets all plot options to their default values
-                        actionButton("plot_reset_button", "Reset Options")
+                        actionButton("plot_reset_button", "Reset Options"),
+                        bsTooltip(id="plot_reset_button",
+                                  title="Reset plot options",
+                                  placement = "top")
                       )
                       ,
                       mainPanel(
@@ -583,7 +586,7 @@ golem_add_external_resources <- function() {
   
   tags$head(favicon(),
             bundle_resources(path = app_sys('app/www'),
-                             app_title = 'shinymde')
+                             app_title = 'shinymde'))
             # Add here other external resources
             # for example, you can add shinyalert::useShinyalert() )
 }
