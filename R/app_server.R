@@ -1,5 +1,5 @@
 #' The application server-side
-#' @param input,output,session Internal parameters for {shiny}. 
+#' @param input,output,session Internal parameters for {shiny}.
 #'     DO NOT REMOVE.
 #' @import ggplot2
 #' @importFrom dplyr %>%
@@ -9,9 +9,7 @@
 #' @importFrom utils read.table
 #' @import shiny
 #' @noRd
-app_server <- function( input, output, session ) {
-  # Your application server logic 
-  
+app_server <- function(input, output, session) {
   on_off_toggle <- function(elements, kind = "hide") {
     switch(
       kind,
@@ -27,12 +25,13 @@ app_server <- function( input, output, session ) {
               label = "Input File",
               placeholder =  "Please provide a file path")
   })
-  # Get only data.frame objects since that's all mde supports. 
+  # Get only data.frame objects since that's all mde supports.
   output$dataset <- renderUI({
     selectInput(
       "dataset",
       "Dataset",
-      choices = Filter(function(x) is.data.frame(get(x)),ls("package:datasets")),
+      choices = Filter(function(x)
+        is.data.frame(get(x)), ls("package:datasets")),
       selected = "airquality"
     )
   })
@@ -43,21 +42,27 @@ app_server <- function( input, output, session ) {
   })
   
   output$file_type <- renderUI({
-    selectInput("file_type", "File Extension", 
-                choices = c("csv", "tsv", "xlsx"),
-                selected = "csv", multiple = FALSE)
+    selectInput(
+      "file_type",
+      "File Extension",
+      choices = c("csv", "tsv", "xlsx"),
+      selected = "csv",
+      multiple = FALSE
+    )
   })
-  shinyBS::addTooltip(session=session,
-                      id="file_type", 
-                      title="Select the remote dataset's file type.")
+  shinyBS::addTooltip(session = session,
+                      id = "file_type",
+                      title = "Select the remote dataset's file type.")
   
   
   
-  on_off_toggle("sheet", kind="hide")
+  on_off_toggle("sheet", kind = "hide")
   guess_input <- reactive({
-    if (req(input$data_source == "user_data")){
-      file_extension <-gsub("(.*)(\\..*$)(.*)", "\\2",
-                            input$input_file$datapath, perl = TRUE)
+    if (req(input$data_source == "user_data")) {
+      file_extension <- gsub("(.*)(\\..*$)(.*)",
+                             "\\2",
+                             input$input_file$datapath,
+                             perl = TRUE)
       
       return(file_extension)
     }
@@ -104,28 +109,25 @@ app_server <- function( input, output, session ) {
     }
     
     if (input$data_source == "user_data") {
-      
-      
-      # It is unlikely that this would happen since a user has to choose a 
-      # file that exists anyway. 
+      # It is unlikely that this would happen since a user has to choose a
+      # file that exists anyway.
       # observeEvent(input$input_file$datapath, {
       #   if (any(is.null(input$input_file$data_path),
       #           !file.exists(req(input$input_file$datapath)))) {
-      #     
+      #
       # shinyFeedback::showFeedbackDanger("input_file",
       #                     text = "Please provide a valid data path.")
-      #     
+      #
       #   }
-      # 
+      #
       #   })
-      # 
+      #
       
       
       
       
       
       if (!guess_input() %in% c(".csv", ".xlsx", ".tsv")) {
-        
         stop(
           paste0(
             "Only .csv, .xlsx, and .tsv are currently supported, not ",
@@ -142,8 +144,7 @@ app_server <- function( input, output, session ) {
           show_col_types = FALSE
         ),
         ".xlsx" = {
-          
-          on_off_toggle("sheet", kind="show")
+          on_off_toggle("sheet", kind = "show")
           readxl::read_xlsx(req(input$input_file$datapath),
                             sheet = req(input$sheet))
           
@@ -160,30 +161,6 @@ app_server <- function( input, output, session ) {
     }
   })
   
-  # Hide Tabs on start 
-  # hidden_on_start <- c("Summarise Missingness", "Drop Values",
-  #                      "Recode Values", "Visualise Missingness")
-  
-  show_hide_tab <- function(id, tabs, kind="hide"){
-    switch(kind,
-           hide =  lapply(tabs, function(tab)
-             shiny::hideTab(inputId=id,
-                            target=tab)),
-           show = lapply(tabs, function(tab)
-             shiny::showTab(inputId=id,
-                            target=tab)))
-    
-  }
-  
-  # show_hide_tab(tabs=hidden_on_start, id="shinymde", kind="hide")
-  # if user confirms input, show the above tabs 
-  # observeEvent(input$confirm,
-  #              {
-  #                
-  #                show_hide_tab(tabs=hidden_on_start, 
-  #                              id="shinymde", kind="show")
-  #              })
-  
   
   
   on_off_toggle("data_summary", kind = "hide")
@@ -193,20 +170,27 @@ app_server <- function( input, output, session ) {
   })
   observeEvent(input$confirm,
                {
-                 on_off_toggle("data_summary", kind="show")
-                 on_off_toggle("sys_details", kind="hide")
+                 on_off_toggle("data_summary", kind = "show")
+                 on_off_toggle("sys_details", kind = "hide")
                })
-  observeEvent(input$reset_input,{
-    # TODO: Only reset data at current location not the entire UI 
-    # Why not the entire UI? Seems like a waste of resources. 
-    lapply(c("data_source", "input_file",
-             "file_type", "remote", "dataset"), shinyjs::reset)
+  observeEvent(input$reset_input, {
+    # TODO: Only reset data at current location not the entire UI
+    # Why not the entire UI? Seems like a waste of resources.
+    lapply(
+      c(
+        "data_source",
+        "input_file",
+        "file_type",
+        "remote",
+        "dataset"
+      ),
+      shinyjs::reset
+    )
     
-    on_off_toggle("sys_details", kind="show")
-    on_off_toggle("data_summary", kind="hide")
+    on_off_toggle("sys_details", kind = "show")
+    on_off_toggle("data_summary", kind = "hide")
     
-  }
-  )
+  })
   
   output$sort_by <- renderUI({
     selectInput(
@@ -229,26 +213,28 @@ app_server <- function( input, output, session ) {
   })
   # Hide on app start
   on_off_toggle(c("pattern_type_summary", "pattern_summary",
-                   "select_kind"),
-                kind="hide")
+                  "select_kind"),
+                kind = "hide")
   observeEvent(input$regex_based,
                {
-                 if(input$regex_based == "yes"){
-                   on_off_toggle("select_kind", kind="show")
-                   on_off_toggle("pattern_type_summary", kind="show")
-                   on_off_toggle("pattern_summary", kind="show")
-
+                 if (input$regex_based == "yes") {
+                   on_off_toggle("select_kind", kind = "show")
+                   on_off_toggle("pattern_type_summary", kind = "show")
+                   on_off_toggle("pattern_summary", kind = "show")
+                   
                  }
                })
   
   output$exclude_columns <- renderUI({
-    conditionalPanel("input.regex_based=='no'",
-                     selectInput(
-      "exclude_columns",
-      "Columns to exclude",
-      choices = names(in_data()),
-      multiple = TRUE
-    ))
+    conditionalPanel(
+      "input.regex_based=='no'",
+      selectInput(
+        "exclude_columns",
+        "Columns to exclude",
+        choices = names(in_data()),
+        multiple = TRUE
+      )
+    )
   })
   
   
@@ -259,22 +245,22 @@ app_server <- function( input, output, session ) {
            TRUE, FALSE)
   })
   summary_na <- reactive(
-   
     na_summary(
-        in_data(),
-        sort_by = input$sort_by,
-        grouping_cols = input$group_by,
-        exclude_cols = input$exclude_columns,
-        descending = sort_order(),
-        round_to = input$round_to,
-        regex_kind = input$select_kind, 
-        pattern_type = input$pattern_type_summary,
-        pattern = input$pattern_summary
-        
-      ))
+      in_data(),
+      sort_by = input$sort_by,
+      grouping_cols = input$group_by,
+      exclude_cols = input$exclude_columns,
+      descending = sort_order(),
+      round_to = input$round_to,
+      regex_kind = input$select_kind,
+      pattern_type = input$pattern_type_summary,
+      pattern = input$pattern_summary
       
-    
-   
+    )
+  )
+  
+  
+  
   
   output$summary_na <- renderDataTable(summary_na(),
                                        options = list(pageLength = 10))
@@ -290,9 +276,6 @@ app_server <- function( input, output, session ) {
     
     
   })
-  
-  tabsetPanel()
-  
   
   values_to_recode <- reactive({
     # split and convert to numeric if applicable
@@ -608,28 +591,29 @@ app_server <- function( input, output, session ) {
     }
   })
   
-  base_plot <- reactive(summary_na() %>%
-                          ggplot(aes(
-                            forcats::fct_reorder(.data[[req(input$x_variable)]],
-                                                 .data[[req(input$y_variable)]]),
-                            .data[[req(input$y_variable)]],
-                            fill = .data[[req(input$fill_variable)]]
-                          )) +
-                          theme_minimal() +
-                          guides(fill = "none") +
-                          labs(x = input$x_variable)
+  base_plot <- reactive(
+    summary_na() %>%
+      ggplot(aes(
+        forcats::fct_reorder(.data[[req(input$x_variable)]],
+                             .data[[req(input$y_variable)]]),
+        .data[[req(input$y_variable)]],
+        fill = .data[[req(input$fill_variable)]]
+      )) +
+      theme_minimal() +
+      guides(fill = "none") +
+      labs(x = input$x_variable)
   )
   
   visual_plot <- reactive({
-    base_plot() + 
-      geom_col() -> res 
-    if(input$plot_type=="bar"){
-      res<-switch(
-        input$show_text,
-        "yes" = res + geom_label(aes(label = round(.data[[input$y_variable]],
-                                                   input$round_to_visual))),
-        "no" = res
-      )
+    base_plot() +
+      geom_col() -> res
+    if (input$plot_type == "bar") {
+      res <- switch(input$show_text,
+                    "yes" = res + geom_label(aes(
+                      label = round(.data[[input$y_variable]],
+                                    input$round_to_visual)
+                    )),
+                    "no" = res)
     }
     
     return(res)
@@ -641,24 +625,27 @@ app_server <- function( input, output, session ) {
   
   
   visual_plot_lollipop <- reactive({
-    base_plot() + 
-      geom_point(aes( 
-        col = .data[[req(input$fill_variable)]]),
-        size = input$size) +
-      geom_segment(aes(x=.data[[req(input$x_variable)]],
-                       
-                       
-                       xend=.data[[req(input$x_variable)]], y=0, 
-                       yend=.data[[req(input$y_variable)]],
-                       
-                       col = .data[[req(input$fill_variable)]]),
-                   
-                   size = input$size) 
+    base_plot() +
+      geom_point(aes(col = .data[[req(input$fill_variable)]]),
+                 size = input$size) +
+      geom_segment(aes(
+        x = .data[[req(input$x_variable)]],
+        
+        
+        xend = .data[[req(input$x_variable)]],
+        y = 0,
+        yend = .data[[req(input$y_variable)]],
+        
+        col = .data[[req(input$fill_variable)]]
+      ),
+      
+      size = input$size)
   })
-  output$visual_summary <- renderPlot(
-    switch(input$plot_type,
-           "bar" = visual_plot(),
-           "lollipop" = visual_plot_lollipop()))
+  output$visual_summary <- renderPlot(switch(
+    input$plot_type,
+    "bar" = visual_plot(),
+    "lollipop" = visual_plot_lollipop()
+  ))
   
   output$download_plot <- downloadHandler(
     filename = function() {
@@ -671,29 +658,33 @@ app_server <- function( input, output, session ) {
       png(file,
           width = dims[1], height = dims[2])
       
-      switch(input$plot_type,
-             "bar" = print(visual_plot()),
-             "lollipop" = print(visual_plot_lollipop())) 
+      switch(
+        input$plot_type,
+        "bar" = print(visual_plot()),
+        "lollipop" = print(visual_plot_lollipop())
+      )
       dev.off()
     }
-    
-    
-    
     
   )
   # This resets plot save preferences to the default.
   observeEvent(input$reset_opts, {
     shinyjs::reset("dims")
     shinyjs::reset("extension")
+    
   })
   
-  # Hide text labels if plot_type is set to lollipop 
-  observeEvent(input$plot_type,{
-    if(input$plot_type=="lollipop"){
-      on_off_toggle("round_to_visual", kind="hide")
-      # This does not work as expected. IT should vary whenever one 
-      # changes plot type.
-      # updateTextInput(inputId = "fill_variable", label="Colour Variable")
+  observeEvent(input$plot_reset_button,
+               {
+                 shinyjs::reset("plot_area")
+               })
+  
+  # Hide text labels if plot_type is set to lollipop
+  observeEvent(input$plot_type, {
+    if (input$plot_type == "lollipop") {
+      on_off_toggle("round_to_visual", kind = "hide")
+      # TODO: Dynamic updates to ensure reset buttons reset these too. 
+      updateSelectInput(inputId = "fill_variable", label = "Colour Variable")
     }
   })
   

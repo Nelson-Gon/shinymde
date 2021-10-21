@@ -8,6 +8,8 @@ title: "Changes to shinymde"
 
 **shinymde 0.1.1.9000**
 
+* There is now a reset button to allow reset of plot option in the "Visualize Missingness" tab. 
+
 * Following changes in `mde`, users can now filter columns in `na_summary` based on regular expression matches. 
 
 * `bsTooltip` is now imported explicitly from `shinyBS`. This is a workaround to allow `R CMD check` passes. 
