@@ -3,6 +3,7 @@
 #' @importFrom utils packageVersion
 #' @importFrom shinyBS bsTooltip
 #' @importFrom shinycssloaders withSpinner
+#' @importFrom shinyWidgets animateOptions dropdown 
 #' @param request Internal parameter for `{shiny}`.
 #'     DO NOT REMOVE.
 #' @import shiny

@@ -8,6 +8,10 @@ title: "Changes to shinymde"
 
 **shinymde 0.1.1.9000**
 
+* `renderUI` was dropped in favour of `update*` functions which lead to a significant speed improvement. 
+
+* Tooltips were dropped. We now use a simpler interface based on `shinyWidgets`.
+
 * There is now a reset button to allow reset of plot option in the "Visualize Missingness" tab. 
 
 * Following changes in `mde`, users can now filter columns in `na_summary` based on regular expression matches. 
