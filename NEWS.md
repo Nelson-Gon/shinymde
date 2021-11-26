@@ -8,6 +8,10 @@ title: "Changes to shinymde"
 
 **shinymde 0.1.1.9000**
 
+* All tabs now have drop downs instead of a more cluttered interface. 
+
+* The dashboard side bar is now collapsed on start.
+
 * `renderUI` was dropped in favour of `update*` functions which lead to a significant speed improvement. 
 
 * Tooltips were dropped. We now use a simpler interface based on `shinyWidgets`.

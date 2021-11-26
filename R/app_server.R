@@ -292,27 +292,27 @@ app_server <- function(input, output, session) {
     values
   })
   
-  output$subset_cols <- renderUI(selectInput(
-    "subset_cols",
-    "A subset to recode",
-    choices = names(in_data()),
-    multiple = TRUE
-  ))
+  observe({
+    updateSelectInput(
+      session,
+      "subset_cols",
+      "A subset to recode",
+      choices = names(in_data())
+      
+    )
+  })
+  observe({
+    updateSelectInput(
+      session,
+      "keep_columns",
+      "Keep Columns", 
+      choices = names(in_data())
+    )
+  })
   
-  output$criteria <- renderUI(selectInput(
-    "criteria",
-    "Criteria",
-    choices = c("gt", "lt",
-                "lteq", "gteq", "eq"),
-    selected = "gt"
-  ))
+
   
-  output$keep_columns <- renderUI(selectInput(
-    "keep_columns",
-    "Keep Columns",
-    choices = names(in_data()),
-    multiple = TRUE
-  ))
+ 
   
   
   recode_switch <- reactive({
@@ -472,34 +472,31 @@ app_server <- function(input, output, session) {
   )
   
   # Dropping NAs
-  output$group_by_drop <- renderUI({
-    selectInput(
+  observe({
+    updateSelectInput(session,
       "group_by_drop",
       "Grouping Columns",
-      choices = names(in_data()),
-      multiple = TRUE
+      choices = names(in_data())
     )
   })
+  observe({
+    updateSelectInput(session,
+        "keep_columns_drop",
+        "Keep Columns",
+        choices = names(in_data())
+      )
+  }
+    )
   
-  output$keep_columns_drop <- renderUI(selectInput(
-    "keep_columns_drop",
-    "Keep Columns",
-    choices = names(in_data()),
-    multiple = TRUE
-  ))
-  output$target_cols <- renderUI(selectInput(
-    "target_cols",
-    "Target Columns",
-    choices = names(in_data()),
-    multiple = TRUE
-  ))
-  output$sign <- renderUI(selectInput(
-    "sign",
-    "Sign",
-    choices = c("gt", "gteq", "lt", "lteq", "eq"),
-    selected = "gt",
-    multiple = FALSE
-  ))
+
+  observe({
+    updateSelectInput(session, 
+      "target_cols",
+      "Target Columns",
+      choices = names(in_data())
+    )
+  })
+ 
   
   drop_switch <- reactive({
     on_off_toggle(
@@ -565,8 +562,8 @@ app_server <- function(input, output, session) {
                                     options = list(pageLength = 5))
   
   # Visual summaries
-  output$y_variable <- renderUI({
-    selectInput(
+  observe({
+    updateSelectInput(session,
       "y_variable",
       "Y axis variable",
       choices = names(summary_na()),
@@ -574,25 +571,27 @@ app_server <- function(input, output, session) {
     )
   })
   
-  output$x_variable <- renderUI({
-    selectInput(
-      "x_variable",
-      "X axis variable",
-      choices = names(summary_na()),
-      selected = "variable"
-    )
+  observe({
+    updateSelectInput(session,
+                        "x_variable",
+                        "X axis variable",
+                        choices = names(summary_na()),
+                        selected = "variable"
+                      )
+                      
   })
   
-  output$fill_variable <- renderUI({
-    {
-      selectInput(
-        "fill_variable",
-        "Fill variable",
-        choices = names(summary_na()),
-        selected = "variable"
-      )
-    }
-  })
+observe({
+  updateSelectInput(session,
+                      "fill_variable",
+                      "Fill variable",
+                      choices = names(summary_na()),
+                      selected = "variable"
+                    )
+                    
+})
+  
+
   
   base_plot <- reactive(
     summary_na() %>%

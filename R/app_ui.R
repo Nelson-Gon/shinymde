@@ -3,7 +3,7 @@
 #' @importFrom utils packageVersion
 #' @importFrom shinyBS bsTooltip
 #' @importFrom shinycssloaders withSpinner
-#' @importFrom shinyWidgets animateOptions dropdown 
+#' @importFrom shinyWidgets animateOptions dropdown
 #' @param request Internal parameter for `{shiny}`.
 #'     DO NOT REMOVE.
 #' @import shiny
@@ -22,6 +22,7 @@ app_ui <- function(request) {
                                                      packageVersion("shinymde")
                                                    )),
         sidebar = shinydashboard::dashboardSidebar(
+          collapsed = TRUE,
           sidebarMenu(
             # This id allows us to access the currently active tab as in tabsetpanel
             id = "shiny_mde",
@@ -39,7 +40,7 @@ app_ui <- function(request) {
             menuItem(
               "Recode Values",
               tabName = "recode_values",
-              icon = shiny::icon("exchange")
+              icon = shiny::icon("exchange-alt")
             ),
             menuItem(
               "Drop Values",
@@ -133,9 +134,9 @@ app_ui <- function(request) {
             ),
             tabItem(tabName = "input",
                     
-                   inputPanel(
-                     
-                   radioButtons(
+                    sidebarLayout(
+                      sidebarPanel(
+                        radioButtons(
                           "data_source",
                           "Data Source",
                           choices = c("inbuilt",
@@ -149,37 +150,39 @@ app_ui <- function(request) {
                         conditionalPanel(condition = "input.data_source == 'user_data'",
                                          numericInput("sheet", "Sheet", value =
                                                         1)),
-                        conditionalPanel(condition =
-                                           "input.data_source=='inbuilt'",
-                                         selectInput(
-                                           "dataset",
-                                           "Dataset",
-                                           choices = c("mtcars", "airquality"),
-                                           selected = "airquality"
-                                         )),
-                        conditionalPanel(condition =
-                                           "input.data_source == 'remote'",
-                                         textInput(
-                                           "remote",
-                                           "Remote",
-                                           value = ""
-                                         )),
+                        conditionalPanel(
+                          condition =
+                            "input.data_source=='inbuilt'",
+                          selectInput(
+                            "dataset",
+                            "Dataset",
+                            choices = c("mtcars", "airquality"),
+                            selected = "airquality"
+                          )
+                        ),
                         conditionalPanel(condition =
                                            "input.data_source == 'remote'",
-                                         selectInput("file_type",
-                                                     "File Type",
-                                                     choices = c("csv", "tsv"),
-                                                     selected = "csv" )),
+                                         textInput("remote",
+                                                   "Remote",
+                                                   value = "")),
+                        conditionalPanel(
+                          condition =
+                            "input.data_source == 'remote'",
+                          selectInput(
+                            "file_type",
+                            "File Type",
+                            choices = c("csv", "tsv"),
+                            selected = "csv"
+                          )
+                        ),
                         
                         
                         actionButton("confirm", "Confirm"),
                         actionButton("reset_input", "Reset"),
-                      
-                       
-                        
                         
                       ),
                       
+                      mainPanel(
                         div(
                           id = "sys_details",
                           
@@ -206,172 +209,159 @@ app_ui <- function(request) {
                         ),
                         
                         verbatimTextOutput("data_summary")
-                        
                       )
-                   ,
-            tabItem(tabName = "missingness_summary",
-                    fluidRow(column(4,shinyWidgets::dropdown(
-                        style = "material-flat",
-                        icon = icon("cog"),
-                        animate = shinyWidgets::animateOptions(
-                          enter = "fadeIn",
-                          exit = "fadeOut"
-                        ),
-                        uiOutput("sort_by"),
-                        selectInput(
-                          "sort_order",
-                          "Sort Order",
-                          choices = c("ascending",
-                                      "descending"),
-                          selected = "descending"
-                        ),
-                        numericInput("round_to", "Round to",
-                                     value = options("digits"))
-                        )),
-                        column(
-                          4,
-                        
-                        shinyWidgets::dropdown(
-                          style = "material-flat",
-                          icon = icon("cog"),
-                          animate = shinyWidgets::animateOptions(
-                            enter = "fadeIn",
-                            exit = "fadeOut"
-                          ), 
-                          uiOutput("group_by"),
-                        uiOutput("exclude_columns")
-                        )),
-                        column(4,
-                               shinyWidgets::dropdown(
-                                 style = "material-flat",
-                                 icon = icon("cog"),
-                                 animate = shinyWidgets::animateOptions(
-                                   enter = "fadeIn",
-                                   exit = "fadeOut"
-                                 ), 
-                        selectInput(
-                          "regex_based",
-                          "Select columns based on RegEx?",
-                          choices = c("yes", "no"),
-                          selected = "no"
-                        ),
-                        
-                        selectInput(
-                          "select_kind",
-                          "Nature of selection",
-                          choices = c("exclusion",
-                                      "inclusion"),
-                          selected = FALSE,
-                          selectize = FALSE,
-                          size = 2
-                        ),
-                        
-                        
-                        selectInput(
-                          "pattern_type_summary",
-                          label = "Pattern type for regex",
-                          choices = c("contains", "starts_with",
-                                      "ends_with", "regex"),
-                          selected = FALSE,
-                          selectize = FALSE,
-                          size = 4
-                        ),
-                        
-                        
-                        textInput("pattern_summary",
-                                  label = "Pattern to use for regex",
-                                  value = NULL)
-                        ))),
-                        
-                        
-                        
-                    shinycssloaders::withSpinner(
-                        dataTableOutput("summary_na")),
-                        
-                    downloadButton("downloadfile", "Download this report")
-                        
-                      )
-                    ,
+                      
+                      
+                      
+                      
+                      
+                    ))
+            
+            
+            
+            
+            ,
+            tabItem(
+              tabName = "missingness_summary",
+              fluidRow(
+                column(
+                  4,
+                  shinyWidgets::dropdown(
+                    label = "Sort",
+                    style = "fill",
+                    icon = icon("cog"),
+                  animate = shinyWidgets::animateOptions(enter = "fadeInLeft",
+                                                       exit = "fadeOut"),
+                    uiOutput("sort_by"),
+                    selectInput(
+                      "sort_order",
+                      "Sort Order",
+                      choices = c("ascending",
+                                  "descending"),
+                      selected = "descending"
+                    ),
+                    numericInput("round_to", "Round to",
+                                 value = options("digits"))
+                  )
+                ),
+                column(
+                  4,
+                  
+                  shinyWidgets::dropdown(
+                    label = "Group",
+                    style = "fill",
+                    icon = icon("cog"),
+                    animate = shinyWidgets::animateOptions(enter = "fadeIn",
+                                                           exit = "fadeOut"),
+                    uiOutput("group_by"),
+                    uiOutput("exclude_columns")
+                  )
+                ),
+                column(
+                  4,
+                  shinyWidgets::dropdown(
+                    label = "Subset", 
+                    style = "fill",
+                    icon = icon("cog"),
+                    animate = shinyWidgets::animateOptions(enter = "fadeIn",
+                                                           exit = "fadeOut"),
+                    selectInput(
+                      "regex_based",
+                      "Select columns based on RegEx?",
+                      choices = c("yes", "no"),
+                      selected = "no"
+                    ),
+                    
+                    selectInput(
+                      "select_kind",
+                      "Nature of selection",
+                      choices = c("exclusion",
+                                  "inclusion"),
+                      selected = FALSE,
+                      selectize = FALSE,
+                      size = 2
+                    ),
+                    
+                    
+                    selectInput(
+                      "pattern_type_summary",
+                      label = "Pattern type for regex",
+                      choices = c("contains", "starts_with",
+                                  "ends_with", "regex"),
+                      selected = FALSE,
+                      selectize = FALSE,
+                      size = 4
+                    ),
+                    
+                    
+                    textInput("pattern_summary",
+                              label = "Pattern to use for regex",
+                              value = NULL)
+                  )
+                )
+              ),
+              
+              
+              
+              shinycssloaders::withSpinner(dataTableOutput("summary_na")),
+              
+              downloadButton("downloadfile", "Download this report")
+              
+            )
+            ,
             
             tabItem(tabName = "recode_values",
-                    sidebarLayout(
-                      sidebarPanel(
-                        selectInput(
-                          "recode_type",
-                          "Kind of recoding",
-                          choices = c(
-                            "recode_as_na",
-                            "recode_na_as",
-                            "recode_as_na_for",
-                            "recode_as_na_if"
-                          ),
-                          selected = "recode_as_na"
-                        ),
-                       
-                        
-                        textInput("value_to_recode", "Value"),
-                       
-                        uiOutput("criteria"),
-                      
-                        uiOutput("subset_cols"),
-                       
-                        # need pattern_type and subset_cols not both so need
-                        # to set one to NULL
-                        # This in shiny is done like so
-                        # see stackoverflow.com/a/53698788/10323798
-                        selectInput(
-                          "pattern_type",
-                          "Pattern type",
-                          choices = c("starts_with",
-                                      "ends_with", "contains",
-                                      "regex"),
-                          selected = FALSE,
-                          selectize = FALSE,
-                          size = 4
-                        ),
-                       
-                        textInput("pattern", "Pattern", value = NULL)
-                        ),
-                      
-                      mainPanel(
-                        dataTableOutput("recode_values"),
-                        
-                        
-                  downloadButton("downloadfile_recode", "Download this report")
-                       
-                      )
-                    )),
-            
-            tabItem(tabName = "drop_values",
                     shinyWidgets::dropdown(
                       icon = icon("cog"),
-                      style = "material-flat",
+                      style = "fill", 
+                      label = "Recode",
                       animate = shinyWidgets::animateOptions(
-                        enter = "fadeInLeft",
-                        exit = "fadeOut"
+                        exit = "fadeOut",
+                        enter = "fadeInLeft"
                       ), 
                       selectInput(
-                        "drop_type",
-                        "Kind of drop",
-                        choices = c("drop_all_na",
-                                    "drop_na_if",
-                                    "drop_na_at"),
-                        selected = "drop_all_na"
+                        "recode_type",
+                        "Kind of recoding",
+                        choices = c(
+                          "recode_as_na",
+                          "recode_na_as",
+                          "recode_as_na_for",
+                          "recode_as_na_if"
+                        ),
+                        selected = "recode_as_na"
                       ),
                       
-                      numericInput("percent_na_drop",
-                                   "Percent NA", value = 20),
                       
-                      uiOutput("sign"),
-                      
-                      uiOutput("group_by_drop"),
-                      
-                      uiOutput("keep_columns_drop"),
-                      
-                      uiOutput("target_cols"),
+                      textInput("value_to_recode", "Value"),
                       
                       selectInput(
-                        "pattern_type_drop",
+                        "criteria",
+                        "Criteria",
+                        choices = c("gt", "lt",
+                                    "lteq", "gteq", "eq"),
+                        selected = "gt"
+                        
+                      ),
+                      
+                      selectInput(
+                        "subset_cols",
+                        "A subset to recode",
+                        choices = c("A", "B"),
+                        multiple = TRUE
+                      ),
+                      
+                      selectInput(
+                        "keep_columns",
+                        "Keep Columns",
+                        choices = c("A", 'B'),
+                        multiple = TRUE
+                      ), 
+                      # need pattern_type and subset_cols not both so need
+                      # to set one to NULL
+                      # This in shiny is done like so
+                      # see stackoverflow.com/a/53698788/10323798
+                      selectInput(
+                        "pattern_type",
                         "Pattern type",
                         choices = c("starts_with",
                                     "ends_with", "contains",
@@ -381,66 +371,161 @@ app_ui <- function(request) {
                         size = 4
                       ),
                       
-                      textInput("pattern_drop", "Pattern", value = NULL)
-                    ), 
+                      textInput("pattern", "Pattern", value = NULL)
                       
-                    
-                    
-                      shinycssloaders::withSpinner(dataTableOutput("drop_na")),
+                    ),
                         
-                        downloadButton("downloadfile_drop",
-                                       "Download this report"),
-                       
+                      
+                      
+                     
+            shinycssloaders::withSpinner(dataTableOutput("recode_values")),
                         
-                      )
-                   ,
+                        
+        downloadButton("downloadfile_recode", "Download this report")
+                        
+                      ), 
+            
+            tabItem(
+              tabName = "drop_values",
+              shinyWidgets::dropdown(
+                label = "Drop", 
+                icon = icon("cog"),
+                style = "fill",
+                animate = shinyWidgets::animateOptions(enter = "fadeInLeft",
+                                                       exit = "fadeOut"),
+                selectInput(
+                  "drop_type",
+                  "Kind of drop",
+                  choices = c("drop_all_na",
+                              "drop_na_if",
+                              "drop_na_at"),
+                  selected = "drop_all_na"
+                ),
+                
+                numericInput("percent_na_drop",
+                             "Percent NA", value = 20),
+                
+                selectInput(
+                  "sign",
+                  "Sign",
+                  choices = c("gt", "gteq", "lt", "lteq", "eq"),
+                  selected = "gt",
+                  multiple = FALSE
+                ),
+                
+                selectInput(
+                  "group_by_drop",
+                  "Grouping Columns",
+                  choices = c("A", "B"),
+                  multiple = TRUE
+                ),
+                
+                selectInput(
+                  "keep_columns_drop",
+                  "Keep Columns",
+                  choices = c("A", "B"),
+                  multiple = TRUE
+                ),
+                
+                selectInput(
+                  "target_cols",
+                  "Target Columns",
+                  choices = c("A", "B"),
+                  multiple = TRUE
+                ),
+                
+                selectInput(
+                  "pattern_type_drop",
+                  "Pattern type",
+                  choices = c("starts_with",
+                              "ends_with", "contains",
+                              "regex"),
+                  selected = FALSE,
+                  selectize = FALSE,
+                  size = 4
+                ),
+                
+                textInput("pattern_drop", "Pattern", value = NULL)
+              ),
+              
+              
+              
+              shinycssloaders::withSpinner(dataTableOutput("drop_na")),
+              
+              downloadButton("downloadfile_drop",
+                             "Download this report"),
+              
+              
+            )
+            ,
             
             tabItem(tabName = "visual_summary",
-                    sidebarLayout(
-                      sidebarPanel(
-                        div(
-                          id = "plot_area",
-                          selectInput(
-                            "plot_type",
-                            "Type of plot",
-                            choices = c("bar",
-                                        "lollipop"),
-                            selected = "bar"
-                          ),
-                          conditionalPanel(
-                            condition = "input.plot_type=='bar'",
-                            selectInput(
-                              "show_text",
-                              "Show Text?",
-                              choices = c("yes",
-                                          "no"),
-                              selected = "no"
-                            )
-                          ),
-                          conditionalPanel(
-                            condition = "input.plot_type=='lollipop'",
-                            sliderInput(
-                              "size",
-                              "Size",
-                              min = 0,
-                              max = 5,
-                              step = 0.2,
-                              value = 2
-                            )
-                          ),
-                          uiOutput("y_variable"),
-                       
-                          uiOutput("x_variable"),
-                          uiOutput("fill_variable"),
-                          numericInput("round_to_visual", "Round to",
-                                       value = 2),
+                    shinyWidgets::dropdown(
+                      icon = icon("cog"),
+                      label ="Plot Settings",
+                      style = "fill",
+                      animate = shinyWidgets::animateOptions(
+                        enter = "fadeInLeft",
+                        exit = "fadeOut"
+                      ),
+                      div(
+                        id = "plot_area",
+                        selectInput(
+                          "plot_type",
+                          "Type of plot",
+                          choices = c("bar",
+                                      "lollipop"),
+                          selected = "bar"
                         ),
-                        # Resets all plot options to their default values
-                        actionButton("plot_reset_button", "Reset Options")
-                      )
-                      ,
-                      mainPanel(
-                        plotOutput("visual_summary"),
+                        conditionalPanel(
+                          condition = "input.plot_type=='bar'",
+                          selectInput(
+                            "show_text",
+                            "Show Text?",
+                            choices = c("yes",
+                                        "no"),
+                            selected = "no"
+                          )
+                        ),
+                        conditionalPanel(
+                          condition = "input.plot_type=='lollipop'",
+                          sliderInput(
+                            "size",
+                            "Size",
+                            min = 0,
+                            max = 5,
+                            step = 0.2,
+                            value = 2
+                          )
+                        ),
+                        selectInput(
+                          "y_variable",
+                          "Y axis variable",
+                          choices = c("A", "B"),
+                          selected = "A"
+                        ),
+                        
+                        selectInput(
+                          "x_variable",
+                          "X axis variable",
+                          choices = c("A", "B"),
+                          selected = "B"
+                        ),
+                        selectInput(
+                          "fill_variable",
+                          "Fill variable",
+                          choices = c("A", "B"),
+                          selected = "A"
+                        ),
+                        numericInput("round_to_visual", "Round to",
+                                     value = 2),
+                      ),
+                      # Resets all plot options to their default values
+                      actionButton("plot_reset_button", "Reset Options") 
+                    ), 
+                        
+                      
+                shinycssloaders::withSpinner(plotOutput("visual_summary")),
                         
                         
                         fluidRow(
@@ -449,13 +534,13 @@ app_ui <- function(request) {
                           
                           column(4, textInput("dims", "Dimensions",
                                               value = "1137x720")),
-                         
+                          
                           column(4, downloadButton("download_plot",
                                                    "Save Plot")),
-                        
+                          
                           actionButton("reset_opts",
                                        "Restore Defaults")
-                        
+                          
                           
                           
                         )
@@ -465,7 +550,6 @@ app_ui <- function(request) {
         )
       )
       
-    ))
 }
 
 #' Add external Resources to the Application
@@ -482,6 +566,6 @@ golem_add_external_resources <- function() {
   tags$head(favicon(),
             bundle_resources(path = app_sys('app/www'),
                              app_title = 'shinymde'))
-            # Add here other external resources
-            # for example, you can add shinyalert::useShinyalert() )
+  # Add here other external resources
+  # for example, you can add shinyalert::useShinyalert() )
 }
