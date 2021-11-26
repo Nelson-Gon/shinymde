@@ -2,6 +2,7 @@
 #' @import shinydashboard
 #' @importFrom utils packageVersion
 #' @importFrom shinyBS bsTooltip
+#' @importFrom shinycssloaders withSpinner
 #' @param request Internal parameter for `{shiny}`.
 #'     DO NOT REMOVE.
 #' @import shiny
@@ -131,9 +132,9 @@ app_ui <- function(request) {
             ),
             tabItem(tabName = "input",
                     
-                    sidebarLayout(
-                      sidebarPanel(
-                        radioButtons(
+                   inputPanel(
+                     
+                   radioButtons(
                           "data_source",
                           "Data Source",
                           choices = c("inbuilt",
@@ -149,36 +150,35 @@ app_ui <- function(request) {
                                                         1)),
                         conditionalPanel(condition =
                                            "input.data_source=='inbuilt'",
-                                         uiOutput("dataset")),
+                                         selectInput(
+                                           "dataset",
+                                           "Dataset",
+                                           choices = c("mtcars", "airquality"),
+                                           selected = "airquality"
+                                         )),
                         conditionalPanel(condition =
                                            "input.data_source == 'remote'",
-                                         uiOutput("remote")),
+                                         textInput(
+                                           "remote",
+                                           "Remote",
+                                           value = ""
+                                         )),
                         conditionalPanel(condition =
                                            "input.data_source == 'remote'",
-                                         uiOutput("file_type")),
+                                         selectInput("file_type",
+                                                     "File Type",
+                                                     choices = c("csv", "tsv"),
+                                                     selected = "csv" )),
                         
                         
                         actionButton("confirm", "Confirm"),
                         actionButton("reset_input", "Reset"),
-                        bsTooltip(id = "data_source",
-                                  title = "Choose a dataset source."),
-                        bsTooltip(id = "remote",
-                                  title = "Link to a remote dataset."),
-                        bsTooltip(id = "confirm",
-                                  title = "Click to confirm input."),
-                        bsTooltip(id = "reset_input",
-                                  title = "Click to restore defaults."),
-                        bsTooltip(
-                          id = "dataset",
-                          title = "Choose a dataset.",
-                          placement = "top"
-                        ),
-                        bsTooltip(id = "input_file",
-                                  title = "Path to a csv, tsv, or xlsx file.")
+                      
+                       
                         
                         
                       ),
-                      mainPanel(
+                      
                         div(
                           id = "sys_details",
                           
@@ -192,7 +192,7 @@ app_ui <- function(request) {
                             title = "R version",
                             value =
                               R.version.string,
-                            icon = shiny::icon("gear"),
+                            icon = shiny::icon("cog"),
                             width = 12
                           ),
                           infoBox(
@@ -204,14 +204,18 @@ app_ui <- function(request) {
                           )
                         ),
                         
-                        verbatimTextOutput("data_summary"),
-                        bsTooltip(id = "data_summary",
-                                  title = "A statistical summary of input data.")
+                        verbatimTextOutput("data_summary")
+                        
                       )
-                    )),
+                   ,
             tabItem(tabName = "missingness_summary",
-                    sidebarLayout(
-                      sidebarPanel(
+                    fluidRow(column(4,shinyWidgets::dropdown(
+                        style = "material-flat",
+                        icon = icon("cog"),
+                        animate = shinyWidgets::animateOptions(
+                          enter = "fadeIn",
+                          exit = "fadeOut"
+                        ),
                         uiOutput("sort_by"),
                         selectInput(
                           "sort_order",
@@ -221,9 +225,29 @@ app_ui <- function(request) {
                           selected = "descending"
                         ),
                         numericInput("round_to", "Round to",
-                                     value = options("digits")),
-                        uiOutput("group_by"),
-                        uiOutput("exclude_columns"),
+                                     value = options("digits"))
+                        )),
+                        column(
+                          4,
+                        
+                        shinyWidgets::dropdown(
+                          style = "material-flat",
+                          icon = icon("cog"),
+                          animate = shinyWidgets::animateOptions(
+                            enter = "fadeIn",
+                            exit = "fadeOut"
+                          ), 
+                          uiOutput("group_by"),
+                        uiOutput("exclude_columns")
+                        )),
+                        column(4,
+                               shinyWidgets::dropdown(
+                                 style = "material-flat",
+                                 icon = icon("cog"),
+                                 animate = shinyWidgets::animateOptions(
+                                   enter = "fadeIn",
+                                   exit = "fadeOut"
+                                 ), 
                         selectInput(
                           "regex_based",
                           "Select columns based on RegEx?",
@@ -255,62 +279,18 @@ app_ui <- function(request) {
                         
                         textInput("pattern_summary",
                                   label = "Pattern to use for regex",
-                                  value = NULL),
+                                  value = NULL)
+                        ))),
                         
                         
-                        bsTooltip("sort_by",
-                                  title = "Select sort column.",
-                                  placement = "top"),
-                        bsTooltip(
-                          id = "sort_order",
-                          title = "Choose sort order.",
-                          placement = "top"
-                        ),
-                        bsTooltip(id = "round_to",
-                                  title = "Number of decimal places"),
-                        bsTooltip(
-                          id = "group_by",
-                          title = "Choose columns to group by.",
-                          placement = "top"
-                        ),
-                        bsTooltip(
-                          id = "exclude_columns",
-                          title = "Columns to exclude from analysis.",
-                          placement = "top"
-                        ),
-                        bsTooltip(
-                          id = "regex_based",
-                          title = "Are you filtering using regex?",
-                          placement = "top"
-                        ),
-                        bsTooltip(
-                          id = "select_kind",
-                          title = "Select kind of regex filter",
-                          placement = "top"
-                        ),
-                        bsTooltip(
-                          id = "pattern_type_summary",
-                          title = "Pattern type for regex filter",
-                          placement = "top"
-                        ),
-                        bsTooltip(
-                          id = "pattern_summary",
-                          title = "Pattern for regex filter.",
-                          placement = "top"
-                        ),
                         
-                      ),
-                      mainPanel(
-                        dataTableOutput("summary_na"),
-                        bsTooltip(id = "summary_na",
-                                  title = "A tabular summary of missingness."),
+                    shinycssloaders::withSpinner(
+                        dataTableOutput("summary_na")),
                         
-                        downloadButton("downloadfile", "Download this report"),
-                        bsTooltip(id = "downloadfile",
-                                  title = "Click to save this report.")
+                    downloadButton("downloadfile", "Download this report")
                         
                       )
-                    )),
+                    ,
             
             tabItem(tabName = "recode_values",
                     sidebarLayout(
@@ -326,30 +306,14 @@ app_ui <- function(request) {
                           ),
                           selected = "recode_as_na"
                         ),
-                        bsTooltip(
-                          id = "recode_type",
-                          title = "Select the kind of recoding.",
-                          placement = "top"
-                        ),
+                       
                         
                         textInput("value_to_recode", "Value"),
-                        bsTooltip(
-                          id = "value_to_recode",
-                          title = "Comma separated values to recode.",
-                          placement = "top"
-                        ),
+                       
                         uiOutput("criteria"),
-                        bsTooltip(
-                          id = "criteria",
-                          title = "Criteria to use e.g. gt ~ greater than.",
-                          placement = "top"
-                        ),
+                      
                         uiOutput("subset_cols"),
-                        bsTooltip(
-                          id = "subset_cols",
-                          title = "A subset of columns to recode.",
-                          placement = "top"
-                        ),
+                       
                         # need pattern_type and subset_cols not both so need
                         # to set one to NULL
                         # This in shiny is done like so
@@ -364,98 +328,71 @@ app_ui <- function(request) {
                           selectize = FALSE,
                           size = 4
                         ),
-                        # This would only work if we set selectize to TRUE?
-                        # bsTooltip(id="pattern_type",
-                        #                    title ="Pattern type to use for
-                        #                    RegEX subset.",
-                        #                    placement = "top"),
-                        textInput("pattern", "Pattern", value = NULL),
-                        bsTooltip(id = "pattern",
-                                  title = "Pattern to use for RegEx subsets.")
-                      ),
+                       
+                        textInput("pattern", "Pattern", value = NULL)
+                        ),
+                      
                       mainPanel(
                         dataTableOutput("recode_values"),
-                        bsTooltip(id = "recode_values",
-                                  title = "A table with recoded values."),
                         
-                        downloadButton("downloadfile_recode", "Download this report"),
-                        bsTooltip(id = "downloadfile_recode",
-                                  title = "Click to save the recoded dataset.")
+                        
+                  downloadButton("downloadfile_recode", "Download this report")
+                       
                       )
                     )),
             
             tabItem(tabName = "drop_values",
-                    sidebarLayout(
-                      sidebarPanel(
-                        selectInput(
-                          "drop_type",
-                          "Kind of drop",
-                          choices = c("drop_all_na",
-                                      "drop_na_if",
-                                      "drop_na_at"),
-                          selected = "drop_all_na"
-                        ),
-                        bsTooltip(
-                          id = "drop_type",
-                          title = "Select the kind of drop.",
-                          placement = "top"
-                        ),
-                        numericInput("percent_na_drop",
-                                     "Percent NA", value = 20),
-                        bsTooltip(id = "percent_na_drop",
-                                  title = "Input percent NA criteria."),
-                        uiOutput("sign"),
-                        bsTooltip("sign",
-                                  title = "Criteria e.g. gt ~ greater than.",
-                                  placement = "top"),
-                        uiOutput("group_by_drop"),
-                        bsTooltip(
-                          id = "group_by_drop",
-                          title = "Columns to group by.",
-                          placement = "top"
-                        ),
-                        uiOutput("keep_columns_drop"),
-                        bsTooltip(
-                          id = "keep_columns_drop",
-                          title = "Keep these columns regardless of criteria",
-                          placement = "top"
-                        ),
-                        uiOutput("target_cols"),
-                        bsTooltip(
-                          id = "target_cols",
-                          title = "Target columns to drop at.",
-                          placement = "top"
-                        ),
-                        selectInput(
-                          "pattern_type_drop",
-                          "Pattern type",
-                          choices = c("starts_with",
-                                      "ends_with", "contains",
-                                      "regex"),
-                          selected = FALSE,
-                          selectize = FALSE,
-                          size = 4
-                        ),
-                        bsTooltip(
-                          id = "pattern_type_drop",
-                          title = "Pattern type for RegEx drop.",
-                          placement = "top"
-                        ),
-                        textInput("pattern_drop", "Pattern", value = NULL),
-                        bsTooltip(id = "pattern_drop",
-                                  title = "Pattern for RegEx drop.")
+                    shinyWidgets::dropdown(
+                      icon = icon("cog"),
+                      style = "material-flat",
+                      animate = shinyWidgets::animateOptions(
+                        enter = "fadeInLeft",
+                        exit = "fadeOut"
+                      ), 
+                      selectInput(
+                        "drop_type",
+                        "Kind of drop",
+                        choices = c("drop_all_na",
+                                    "drop_na_if",
+                                    "drop_na_at"),
+                        selected = "drop_all_na"
                       ),
-                      mainPanel(
-                        dataTableOutput("drop_na"),
-                        bsTooltip(id = "drop_na",
-                                  title = "Table with NAs dropped."),
+                      
+                      numericInput("percent_na_drop",
+                                   "Percent NA", value = 20),
+                      
+                      uiOutput("sign"),
+                      
+                      uiOutput("group_by_drop"),
+                      
+                      uiOutput("keep_columns_drop"),
+                      
+                      uiOutput("target_cols"),
+                      
+                      selectInput(
+                        "pattern_type_drop",
+                        "Pattern type",
+                        choices = c("starts_with",
+                                    "ends_with", "contains",
+                                    "regex"),
+                        selected = FALSE,
+                        selectize = FALSE,
+                        size = 4
+                      ),
+                      
+                      textInput("pattern_drop", "Pattern", value = NULL)
+                    ), 
+                      
+                    
+                    
+                      shinycssloaders::withSpinner(dataTableOutput("drop_na")),
+                        
                         downloadButton("downloadfile_drop",
                                        "Download this report"),
-                        bsTooltip(id = "downloadfile_drop",
-                                  title = "Click to save this table.")
+                       
                         
                       )
-                    )),
+                   ,
             
             tabItem(tabName = "visual_summary",
                     sidebarLayout(
@@ -491,76 +428,33 @@ app_ui <- function(request) {
                             )
                           ),
                           uiOutput("y_variable"),
-                          bsTooltip(id = "y_variable",
-                                    title = "Variable to use on the Y axis"),
+                       
                           uiOutput("x_variable"),
                           uiOutput("fill_variable"),
                           numericInput("round_to_visual", "Round to",
                                        value = 2),
                         ),
                         # Resets all plot options to their default values
-                        actionButton("plot_reset_button", "Reset Options"),
-                        bsTooltip(id="plot_reset_button",
-                                  title="Reset plot options",
-                                  placement = "top")
+                        actionButton("plot_reset_button", "Reset Options")
                       )
                       ,
                       mainPanel(
                         plotOutput("visual_summary"),
-                        bsTooltip(id = "visual_summary",
-                                  title = "A visual summary of missingness."),
-                        bsTooltip(
-                          id = "plot_type",
-                          title = "Type of plot to render.",
-                          placement = "top"
-                        ),
-                        bsTooltip(
-                          id = "show_text",
-                          title = "Should bars have text labels?",
-                          placement = "top"
-                        ),
-                        bsTooltip(id = "size",
-                                  title = "Lollipop size"),
-                        
-                        bsTooltip(
-                          id = "x_variable",
-                          title = "Value on  X axis",
-                          placement = "top"
-                        ),
-                        bsTooltip(
-                          id = "y_variable",
-                          title = "Value on Y axis",
-                          placement = "top"
-                        ),
-                        bsTooltip(
-                          id = "fill_variable",
-                          title = "Variable to map colors to",
-                          placement = "top"
-                        ),
-                        bsTooltip(id = "round_to_visual",
-                                  title = "For text, number of decimal places."),
                         
                         
                         fluidRow(
                           column(4, textInput("extension", "Save Format",
                                               value = "png")),
                           
-                          bsTooltip(id = "extension",
-                                    title = "Save plot in this format"),
-                          
                           column(4, textInput("dims", "Dimensions",
                                               value = "1137x720")),
-                          bsTooltip(id = "dims",
-                                    title = "Plot save dimensions."),
+                         
                           column(4, downloadButton("download_plot",
                                                    "Save Plot")),
-                          bsTooltip(id = "download_plot",
-                                    
-                                    title = "Click to save plot."),
+                        
                           actionButton("reset_opts",
-                                       "Restore Defaults"),
-                          bsTooltip(id = "reset_opts",
-                                    title = "Click to restore defaults.")
+                                       "Restore Defaults")
+                        
                           
                           
                         )

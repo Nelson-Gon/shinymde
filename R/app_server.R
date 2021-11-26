@@ -26,33 +26,36 @@ app_server <- function(input, output, session) {
               placeholder =  "Please provide a file path")
   })
   # Get only data.frame objects since that's all mde supports.
-  output$dataset <- renderUI({
-    selectInput(
-      "dataset",
-      "Dataset",
-      choices = Filter(function(x)
-        is.data.frame(get(x)), ls("package:datasets")),
-      selected = "airquality"
+  observe({
+    updateSelectInput(session,
+                      "dataset",
+                      "Dataset",
+                      choices = Filter(function(x)
+                        is.data.frame(get(x)), ls("package:datasets")),
+                      selected = "airquality")
+  })
+  
+  observe({
+    updateTextInput(session,
+      "remote",
+      "Remote Source",
+      value = "https://github.com/Nelson-Gon/shinymde/blob/c6cd1b8b3acc28225a907e00f80ac4031b755966/testdata/airquality.csv?raw=TRUE"
     )
   })
   
-  output$remote <- renderUI({
-    textInput("remote", "Remote Dataset Link",
-              value = "https://github.com/Nelson-Gon/shinymde/blob/c6cd1b8b3acc28225a907e00f80ac4031b755966/testdata/airquality.csv?raw=TRUE")
-  })
+
+  observe(
+    {
+      updateSelectInput(session,
+                        "file_type",
+                        "File Extension",
+                        choices = c("csv", "tsv", "xlsx"),
+                        selected = "csv")
+    }
+  )
   
-  output$file_type <- renderUI({
-    selectInput(
-      "file_type",
-      "File Extension",
-      choices = c("csv", "tsv", "xlsx"),
-      selected = "csv",
-      multiple = FALSE
-    )
-  })
-  shinyBS::addTooltip(session = session,
-                      id = "file_type",
-                      title = "Select the remote dataset's file type.")
+
+
   
   
   
