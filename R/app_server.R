@@ -150,16 +150,14 @@ app_server <- function(input, output, session) {
   output$data_summary <- renderPrint({
     summary(in_data())
   })
+  
   # Hide sys_details on click of button
-  observeEvent(input$indata_button,
+  observeEvent(input$confirm_in,
                {
                  on_off_toggle("sys_details", kind = "hide")
-               })
-  observeEvent(input$confirm,
-               {
                  on_off_toggle("data_summary", kind = "show")
-                 on_off_toggle("sys_details", kind = "hide")
                })
+
   observeEvent(input$reset_input, {
     # TODO: Only reset data at current location not the entire UI
     # Why not the entire UI? Seems like a waste of resources.
@@ -176,6 +174,7 @@ app_server <- function(input, output, session) {
     
     on_off_toggle("sys_details", kind = "show")
     on_off_toggle("data_summary", kind = "hide")
+   
     
   })
   
@@ -224,17 +223,14 @@ app_server <- function(input, output, session) {
   
   
   
-  sort_order <- reactive({
-    ifelse(input$sort_order == "descending",
-           TRUE, FALSE)
-  })
+ 
   summary_na <- reactive(
     na_summary(
       in_data(),
       sort_by = input$sort_by,
       grouping_cols = input$group_by,
       exclude_cols = input$exclude_columns,
-      descending = sort_order(),
+      descending = req(input$sort_order)=="descending",
       round_to = input$round_to,
       regex_kind = input$select_kind,
       pattern_type = input$pattern_type_summary,
@@ -452,7 +448,6 @@ app_server <- function(input, output, session) {
     }
   )
   
-  # Dropping NAs
   observe({
     updateSelectInput(session,
       "group_by_drop",
@@ -669,7 +664,7 @@ observe({
   observeEvent(input$extension, {
     if (input$extension != "png") {
       shinyFeedback::showFeedbackDanger("extension",
-                                        text = "Only PNG is currently supported.")
+                                    text = "Only PNG is currently supported.")
     }
   })
   

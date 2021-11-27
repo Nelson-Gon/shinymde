@@ -59,20 +59,24 @@ app_ui <- function(request) {
         body = dashboardBody(
           shinyjs::useShinyjs(),
           shinyFeedback::useShinyFeedback(),
-          # TODO: Make page selection same color as app skin.
-          # tags$head(tags$style(shiny::HTML(
-          #   ".dataTables_paginate .paginate_button.active {background-color: #dd4b39;}"
-          # ))),
           
           tags$head(tags$style(
             HTML(
               ".info-box:hover,
     .btn:hover, .info-box-icon, .radio:hover,
     .option:hover, .odd:hover, .even:hover{
-    background-color: #0073b7 !important;
+    background-color: #b7000c !important;
     color: white;
     }
-
+ 
+    .bttn-unite.bttn-primary:before, .bttn-unite.bttn-primary:after{
+    background: #b7000c; 
+    border-color: #b7000c !important;
+    }
+    .bttn-unite.bttn-primary{
+    border-color: #b7000c !important;
+    color: black; 
+    }
     "
             )
           )),
@@ -135,7 +139,7 @@ app_ui <- function(request) {
             tabItem(
               tabName = "input",
               
-              shinyWidgets::dropdownButton(
+              fluidRow(column(6, shinyWidgets::dropdownButton(
                 inputId = "indata_button",
                 circle = "TRUE",
                 icon = icon("cog"),
@@ -184,12 +188,19 @@ app_ui <- function(request) {
                     selected = "csv"
                   )
                 ),
+                shinyWidgets::actionBttn("confirm_in",
+                                         label = "confirm",
+                                         color = "primary"))),
+                column(6, 
+                       shinyWidgets::actionBttn(
+                         "reset_input",
+                         label = "Reset",
+                         icon = icon("undo"),
+                         color = "primary"
+                       )))
                 
                 
-                actionButton("confirm", "Confirm"),
-                actionButton("reset_input", "Reset")
-                
-              ),
+              ,
               
               
               div(
@@ -313,7 +324,9 @@ app_ui <- function(request) {
               
               shinycssloaders::withSpinner(dataTableOutput("summary_na")),
               
-              downloadButton("downloadfile", "Download this report")
+              shinyWidgets::downloadBttn("downloadfile", 
+                                         "Download this report",
+                                         color = "primary")
               
             )
             ,
@@ -382,8 +395,9 @@ app_ui <- function(request) {
                 
               )),
               column(6,  
-                     downloadButton("downloadfile_recode",
-                                    "Download this report"))), 
+                     shinyWidgets::downloadBttn("downloadfile_recode",
+                                    "Download this report",
+                                    color = "primary"))), 
               
               
               
@@ -456,8 +470,9 @@ app_ui <- function(request) {
                 textInput("pattern_drop", "Pattern", value = NULL)
               )),column(6,
                        
-                       downloadButton("downloadfile_drop",
-                                      "Download this report"))),
+                        shinyWidgets::downloadBttn("downloadfile_drop",
+                                      "Download this report",
+                                      color = "primary"))),
               
               
               
@@ -537,8 +552,9 @@ app_ui <- function(request) {
                   textInput("dims", "Dimensions",
                             value = "1137x720"),
                   
-                  downloadButton("download_plot",
-                                 "Save Plot")
+                  shinyWidgets::downloadBttn("download_plot",
+                                 "Save Plot",
+                                 color = "primary")
                   
                 )),
               column(3,
@@ -546,7 +562,7 @@ app_ui <- function(request) {
                        inputId = "plot_reset_button",
                        label = "Reset",
                        style = "unite", 
-                       color = "danger"
+                       color = "primary"
                      ))), 
               
               

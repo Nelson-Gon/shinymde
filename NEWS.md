@@ -8,6 +8,8 @@ title: "Changes to shinymde"
 
 **shinymde 0.1.1.9000**
 
+* Action buttons are now the same color as the app's skin. 
+
 * The sidebar menu is now collapsed on app start. 
 
 * Changes to the UI to ensure that it is less cluttered. Download buttons now appear above plots/tables. 
