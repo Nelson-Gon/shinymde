@@ -8,6 +8,14 @@ title: "Changes to shinymde"
 
 **shinymde 0.1.1.9000**
 
+* The sidebar menu is now collapsed on app start. 
+
+* Changes to the UI to ensure that it is less cluttered. Download buttons now appear above plots/tables. 
+
+* `dropdown` was dropped in favour of `dropdownButton`.
+
+* The UI is now red instead of blue.
+
 * All tabs now have drop downs instead of a more cluttered interface. 
 
 * The dashboard side bar is now collapsed on start.

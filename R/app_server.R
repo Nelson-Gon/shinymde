@@ -20,11 +20,7 @@ app_server <- function(input, output, session) {
   }
   
   
-  output$input_file <- renderUI({
-    fileInput("input_file",
-              label = "Input File",
-              placeholder =  "Please provide a file path")
-  })
+ 
   # Get only data.frame objects since that's all mde supports.
   observe({
     updateSelectInput(session,
@@ -61,10 +57,10 @@ app_server <- function(input, output, session) {
   
   on_off_toggle("sheet", kind = "hide")
   guess_input <- reactive({
-    if (req(input$data_source == "user_data")) {
+    if (req(input$data_source) == "user_data") {
       file_extension <- gsub("(.*)(\\..*$)(.*)",
                              "\\2",
-                             input$input_file$datapath,
+                             req(input$input_file$datapath),
                              perl = TRUE)
       
       return(file_extension)
@@ -112,24 +108,7 @@ app_server <- function(input, output, session) {
     }
     
     if (input$data_source == "user_data") {
-      # It is unlikely that this would happen since a user has to choose a
-      # file that exists anyway.
-      # observeEvent(input$input_file$datapath, {
-      #   if (any(is.null(input$input_file$data_path),
-      #           !file.exists(req(input$input_file$datapath)))) {
-      #
-      # shinyFeedback::showFeedbackDanger("input_file",
-      #                     text = "Please provide a valid data path.")
-      #
-      #   }
-      #
-      #   })
-      #
-      
-      
-      
-      
-      
+   
       if (!guess_input() %in% c(".csv", ".xlsx", ".tsv")) {
         stop(
           paste0(
@@ -171,6 +150,11 @@ app_server <- function(input, output, session) {
   output$data_summary <- renderPrint({
     summary(in_data())
   })
+  # Hide sys_details on click of button
+  observeEvent(input$indata_button,
+               {
+                 on_off_toggle("sys_details", kind = "hide")
+               })
   observeEvent(input$confirm,
                {
                  on_off_toggle("data_summary", kind = "show")
@@ -206,12 +190,11 @@ app_server <- function(input, output, session) {
   
   
   
-  output$group_by <- renderUI({
-    selectInput(
+  observe({
+    updateSelectInput(session, 
       "group_by",
       "Grouping Columns",
-      choices = names(in_data()),
-      multiple = TRUE
+      choices = names(in_data())
     )
   })
   # Hide on app start
@@ -228,16 +211,14 @@ app_server <- function(input, output, session) {
                  }
                })
   
-  output$exclude_columns <- renderUI({
-    conditionalPanel(
-      "input.regex_based=='no'",
-      selectInput(
-        "exclude_columns",
-        "Columns to exclude",
-        choices = names(in_data()),
-        multiple = TRUE
-      )
+  
+  observe({
+    updateSelectInput(session, 
+      "exclude_columns",
+      "Columns to exclude",
+      choices = names(in_data())
     )
+  
   })
   
   
@@ -669,12 +650,7 @@ observe({
     }
     
   )
-  # This resets plot save preferences to the default.
-  observeEvent(input$reset_opts, {
-    shinyjs::reset("dims")
-    shinyjs::reset("extension")
-    
-  })
+  
   
   observeEvent(input$plot_reset_button,
                {
