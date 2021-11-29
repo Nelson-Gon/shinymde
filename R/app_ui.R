@@ -138,7 +138,6 @@ app_ui <- function(request) {
             ),
             tabItem(
               tabName = "input",
-              
               fluidRow(column(6, shinyWidgets::dropdownButton(
                 inputId = "indata_button",
                 circle = "TRUE",
