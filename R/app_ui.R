@@ -138,11 +138,14 @@ app_ui <- function(request) {
             ),
             tabItem(
               tabName = "input",
-              fluidRow(column(6, shinyWidgets::dropdownButton(
+              fluidRow(column(6, shinyWidgets::dropdown(
                 inputId = "indata_button",
-                circle = "TRUE",
+                style = "fill",
+                label = "Input Data", 
                 icon = icon("cog"),
                 width = "400px",
+                animate = shinyWidgets::animateOptions(enter="fadeInLeft",
+                                         exit = "fadeOut"), 
                 
                 shinyWidgets::awesomeRadio(
                   "data_source",
@@ -189,18 +192,21 @@ app_ui <- function(request) {
                 ),
                 shinyWidgets::actionBttn("confirm_in",
                                          label = "confirm",
-                                         color = "primary"))),
+                                         color = "primary",
+                                         style = "fill"))),
                 column(6, 
                        shinyWidgets::actionBttn(
                          "reset_input",
                          label = "Reset",
+                         style = "fill",
                          icon = icon("undo"),
-                         color = "primary"
+                         color = "danger"
                        )))
                 
                 
               ,
-              
+              br(),
+              br(), 
               
               div(
                 id = "sys_details",
@@ -231,12 +237,16 @@ app_ui <- function(request) {
             ),
             tabItem(
               tabName = "missingness_summary",
+              div(id = "sort_group_subset",
               fluidRow(
-                column(
-                  4,
-                  shinyWidgets::dropdownButton(
+                column(4,
+                  shinyWidgets::dropdown(
                     label = "Sort",
-                    circle = TRUE, 
+                     style = "fill", 
+                    animate = shinyWidgets::animateOptions(
+                      enter = "fadeInLeft",
+                      exit = "fadeOut"
+                    ), 
                     icon = icon("cog"),
                     
                     uiOutput("sort_by"),
@@ -249,13 +259,10 @@ app_ui <- function(request) {
                     ),
                     numericInput("round_to", "Round to",
                                  value = options("digits"))
-                  )
-                ),
-                column(
-                  4,
-                  
-                  shinyWidgets::dropdownButton(
-                    circle = TRUE, 
+                  )),
+               
+                  column(4, shinyWidgets::dropdown(
+                    style = "fill", 
                     label = "Group",
                     icon = icon("cog"),
     
@@ -264,32 +271,19 @@ app_ui <- function(request) {
                       "Grouping Columns",
                       choices = c("A", "B"),
                       multiple = TRUE
-                    ),
-                    conditionalPanel(
-                      "input.regex_based=='no'",
-                      selectInput(
-                        "exclude_columns",
-                        "Columns to exclude",
-                        choices = c("A", "B"),
-                        multiple = TRUE
-                      )
                     )
-                  )
-                ),
-                column(
-                  4,
-                  shinyWidgets::dropdownButton(
+                 
+                    )
+                  ),
+               
+                  column(4,shinyWidgets::dropdown(
                     label = "Subset",
-                    circle = TRUE, 
+                    style="fill", 
                     icon = icon("cog"),
-                  
-                    selectInput(
-                      "regex_based",
-                      "Select columns based on RegEx?",
-                      choices = c("yes", "no"),
-                      selected = "no"
-                    ),
-                    
+                    animate = shinyWidgets::animateOptions(
+                      enter = "fadeInLeft",
+                      exit = "fadeOut"
+                    ), 
                     selectInput(
                       "select_kind",
                       "Nature of selection",
@@ -299,7 +293,6 @@ app_ui <- function(request) {
                       selectize = FALSE,
                       size = 2
                     ),
-                    
                     
                     selectInput(
                       "pattern_type_summary",
@@ -315,20 +308,18 @@ app_ui <- function(request) {
                     textInput("pattern_summary",
                               label = "Pattern to use for regex",
                               value = NULL)
-                  )
-                )
-              ),
-              
-              
-              
+                  ))),
+              style = "margin-top:6px;margin-left:-12px;width:400px;"),
+            
+
               shinycssloaders::withSpinner(dataTableOutput("summary_na")),
-              
               shinyWidgets::downloadBttn("downloadfile", 
                                          "Download this report",
+                                         style = "fill",
                                          color = "primary")
               
-            )
-            ,
+             
+            ),
             
             tabItem(
               tabName = "recode_values",

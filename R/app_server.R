@@ -243,7 +243,7 @@ app_server <- function(input, output, session) {
   
   
   output$summary_na <- renderDataTable(summary_na(),
-                                       options = list(pageLength = 10))
+                                       options = list(pageLength = 25))
   
   delimiters <- reactive({
     switch(
@@ -375,7 +375,7 @@ app_server <- function(input, output, session) {
                                           
                                           
                                           ,
-                                          options = list(pageLength = 5))
+                                          options = list(pageLength = 25))
   
   
   
@@ -535,7 +535,7 @@ app_server <- function(input, output, session) {
   
   output$drop_na <- renderDataTable(drop_switch(),
                                     
-                                    options = list(pageLength = 5))
+                                    options = list(pageLength = 25))
   
   # Visual summaries
   observe({
