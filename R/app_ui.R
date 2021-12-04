@@ -149,7 +149,7 @@ app_ui <- function(request) {
                 style = "fill",
                 label = "Input Data", 
                 icon = icon("cog"),
-                width = "400px",
+                width = "250px",
                 animate = shinyWidgets::animateOptions(enter="fadeInLeft",
                                          exit = "fadeOut"), 
                 
@@ -410,6 +410,7 @@ app_ui <- function(request) {
             
             tabItem(
               tabName = "drop_values",
+             
               fluidRow(column(6,shinyWidgets::dropdown(
                 label = "Drop",
                 style ="fill",
@@ -417,7 +418,9 @@ app_ui <- function(request) {
                   enter = "fadeInLeft", exit = "fadeOut"
                 ), 
                 icon = icon("cog"),
-                
+                div(id = "drop_zone",
+                    style = "width:250px;", 
+                fluidRow(column(4,
                 selectInput(
                   "drop_type",
                   "Kind of drop",
@@ -425,40 +428,41 @@ app_ui <- function(request) {
                               "drop_na_if",
                               "drop_na_at"),
                   selected = "drop_all_na"
-                ),
-                
+                )),
+                column(4, 
                 numericInput("percent_na_drop",
-                             "Percent NA", value = 20),
-                
+                             "Percent NA", value = 20)),
+                column(4,
                 selectInput(
                   "sign",
                   "Sign",
                   choices = c("gt", "gteq", "lt", "lteq", "eq"),
                   selected = "gt",
                   multiple = FALSE
-                ),
+                )))),
                 
+                fluidRow(column(4,
                 selectInput(
                   "group_by_drop",
                   "Grouping Columns",
                   choices = c("A", "B"),
                   multiple = TRUE
-                ),
-                
+                )),
+                column(4, 
                 selectInput(
                   "keep_columns_drop",
                   "Keep Columns",
                   choices = c("A", "B"),
                   multiple = TRUE
-                ),
-                
+                )),
+                column(4, 
                 selectInput(
                   "target_cols",
                   "Target Columns",
                   choices = c("A", "B"),
                   multiple = TRUE
-                ),
-                
+                ))),
+                fluidRow(column(6,
                 selectInput(
                   "pattern_type_drop",
                   "Pattern type",
@@ -468,9 +472,9 @@ app_ui <- function(request) {
                   selected = FALSE,
                   selectize = FALSE,
                   size = 4
-                ),
-                
-                textInput("pattern_drop", "Pattern", value = NULL)
+                )),
+                column(6,
+                textInput("pattern_drop", "Pattern", value = NULL)))
               )),column(6,
                        
                         shinyWidgets::downloadBttn("downloadfile_drop",
