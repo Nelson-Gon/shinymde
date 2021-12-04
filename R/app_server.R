@@ -197,18 +197,18 @@ app_server <- function(input, output, session) {
     )
   })
   # Hide on app start
-  on_off_toggle(c("pattern_type_summary", "pattern_summary",
-                  "select_kind"),
-                kind = "hide")
-  observeEvent(input$regex_based,
-               {
-                 if (input$regex_based == "yes") {
-                   on_off_toggle("select_kind", kind = "show")
-                   on_off_toggle("pattern_type_summary", kind = "show")
-                   on_off_toggle("pattern_summary", kind = "show")
-                   
-                 }
-               })
+  # on_off_toggle(c("pattern_type_summary", "pattern_summary",
+  #                 "select_kind"),
+  #               kind = "hide")
+  # observeEvent(input$regex_based,
+  #              {
+  #                if (input$regex_based == "yes") {
+  #                  on_off_toggle("select_kind", kind = "show")
+  #                  on_off_toggle("pattern_type_summary", kind = "show")
+  #                  on_off_toggle("pattern_summary", kind = "show")
+  #                  
+  #                }
+  #              })
   
   
   observe({
@@ -225,18 +225,38 @@ app_server <- function(input, output, session) {
   
  
   summary_na <- reactive(
-    na_summary(
-      in_data(),
-      sort_by = input$sort_by,
-      grouping_cols = input$group_by,
-      exclude_cols = input$exclude_columns,
-      descending = req(input$sort_order)=="descending",
-      round_to = input$round_to,
-      regex_kind = input$select_kind,
-      pattern_type = input$pattern_type_summary,
-      pattern = input$pattern_summary
-      
-    )
+    if(is.null(input$select_kind)){
+      return(   na_summary(
+        in_data(),
+        sort_by = input$sort_by,
+        grouping_cols = input$group_by,
+        exclude_cols = input$exclude_columns,
+        descending = req(input$sort_order)=="descending",
+        round_to = NULL,
+        regex_kind = NULL,
+        pattern_type = NULL,
+        pattern = NULL
+        
+      ))
+    }
+    else{
+      return(
+        na_summary(
+          in_data(),
+          sort_by = input$sort_by,
+          grouping_cols = input$group_by,
+          exclude_cols = input$exclude_columns,
+          descending = req(input$sort_order)=="descending",
+          round_to = input$round_to,
+          regex_kind = req(input$select_kind),
+          pattern_type = req(input$pattern_type_summary),
+          pattern = req(input$pattern_summary)
+          
+        )
+        
+      )
+    }
+ 
   )
   
   

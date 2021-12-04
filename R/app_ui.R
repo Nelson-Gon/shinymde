@@ -69,13 +69,19 @@ app_ui <- function(request) {
     color: white;
     }
  
-    .bttn-unite.bttn-primary:before, .bttn-unite.bttn-primary:after{
+    .bttn-fill.bttn-primary:before,
+    .bttn-fill.bttn-default:before,
+    .bttn-fill.bttn-danger:before{
     background: #b7000c; 
     border-color: #b7000c !important;
     }
-    .bttn-unite.bttn-primary{
-    border-color: #b7000c !important;
-    color: black; 
+    .bttn-fill.bttn-danger {
+    background: #b7000c;
+    color: #fff;
+    }
+    .bttn-fill.bttn-primary {
+    background: #b7000c;
+    color: #fff;
     }
     "
             )
@@ -192,7 +198,7 @@ app_ui <- function(request) {
                 ),
                 shinyWidgets::actionBttn("confirm_in",
                                          label = "confirm",
-                                         color = "primary",
+                                         color = "default",
                                          style = "fill"))),
                 column(6, 
                        shinyWidgets::actionBttn(
@@ -316,7 +322,7 @@ app_ui <- function(request) {
               shinyWidgets::downloadBttn("downloadfile", 
                                          "Download this report",
                                          style = "fill",
-                                         color = "primary")
+                                         color = "default")
               
              
             ),
@@ -324,8 +330,11 @@ app_ui <- function(request) {
             tabItem(
               tabName = "recode_values",
               fluidRow(column(6,
-              shinyWidgets::dropdownButton(
-                circle = TRUE, 
+              shinyWidgets::dropdown(
+                style = "fill",
+                animate = shinyWidgets::animateOptions(
+                  enter = "fadeInLeft", exit = "fadeOut"
+                ), 
                 icon = icon("cog"),
                 label = "Recode",
     
@@ -387,7 +396,8 @@ app_ui <- function(request) {
               column(6,  
                      shinyWidgets::downloadBttn("downloadfile_recode",
                                     "Download this report",
-                                    color = "primary"))), 
+                                    style = "fill", 
+                                    color = "default"))), 
               
               
               
@@ -400,9 +410,12 @@ app_ui <- function(request) {
             
             tabItem(
               tabName = "drop_values",
-              fluidRow(column(6,shinyWidgets::dropdownButton(
+              fluidRow(column(6,shinyWidgets::dropdown(
                 label = "Drop",
-                circle = TRUE, 
+                style ="fill",
+                animate = shinyWidgets::animateOptions(
+                  enter = "fadeInLeft", exit = "fadeOut"
+                ), 
                 icon = icon("cog"),
                 
                 selectInput(
@@ -462,7 +475,8 @@ app_ui <- function(request) {
                        
                         shinyWidgets::downloadBttn("downloadfile_drop",
                                       "Download this report",
-                                      color = "primary"))),
+                                      style = "fill", 
+                                      color = "default"))),
               
               
               
@@ -473,20 +487,24 @@ app_ui <- function(request) {
             
             tabItem(
               tabName = "visual_summary",
-              fluidRow(column(6,shinyWidgets::dropdownButton(
+              fluidRow(column(6,shinyWidgets::dropdown(
                 icon = icon("cog"),
-                circle = TRUE, 
+                style = "fill",
+                animate = shinyWidgets::animateOptions(
+                  enter = "fadeInLeft",
+                  exit = "fadeOut"
+                ), 
                 label = "Plot Settings",
                
-                div(
-                  id = "plot_area",
-                  selectInput(
+      
+                  fluidRow(column(6,selectInput(
                     "plot_type",
                     "Type of plot",
                     choices = c("bar",
                                 "lollipop"),
                     selected = "bar"
-                  ),
+                  )),
+                  column(6,
                   conditionalPanel(
                     condition = "input.plot_type=='bar'",
                     selectInput(
@@ -507,52 +525,63 @@ app_ui <- function(request) {
                       step = 0.2,
                       value = 2
                     )
-                  ),
-                  selectInput(
-                    "y_variable",
-                    "Y axis variable",
-                    choices = c("A", "B"),
-                    selected = "A"
-                  ),
-                  
-                  selectInput(
+                  ))),
+
+                  div(
+                    id = "plot_inputs_panel",
+                  fluidRow(
+                    column(6,selectInput(
+                      "y_variable",
+                      "Y axis variable",
+                      choices = c("A", "B"),
+                      selected = "A"
+                    )),
+                    column(6,selectInput(
                     "x_variable",
                     "X axis variable",
                     choices = c("A", "B"),
                     selected = "B"
-                  ),
+                  ))),
+                  fluidRow(
+                  column(6,
                   selectInput(
                     "fill_variable",
                     "Fill variable",
                     choices = c("A", "B"),
                     selected = "A"
-                  ),
+                  )),
+                  column(6,
                   numericInput("round_to_visual", "Round to",
-                               value = 2),
-                )
-              )),
+                               value = 2))),
+                style = "width:300px;"))), 
               
               column(3, 
-                shinyWidgets::dropdownButton(
-                  circle = TRUE,
+                shinyWidgets::dropdown(
+                  label = "save",
+                  style = "fill", 
+                  animate = shinyWidgets::animateOptions(
+                    enter = "fadeInleft",
+                    exit = "fadeOut"
+                  ),
                   icon = icon("save"),
+                  fluidRow(column(6,
                   textInput("extension", "Save Format",
-                            value = "png"),
-                  
+                            value = "png")),
+                  column(6,
                   textInput("dims", "Dimensions",
-                            value = "1137x720"),
+                            value = "1137x720"))),
                   
                   shinyWidgets::downloadBttn("download_plot",
                                  "Save Plot",
-                                 color = "primary")
+                                 color = "default")
                   
                 )),
               column(3,
                      shinyWidgets::actionBttn(
                        inputId = "plot_reset_button",
                        label = "Reset",
-                       style = "unite", 
-                       color = "primary"
+                       style = "fill", 
+                       color = "default"
                      ))), 
               
               
