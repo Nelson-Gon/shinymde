@@ -181,7 +181,7 @@ app_server <- function(input, output, session) {
   output$sort_by <- renderUI({
     selectInput(
       "sort_by",
-      "Column to sort_by",
+      "Sort by",
       choices = names(na_summary(in_data())),
       selected = "percent_missing"
     )
@@ -192,7 +192,7 @@ app_server <- function(input, output, session) {
   observe({
     updateSelectInput(session, 
       "group_by",
-      "Grouping Columns",
+      "Group BY",
       choices = names(in_data())
     )
   })
@@ -214,7 +214,7 @@ app_server <- function(input, output, session) {
   observe({
     updateSelectInput(session, 
       "exclude_columns",
-      "Columns to exclude",
+      "Exclude Cols",
       choices = names(in_data())
     )
   
@@ -302,7 +302,7 @@ app_server <- function(input, output, session) {
     updateSelectInput(
       session,
       "keep_columns",
-      "Keep Columns", 
+      "Keep Cols", 
       choices = names(in_data())
     )
   })
@@ -471,14 +471,14 @@ app_server <- function(input, output, session) {
   observe({
     updateSelectInput(session,
       "group_by_drop",
-      "Grouping Columns",
+      "Group BY",
       choices = names(in_data())
     )
   })
   observe({
     updateSelectInput(session,
         "keep_columns_drop",
-        "Keep Columns",
+        "Keep Cols",
         choices = names(in_data())
       )
   }
@@ -488,7 +488,7 @@ app_server <- function(input, output, session) {
   observe({
     updateSelectInput(session, 
       "target_cols",
-      "Target Columns",
+      "Target Cols",
       choices = names(in_data())
     )
   })
