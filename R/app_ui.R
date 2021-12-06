@@ -65,25 +65,22 @@ app_ui <- function(request) {
               ".info-box:hover,
     .btn:hover, .info-box-icon, .radio:hover,
     .option:hover, .odd:hover, .even:hover{
-    background-color: #b7000c !important;
+    background-color: #d73925 !important;
     color: white;
     }
 
-    .bttn-fill.bttn-primary:before,
-    .bttn-fill.bttn-default:before,
-    .bttn-fill.bttn-danger:before{
-    background: #b7000c;
-    border-color: #b7000c !important;
+   
+    .bttn-bordered:hover{
+    background: #fff;
+    color:#d73925;
     }
-    .bttn-fill.bttn-danger {
-    background: #b7000c;
+    .bttn-fill.bttn-default:after{
     color: #fff;
-    border-color: #b7000c !important;
     }
-    .bttn-fill.bttn-primary {
-    background: #b7000c;
-    color: #fff;
-     border-color: #b7000c !important;
+    .bttn-bordered, .bttn-fill.bttn-default:before,
+    .bttn-fill.bttn-danger:before {
+    background: #d73925;
+    color: #fff; 
     }
     "
             )
@@ -151,7 +148,7 @@ app_ui <- function(request) {
             6,
             shinyWidgets::dropdown(
               inputId = "indata_button",
-              style = "fill",
+              style = "bordered",
               label = "Input Data",
               icon = icon("cog"),
               width = "250px",
@@ -205,7 +202,8 @@ app_ui <- function(request) {
                 "confirm_in",
                 label = "confirm",
                 color = "default",
-                style = "fill"
+                style = "bordered",
+                icon = icon("check")
               )
             )
           ),
@@ -214,9 +212,9 @@ app_ui <- function(request) {
             shinyWidgets::actionBttn(
               "reset_input",
               label = "Reset",
-              style = "fill",
+              style = "bordered",
               icon = icon("undo"),
-              color = "danger"
+              color = "default"
             )
           )
         )
@@ -262,7 +260,7 @@ app_ui <- function(request) {
               4,
               shinyWidgets::dropdown(
                 label = "Sort",
-                style = "fill",
+                style = "bordered",
                 width = "250px",
                 animate = shinyWidgets::animateOptions(enter = "fadeInLeft",
                                                        exit = "fadeOut"),
@@ -284,7 +282,7 @@ app_ui <- function(request) {
             column(
               4,
               shinyWidgets::dropdown(
-                style = "fill",
+                style = "bordered",
                 label = "Group",
                 width = "250px",
                 icon = icon("cog"),
@@ -303,7 +301,7 @@ app_ui <- function(request) {
               4,
               shinyWidgets::dropdown(
                 label = "Subset",
-                style = "fill",
+                style = "bordered",
                 width = "250px",
                 icon = icon("cog"),
                 animate = shinyWidgets::animateOptions(enter = "fadeInLeft",
@@ -337,13 +335,14 @@ app_ui <- function(request) {
           ),
           style = "margin-top:6px;margin-left:-12px;width:400px;"
         ),
-        
+        br(),
+        br(), 
         
         shinycssloaders::withSpinner(dataTableOutput("summary_na")),
         shinyWidgets::downloadBttn(
           "downloadfile",
           "Download this report",
-          style = "fill",
+          style = "bordered",
           color = "default"
         )
         
@@ -356,7 +355,7 @@ app_ui <- function(request) {
           column(
             6,
             shinyWidgets::dropdown(
-              style = "fill",
+              style = "bordered",
               width = "380px",
               animate = shinyWidgets::animateOptions(enter = "fadeInLeft", exit = "fadeOut"),
               icon = icon("cog"),
@@ -440,13 +439,14 @@ app_ui <- function(request) {
               shinyWidgets::downloadBttn(
                 "downloadfile_recode",
                 "Download this report",
-                style = "fill",
+                style = "bordered",
                 color = "default"
               )
             )
           ),
           
-          
+          br(),
+        br(), 
           
           
           shinycssloaders::withSpinner(dataTableOutput("recode_values"))
@@ -465,8 +465,8 @@ app_ui <- function(request) {
                 6,
                 shinyWidgets::dropdown(
                   label = "Drop",
-                  style = "fill",
-                  width = "380px",
+                  style = "bordered",
+                  width = "400px",
                   animate = shinyWidgets::animateOptions(enter = "fadeInLeft", exit = "fadeOut"),
                   icon = icon("cog"),
                   
@@ -476,6 +476,7 @@ app_ui <- function(request) {
                       selectInput(
                         "drop_type",
                         "Kind of drop",
+                        width = "180px", 
                         choices = c("drop_all_na",
                                     "drop_na_if",
                                     "drop_na_at"),
@@ -551,12 +552,13 @@ app_ui <- function(request) {
                 shinyWidgets::downloadBttn(
                   "downloadfile_drop",
                   "Download this report",
-                  style = "fill",
+                  style = "bordered",
                   color = "default"
                 )
               )
             ),
-            
+            br(),
+            br(), 
             
             
             shinycssloaders::withSpinner(dataTableOutput("drop_na"))
@@ -572,7 +574,7 @@ app_ui <- function(request) {
               6,
               shinyWidgets::dropdown(
                 icon = icon("cog"),
-                style = "fill",
+                style = "bordered",
                 animate = shinyWidgets::animateOptions(enter = "fadeInLeft",
                                                        exit = "fadeOut"),
                 label = "Plot Settings",
@@ -658,7 +660,7 @@ app_ui <- function(request) {
               3,
               shinyWidgets::dropdown(
                 label = "save",
-                style = "fill",
+                style = "bordered",
                 animate = shinyWidgets::animateOptions(enter = "fadeInleft",
                                                        exit = "fadeOut"),
                 icon = icon("save"),
@@ -676,7 +678,7 @@ app_ui <- function(request) {
                 shinyWidgets::downloadBttn(
                   "download_plot",
                   "Save Plot",
-                  style = "fill",
+                  style = "bordered",
                   color = "default"
                 )
                 
@@ -687,12 +689,13 @@ app_ui <- function(request) {
               shinyWidgets::actionBttn(
                 inputId = "plot_reset_button",
                 label = "Reset",
-                style = "fill",
+                style = "bordered",
                 color = "default"
               )
             )
           ),
           
+          br(),
           
           shinycssloaders::withSpinner(plotOutput("visual_summary")),
           
