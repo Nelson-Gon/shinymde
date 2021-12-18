@@ -1,10 +1,9 @@
 ---
-date: "09/06/2021"
+date: "18/12/2021"
 author: "Nelson Gonzabato"
 title: "Changes to shinymde"
 ---
 
----
 
 **shinymde 0.1.1**
 
