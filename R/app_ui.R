@@ -22,7 +22,6 @@ app_ui <- function(request) {
                                                      packageVersion("shinymde")
                                                    )),
         sidebar = shinydashboard::dashboardSidebar(
-          collapsed = TRUE,
           sidebarMenu(
             # This id allows us to access the currently active tab as in tabsetpanel
             id = "shiny_mde",
@@ -480,7 +479,7 @@ app_ui <- function(request) {
                         choices = c("drop_all_na",
                                     "drop_na_if",
                                     "drop_na_at"),
-                        selected = "drop_all_na"
+                        selected = "drop_na_if"
                       )
                     ),
                     column(4,

@@ -1,6 +1,6 @@
 Package: shinymde
 Title: A Shiny Interface to mde, the missing data explorer 
-Version: 0.1.1.9000
+Version: 0.1.1
 Authors@R: 
     person(given = "Nelson",
            family = "Gonzabato",

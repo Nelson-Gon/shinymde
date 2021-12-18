@@ -6,10 +6,9 @@ title: "Changes to shinymde"
 
 ---
 
-**shinymde 0.1.1.9000**
+**shinymde 0.1.1**
 
-* UI overhaul to ensure a much better user experience. Specifically, inputs
-were decluttered to make it easier to do analyses with minimal interference. 
+* UI overhaul to ensure a much better user experience. Specifically, inputs were decluttered to make it easier to do analyses with minimal interference. 
 
 * Action buttons are now the same color as the app's skin. 
 
