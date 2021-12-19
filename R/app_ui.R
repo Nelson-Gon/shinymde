@@ -8,8 +8,7 @@
 #' @import shiny
 #' @noRd
 app_ui <- function(request) {
-  tagList(
-    # Leave this function for adding external resources
+  tagList(# Leave this function for adding external resources
     golem_add_external_resources(),
     # Your application UI logic
     fluidPage(
@@ -68,7 +67,7 @@ app_ui <- function(request) {
     color: white;
     }
 
-   
+
     .bttn-bordered:hover{
     background: #fff;
     color:#d73925;
@@ -79,12 +78,14 @@ app_ui <- function(request) {
     .bttn-bordered, .bttn-fill.bttn-default:before,
     .bttn-fill.bttn-danger:before {
     background: #d73925;
-    color: #fff; 
+    color: #fff;
     }
     "
             )
           )),
     
+    
+   
     tabItems(
       tabItem(
         tabName = "home",
@@ -335,7 +336,7 @@ app_ui <- function(request) {
           style = "margin-top:6px;margin-left:-12px;width:400px;"
         ),
         br(),
-        br(), 
+        br(),
         
         shinycssloaders::withSpinner(dataTableOutput("summary_na")),
         shinyWidgets::downloadBttn(
@@ -390,33 +391,145 @@ app_ui <- function(request) {
                   )
                 )
               ),
-              fluidRow(
-                column(
-                  6,
-                  selectInput(
-                    "subset_cols",
-                    "Subset",
-                    choices = c("A", "B"),
-                    multiple = TRUE
+              fluidRow(column(
+                6,
+                selectInput(
+                  "subset_cols",
+                  "Subset",
+                  choices = c("A", "B"),
+                  multiple = TRUE
+                )
+              ),
+              column(
+                6,
+                selectInput(
+                  "keep_columns",
+                  "Keep Cols",
+                  choices = c("A", 'B'),
+                  multiple = TRUE
+                )
+              )),
+              # need pattern_type and subset_cols not both so need
+              # to set one to NULL
+              # This in shiny is done like so
+              # see stackoverflow.com/a/53698788/10323798
+              fluidRow(column(
+                6,
+                selectInput(
+                  "pattern_type",
+                  "Pattern type",
+                  choices = c("starts_with",
+                              "ends_with", "contains",
+                              "regex"),
+                  selected = FALSE,
+                  selectize = FALSE,
+                  size = 4
+                )
+              ),
+              column(
+                6,
+                textInput("pattern", "Pattern", value = NULL)
+              ))
+              
+            )
+          ),
+          column(
+            6,
+            shinyWidgets::downloadBttn(
+              "downloadfile_recode",
+              "Download this report",
+              style = "bordered",
+              color = "default"
+            )
+          )
+        ),
+        
+        br(),
+        br(),
+        
+        
+        shinycssloaders::withSpinner(dataTableOutput("recode_values"))
+        
+        
+        
+      ),
+      
+      tabItem(
+        tabName = "drop_values",
+        div(
+          id = "drop_zone",
+          
+          fluidRow(
+            column(
+              6,
+              shinyWidgets::dropdown(
+                label = "Drop",
+                style = "bordered",
+                width = "400px",
+                animate = shinyWidgets::animateOptions(enter = "fadeInLeft", exit = "fadeOut"),
+                icon = icon("cog"),
+                
+                fluidRow(
+                  column(
+                    4,
+                    selectInput(
+                      "drop_type",
+                      "Kind of drop",
+                      width = "180px",
+                      choices = c("drop_all_na",
+                                  "drop_na_if",
+                                  "drop_na_at"),
+                      selected = "drop_na_if"
+                    )
+                  ),
+                  column(4,
+                         numericInput("percent_na_drop",
+                                      "Percent NA", value = 20)),
+                  column(
+                    4,
+                    selectInput(
+                      "sign",
+                      "Sign",
+                      choices = c("gt", "gteq", "lt", "lteq", "eq"),
+                      selected = "gt",
+                      multiple = FALSE
+                    )
                   )
                 ),
-                column(
-                  6,
-                  selectInput(
-                    "keep_columns",
-                    "Keep Cols",
-                    choices = c("A", 'B'),
-                    multiple = TRUE
+                
+                fluidRow(
+                  column(
+                    4,
+                    selectInput(
+                      "group_by_drop",
+                      "Group BY",
+                      choices = c("A", "B"),
+                      multiple = TRUE
+                    )
+                  ),
+                  column(
+                    4,
+                    selectInput(
+                      "keep_columns_drop",
+                      "Keep Cols",
+                      choices = c("A", "B"),
+                      multiple = TRUE
+                    )
+                  ),
+                  column(
+                    4,
+                    selectInput(
+                      "target_cols",
+                      "Target Cols",
+                      choices = c("A", "B"),
+                      multiple = TRUE
+                    )
                   )
-                )),
-                # need pattern_type and subset_cols not both so need
-                # to set one to NULL
-                # This in shiny is done like so
-                # see stackoverflow.com/a/53698788/10323798
+                ),
                 fluidRow(column(
                   6,
                   selectInput(
-                    "pattern_type",
+                    "pattern_type_drop",
                     "Pattern type",
                     choices = c("starts_with",
                                 "ends_with", "contains",
@@ -428,291 +541,197 @@ app_ui <- function(request) {
                 ),
                 column(
                   6,
-                  textInput("pattern", "Pattern", value = NULL)
+                  textInput("pattern_drop", "Pattern", value = NULL)
                 ))
-                
               )
             ),
             column(
               6,
+              
               shinyWidgets::downloadBttn(
-                "downloadfile_recode",
+                "downloadfile_drop",
                 "Download this report",
                 style = "bordered",
                 color = "default"
               )
             )
           ),
-          
           br(),
-        br(), 
+          br(),
           
           
-          shinycssloaders::withSpinner(dataTableOutput("recode_values"))
+          shinycssloaders::withSpinner(dataTableOutput("drop_na"))
           
           
-          
-        ),
-        
-        tabItem(
-          tabName = "drop_values",
-          div(
-            id = "drop_zone",
-            
-            fluidRow(
-              column(
-                6,
-                shinyWidgets::dropdown(
-                  label = "Drop",
-                  style = "bordered",
-                  width = "400px",
-                  animate = shinyWidgets::animateOptions(enter = "fadeInLeft", exit = "fadeOut"),
-                  icon = icon("cog"),
-                  
-                  fluidRow(
-                    column(
-                      4,
-                      selectInput(
-                        "drop_type",
-                        "Kind of drop",
-                        width = "180px", 
-                        choices = c("drop_all_na",
-                                    "drop_na_if",
-                                    "drop_na_at"),
-                        selected = "drop_na_if"
-                      )
-                    ),
-                    column(4,
-                           numericInput("percent_na_drop",
-                                        "Percent NA", value = 20)),
-                    column(
-                      4,
-                      selectInput(
-                        "sign",
-                        "Sign",
-                        choices = c("gt", "gteq", "lt", "lteq", "eq"),
-                        selected = "gt",
-                        multiple = FALSE
-                      )
-                    )
-                  ),
-                  
-                  fluidRow(
-                    column(
-                      4,
-                      selectInput(
-                        "group_by_drop",
-                        "Group BY",
-                        choices = c("A", "B"),
-                        multiple = TRUE
-                      )
-                    ),
-                    column(
-                      4,
-                      selectInput(
-                        "keep_columns_drop",
-                        "Keep Cols",
-                        choices = c("A", "B"),
-                        multiple = TRUE
-                      )
-                    ),
-                    column(
-                      4,
-                      selectInput(
-                        "target_cols",
-                        "Target Cols",
-                        choices = c("A", "B"),
-                        multiple = TRUE
-                      )
-                    )
-                  ),
-                  fluidRow(column(
-                    6,
-                    selectInput(
-                      "pattern_type_drop",
-                      "Pattern type",
-                      choices = c("starts_with",
-                                  "ends_with", "contains",
-                                  "regex"),
-                      selected = FALSE,
-                      selectize = FALSE,
-                      size = 4
-                    )
-                  ),
-                  column(
-                    6,
-                    textInput("pattern_drop", "Pattern", value = NULL)
-                  ))
-                )
-              ),
-              column(
-                6,
-                
-                shinyWidgets::downloadBttn(
-                  "downloadfile_drop",
-                  "Download this report",
-                  style = "bordered",
-                  color = "default"
-                )
-              )
-            ),
-            br(),
-            br(), 
-            
-            
-            shinycssloaders::withSpinner(dataTableOutput("drop_na"))
-            
-            
-          )
-        ),
-        
-        tabItem(
-          tabName = "visual_summary",
-          fluidRow(
-            column(
-              6,
-              shinyWidgets::dropdown(
-                icon = icon("cog"),
-                style = "bordered",
-                animate = shinyWidgets::animateOptions(enter = "fadeInLeft",
-                                                       exit = "fadeOut"),
-                label = "Plot Settings",
-                
-                
-                fluidRow(
-                  column(
-                    6,
-                    selectInput(
-                      "plot_type",
-                      "Type of plot",
-                      choices = c("bar",
-                                  "lollipop"),
-                      selected = "bar"
-                    )
-                  ),
-                  column(
-                    6,
-                    conditionalPanel(
-                      condition = "input.plot_type=='bar'",
-                      selectInput(
-                        "show_text",
-                        "Show Text?",
-                        choices = c("yes",
-                                    "no"),
-                        selected = "no"
-                      )
-                    ),
-                    conditionalPanel(
-                      condition = "input.plot_type=='lollipop'",
-                      sliderInput(
-                        "size",
-                        "Size",
-                        min = 0,
-                        max = 5,
-                        step = 0.2,
-                        value = 2
-                      )
-                    )
-                  )
-                ),
-                
-                div(
-                  id = "plot_inputs_panel",
-                  fluidRow(column(
-                    6,
-                    selectInput(
-                      "y_variable",
-                      "Y axis variable",
-                      choices = c("A", "B"),
-                      selected = "A"
-                    )
-                  ),
-                  column(
-                    6,
-                    selectInput(
-                      "x_variable",
-                      "X axis variable",
-                      choices = c("A", "B"),
-                      selected = "B"
-                    )
-                  )),
-                  fluidRow(column(
-                    6,
-                    selectInput(
-                      "fill_variable",
-                      "Fill variable",
-                      choices = c("A", "B"),
-                      selected = "A"
-                    )
-                  ),
-                  column(
-                    6,
-                    numericInput("round_to_visual", "Round to",
-                                 value = 2)
-                  )),
-                  style = "width:300px;"
-                )
-              )
-            ),
-            
-            column(
-              3,
-              shinyWidgets::dropdown(
-                label = "save",
-                style = "bordered",
-                animate = shinyWidgets::animateOptions(enter = "fadeInleft",
-                                                       exit = "fadeOut"),
-                icon = icon("save"),
-                fluidRow(column(
+        )
+      ),
+      
+      tabItem(
+        tabName = "visual_summary",
+        fluidRow(
+          column(
+            6,
+            shinyWidgets::dropdown(
+              icon = icon("cog"),
+              style = "bordered",
+              animate = shinyWidgets::animateOptions(enter = "fadeInLeft",
+                                                     exit = "fadeOut"),
+              label = "Plot Settings",
+              
+              
+              fluidRow(
+                column(
                   6,
-                  textInput("extension", "Save Format",
-                            value = "png")
+                  selectInput(
+                    "plot_type",
+                    "Type of plot",
+                    choices = c("bar",
+                                "lollipop"),
+                    selected = "bar"
+                  )
                 ),
                 column(
                   6,
-                  textInput("dims", "Dimensions",
-                            value = "1137x720")
-                )),
-                
-                shinyWidgets::downloadBttn(
-                  "download_plot",
-                  "Save Plot",
-                  style = "bordered",
-                  color = "default"
+                  conditionalPanel(
+                    condition = "input.plot_type=='bar'",
+                    selectInput(
+                      "show_text",
+                      "Show Text?",
+                      choices = c("yes",
+                                  "no"),
+                      selected = "no"
+                    )
+                  ),
+                  conditionalPanel(
+                    condition = "input.plot_type=='lollipop'",
+                    sliderInput(
+                      "size",
+                      "Size",
+                      min = 0,
+                      max = 5,
+                      step = 0.2,
+                      value = 2
+                    )
+                  )
                 )
-                
-              )
-            ),
-            column(
-              3,
-              shinyWidgets::actionBttn(
-                inputId = "plot_reset_button",
-                label = "Reset",
-                style = "bordered",
-                color = "default"
+              ),
+              
+              div(
+                id = "plot_inputs_panel",
+                fluidRow(column(
+                  3,
+                  selectInput(
+                    "y_variable",
+                    "Y axis variable",
+                    choices = c("A", "B"),
+                    selected = "A"
+                  )
+                ),
+                column(
+                  6,
+                  selectInput(
+                    "x_variable",
+                    "X axis variable",
+                    choices = c("A", "B"),
+                    selected = "B"
+                  )
+                )),
+                fluidRow(column(
+                  6,
+                  selectInput(
+                    "fill_variable",
+                    "Fill variable",
+                    choices = c("A", "B"),
+                    selected = "A"
+                  )
+                ),
+                column(
+                  6,
+                  numericInput("round_to_visual", "Round to",
+                               value = 2)
+                )),
+                style = "width:300px;"
               )
             )
           ),
-          
-          br(),
-          
-          shinycssloaders::withSpinner(plotOutput("visual_summary")),
-          
-          
-          
-          
-          
-          
-          
-          
-        )
+          column(3,
+                 shinyWidgets::dropdown(
+                   label="Theming",
+                   style = "bordered",
+                   animate = shinyWidgets::animateOptions(
+                     enter="fadeInleft",
+                     exit = "fadeOut"
+                   ),
+                   icon = icon("cog"),
+                   
+                   fluidRow(
+                     column(6,
+                          selectizeInput("theme", "Plot theme", 
+                                         selected = "theme_minimal",
+                                         choices = c("theme_minimal",
+                                                     "theme_classic"))),
+                     column(6, textInput("pkg",
+                                         "Source package",
+                                         value = "ggplot2"))
+                   )
+                 )),
+          column(
+            3,
+            shinyWidgets::dropdown(
+              label = "save",
+              style = "bordered",
+              animate = shinyWidgets::animateOptions(enter = "fadeInleft",
+                                                     exit = "fadeOut"),
+              icon = icon("save"),
+              fluidRow(column(
+                6,
+                textInput("extension", "Save Format",
+                          value = "png")
+              ),
+              column(
+                6,
+                textInput("dims", "Dimensions",
+                          value = "1137x720")
+              )),
+              
+              shinyWidgets::downloadBttn(
+                "download_plot",
+                "Save Plot",
+                style = "bordered",
+                color = "default"
+              )
+              
+            )
+          ),
+          column(
+            3,
+            shinyWidgets::actionBttn(
+              inputId = "plot_reset_button",
+              label = "Reset",
+              style = "bordered",
+              color = "default"
+            )
+          )
+        ),
+        
+        br(),
+        
+        shinycssloaders::withSpinner(plotOutput("visual_summary")),
+        
+        
+        
+        
+        
+        
+        
+        
       )
     )
         )
       )
-    )
-    
-    }
+    ))
+  
+}
 
 #' Add external Resources to the Application
 #'

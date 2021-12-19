@@ -587,7 +587,24 @@ observe({
                     
 })
   
+get_all_themes <- reactive({
+  all_pkg_funs <- getNamespaceExports(req(input$pkg))
+  all_themes<-all_pkg_funs[grep("^theme_",all_pkg_funs)]
+  return(all_themes)
 
+})
+get_theme <- reactive(
+  # akrun credit:https://stackoverflow.com/q/70414757/10323798
+  getFunction(get_all_themes()[grep(req(input$theme), get_all_themes())])()
+)
+# Update available themes based on the above
+observe(
+updateSelectizeInput(session=session,
+                     "theme",
+                     "Plot theme",
+                     choices = get_all_themes(),
+                     selected = "theme_grey")
+)
   
   base_plot <- reactive(
     summary_na() %>%
@@ -596,11 +613,14 @@ observe({
                              .data[[req(input$y_variable)]]),
         .data[[req(input$y_variable)]],
         fill = .data[[req(input$fill_variable)]]
-      )) +
-      theme_minimal() +
+      ))  + 
       guides(fill = "none") +
-      labs(x = input$x_variable)
+      labs(x = req(input$x_variable)) +
+      get_theme()
+      
   )
+
+  
   
   visual_plot <- reactive({
     base_plot() +

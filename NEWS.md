@@ -4,6 +4,10 @@ author: "Nelson Gonzabato"
 title: "Changes to shinymde"
 ---
 
+**shinymde 0.1.2**
+
+* There is now an option to customize plot designs for examples themes.
+See https://github.com/Nelson-Gon/shinymde/issues/14
 
 **shinymde 0.1.1**
 
