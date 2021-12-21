@@ -622,7 +622,7 @@ app_ui <- function(request) {
                   3,
                   selectInput(
                     "y_variable",
-                    "Y axis variable",
+                    "Y",
                     choices = c("A", "B"),
                     selected = "A"
                   )
@@ -631,7 +631,7 @@ app_ui <- function(request) {
                   6,
                   selectInput(
                     "x_variable",
-                    "X axis variable",
+                    "X",
                     choices = c("A", "B"),
                     selected = "B"
                   )
@@ -640,7 +640,7 @@ app_ui <- function(request) {
                   6,
                   selectInput(
                     "fill_variable",
-                    "Fill variable",
+                    "Fill",
                     choices = c("A", "B"),
                     selected = "A"
                   )
@@ -665,6 +665,7 @@ app_ui <- function(request) {
                    icon = icon("cog"),
                    
                    fluidRow(
+                     fluidRow(
                      column(6,
                           selectizeInput("theme", "Plot theme", 
                                          selected = "theme_minimal",
@@ -673,7 +674,14 @@ app_ui <- function(request) {
                      column(6, textInput("pkg",
                                          "Source package",
                                          value = "ggplot2"))
-                   )
+                   ),
+                   shinyWidgets::actionBttn(
+                     inputId = "confirm_pkg",
+                     label = "Confirm",
+                     style = "bordered",
+                     color = "default",
+                     icon = icon("check")
+                   ))
                  )),
           column(
             3,

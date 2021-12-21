@@ -561,7 +561,7 @@ app_server <- function(input, output, session) {
   observe({
     updateSelectInput(session,
       "y_variable",
-      "Y axis variable",
+      "Y",
       choices = names(summary_na()),
       selected = "percent_missing"
     )
@@ -570,7 +570,7 @@ app_server <- function(input, output, session) {
   observe({
     updateSelectInput(session,
                         "x_variable",
-                        "X axis variable",
+                        "X",
                         choices = names(summary_na()),
                         selected = "variable"
                       )
@@ -580,14 +580,21 @@ app_server <- function(input, output, session) {
 observe({
   updateSelectInput(session,
                       "fill_variable",
-                      "Fill variable",
+                      "Fill",
                       choices = names(summary_na()),
                       selected = "variable"
                     )
                     
 })
-  
-get_all_themes <- reactive({
+
+get_all_themes <- eventReactive(input$confirm_pkg,
+                                {
+  if(!req(input$pkg) %in% loadedNamespaces()){
+    
+    suppressPackageStartupMessages(
+      library(req(input$pkg), character.only = TRUE)
+    )
+  }
   all_pkg_funs <- getNamespaceExports(req(input$pkg))
   all_themes<-all_pkg_funs[grep("^theme_",all_pkg_funs)]
   return(all_themes)
