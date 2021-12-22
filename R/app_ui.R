@@ -85,7 +85,7 @@ app_ui <- function(request) {
           )),
     
     
-   
+    
     tabItems(
       tabItem(
         tabName = "home",
@@ -141,228 +141,215 @@ app_ui <- function(request) {
         )
         
       ),
-      tabItem(
-        tabName = "input",
-        fluidRow(
-          column(
-            6,
-            shinyWidgets::dropdown(
-              inputId = "indata_button",
-              style = "bordered",
-              label = "Input Data",
-              icon = icon("cog"),
-              width = "250px",
-              animate = shinyWidgets::animateOptions(enter = "fadeInLeft",
-                                                     exit = "fadeOut"),
+      tabItem(tabName = "input",
+              sidebarLayout(
+                sidebarPanel(
+                  shinyWidgets::awesomeRadio(
+                    "data_source",
+                    "Data Source",
+                    choices = c("inbuilt",
+                                "remote",
+                                "user_data"),
+                    selected = "inbuilt"
+                  ),
+                  conditionalPanel(
+                    condition =
+                      "input.data_source == 'user_data'",
+                    fileInput("input_file",
+                              label = "Input File",
+                              placeholder =  "Please provide a file path")
+                  ),
+                  conditionalPanel(condition = "input.data_source == 'user_data'",
+                                   numericInput("sheet", "Sheet", value =
+                                                  1)),
+                  conditionalPanel(
+                    condition =
+                      "input.data_source=='inbuilt'",
+                    selectInput(
+                      "dataset",
+                      "Dataset",
+                      choices = c("mtcars", "airquality"),
+                      selected = "airquality"
+                    )
+                  ),
+                  conditionalPanel(condition =
+                                     "input.data_source == 'remote'",
+                                   textInput("remote",
+                                             "Remote",
+                                             value = "")),
+                  conditionalPanel(
+                    condition =
+                      "input.data_source == 'remote'",
+                    selectInput(
+                      "file_type",
+                      "File Type",
+                      choices = c("csv", "tsv"),
+                      selected = "csv"
+                    )
+                  ),
+                  shinyWidgets::actionBttn(
+                    "confirm_in",
+                    label = "confirm",
+                    color = "default",
+                    style = "bordered",
+                    icon = icon("check")
+                  )
+                  
+                  ,
+                  shinyWidgets::actionBttn(
+                    "reset_input",
+                    label = "Reset",
+                    style = "bordered",
+                    icon = icon("undo"),
+                    color = "default"
+                  )
+                  
+                  
+                ),
+                mainPanel(
+                  div(
+                    id = "sys_details",
+                    
+                    infoBox(
+                      title = "Date of Analysis",
+                      icon = shiny::icon("calendar"),
+                      value = format(Sys.Date(), "%A %b %d %Y"),
+                      width = 12
+                    ),
+                    infoBox(
+                      title = "R version",
+                      value =
+                        R.version.string,
+                      icon = shiny::icon("cog"),
+                      width = 12
+                    ),
+                    infoBox(
+                      title = "mde version",
+                      value =
+                        as.character(packageVersion("mde")),
+                      icon = shiny::icon("tools"),
+                      width = 12
+                    )
+                  ),
+                  verbatimTextOutput("data_summary")
+                  
+                )
+              )),
+      tabItem(tabName = "missingness_summary",
               
-              shinyWidgets::awesomeRadio(
-                "data_source",
-                "Data Source",
-                choices = c("inbuilt",
-                            "remote",
-                            "user_data"),
-                selected = "inbuilt"
-              ),
-              conditionalPanel(
-                condition =
-                  "input.data_source == 'user_data'",
-                fileInput("input_file",
-                          label = "Input File",
-                          placeholder =  "Please provide a file path")
-              ),
-              conditionalPanel(condition = "input.data_source == 'user_data'",
-                               numericInput("sheet", "Sheet", value =
-                                              1)),
-              conditionalPanel(
-                condition =
-                  "input.data_source=='inbuilt'",
-                selectInput(
-                  "dataset",
-                  "Dataset",
-                  choices = c("mtcars", "airquality"),
-                  selected = "airquality"
-                )
-              ),
-              conditionalPanel(condition =
-                                 "input.data_source == 'remote'",
-                               textInput("remote",
-                                         "Remote",
-                                         value = "")),
-              conditionalPanel(
-                condition =
-                  "input.data_source == 'remote'",
-                selectInput(
-                  "file_type",
-                  "File Type",
-                  choices = c("csv", "tsv"),
-                  selected = "csv"
-                )
-              ),
-              shinyWidgets::actionBttn(
-                "confirm_in",
-                label = "confirm",
-                color = "default",
-                style = "bordered",
-                icon = icon("check")
-              )
-            )
-          ),
-          column(
-            6,
-            shinyWidgets::actionBttn(
-              "reset_input",
-              label = "Reset",
-              style = "bordered",
-              icon = icon("undo"),
-              color = "default"
-            )
-          )
-        )
-        
-        
-        ,
-        br(),
-        br(),
-        
-        div(
-          id = "sys_details",
-          
-          infoBox(
-            title = "Date of Analysis",
-            icon = shiny::icon("calendar"),
-            value = format(Sys.Date(), "%A %b %d %Y"),
-            width = 12
-          ),
-          infoBox(
-            title = "R version",
-            value =
-              R.version.string,
-            icon = shiny::icon("cog"),
-            width = 12
-          ),
-          infoBox(
-            title = "mde version",
-            value =
-              as.character(packageVersion("mde")),
-            icon = shiny::icon("tools"),
-            width = 12
-          )
-        ),
-        
-        verbatimTextOutput("data_summary")
-      ),
-      tabItem(
-        tabName = "missingness_summary",
-        div(
-          id = "sort_group_subset",
-          fluidRow(
-            column(
-              4,
-              shinyWidgets::dropdown(
-                label = "Sort",
-                style = "bordered",
-                width = "250px",
-                animate = shinyWidgets::animateOptions(enter = "fadeInLeft",
-                                                       exit = "fadeOut"),
-                icon = icon("cog"),
+              sidebarLayout(
+                sidebarPanel(
+                  width = 4,
+
+                fluidRow(
                 
-                uiOutput("sort_by"),
-                selectInput(
-                  "sort_order",
-                  "Sort Order",
-                  choices = c("ascending",
-                              "descending"),
-                  selected = "descending"
-                ),
-                numericInput("round_to", "Round to",
-                             value = options("digits"))
-              )
-            ),
-            
-            column(
-              4,
-              shinyWidgets::dropdown(
-                style = "bordered",
-                label = "Group",
-                width = "250px",
-                icon = icon("cog"),
-                
-                selectInput(
-                  "group_by",
-                  "Group BY",
-                  choices = c("A", "B"),
-                  multiple = TRUE
+                  column(6,
+                         shinyWidgets::dropdown(
+                           label = "SORT",
+                           icon = icon("sort"),
+                           animate = shinyWidgets::animateOptions(
+                             enter = "fadeInLeft",
+                             exit = "fadeOut"),
+                           style = "bordered",
+                           width = "260px",
+                           uiOutput("sort_by"),
+                           selectInput(
+                             "sort_order",
+                             "Sort Order",
+                             choices = c("ascending",
+                                         "descending"),
+                             selected = "descending"
+                           )
+                           
+                         )
+                         ),
+                  column(6,
+                         shinyWidgets::dropdown(
+                           animate = shinyWidgets::animateOptions(
+                             enter = "fadeInLeft",
+                             exit = "fadeOut"
+                           ),
+                           label = "FILTER",
+                           icon = icon("filter"),
+                           style = "bordered",
+                           
+                           width = "260px",
+                           
+                           selectInput(
+                             "select_kind",
+                             "Selection Kind",
+                             choices = c("exclusion",
+                                         "inclusion"),
+                             selected = FALSE,
+                             selectize = FALSE,
+                             size = 2
+                           )
+                           ,
+                           selectInput(
+                             "pattern_type_summary",
+                             label = "Pattern type",
+                             choices = c("contains", "starts_with",
+                                         "ends_with", "regex"),
+                             selected = FALSE,
+                             selectize = FALSE,
+                             size = 4
+                           )
+                           ,
+                           
+                           textInput("pattern_summary",
+                                     label = "Pattern",
+                                     value = NULL)
+                         )
+                         )
+                ) ,
+                    
+                  fluidRow(column(
+                    5,
+                    numericInput("round_to", "Round to",
+                                 value = options("digits"))
+                  ),
+                  column(
+                    7,
+                    selectInput(
+                      "group_by",
+                      "Group BY",
+                      choices = c("A", "B"),
+                      multiple = TRUE
+                    )
+                  )),
+                br(),
+                shinyWidgets::downloadBttn(
+                  "downloadfile",
+                  "Download this report",
+                  style = "bordered",
+                  color = "default"
+                )
+                  
+                  
+                 ),
+                mainPanel(
+                  shinycssloaders::withSpinner(dataTableOutput("summary_na"))
+                 
+                  
                 )
                 
-              )
-            ),
-            
-            column(
-              4,
-              shinyWidgets::dropdown(
-                label = "Subset",
-                style = "bordered",
-                width = "250px",
-                icon = icon("cog"),
-                animate = shinyWidgets::animateOptions(enter = "fadeInLeft",
-                                                       exit = "fadeOut"),
-                selectInput(
-                  "select_kind",
-                  "Selection Kind",
-                  choices = c("exclusion",
-                              "inclusion"),
-                  selected = FALSE,
-                  selectize = FALSE,
-                  size = 2
-                ),
                 
-                selectInput(
-                  "pattern_type_summary",
-                  label = "Pattern type",
-                  choices = c("contains", "starts_with",
-                              "ends_with", "regex"),
-                  selected = FALSE,
-                  selectize = FALSE,
-                  size = 4
-                ),
-                
-                
-                textInput("pattern_summary",
-                          label = "Pattern",
-                          value = NULL)
-              )
-            )
-          ),
-          style = "margin-top:6px;margin-left:-12px;width:400px;"
-        ),
-        br(),
-        br(),
-        
-        shinycssloaders::withSpinner(dataTableOutput("summary_na")),
-        shinyWidgets::downloadBttn(
-          "downloadfile",
-          "Download this report",
-          style = "bordered",
-          color = "default"
-        )
-        
-        
-      ),
+              )),
       
       tabItem(
         tabName = "recode_values",
-        fluidRow(
-          column(
-            6,
-            shinyWidgets::dropdown(
+        
+        sidebarLayout(
+          sidebarPanel(
+       shinyWidgets::dropdown(
               style = "bordered",
-              width = "380px",
-              animate = shinyWidgets::animateOptions(enter = "fadeInLeft", exit = "fadeOut"),
-              icon = icon("cog"),
-              label = "Recode",
-              fluidRow(
-                column(
-                  6,
+              width = "240px",
+              animate = shinyWidgets::animateOptions(
+                enter = "fadeInLeft", 
+                exit = "fadeOut"),
+              icon = icon("exchange-alt"),
+              label = "RECODE",
+    
                   selectInput(
                     "recode_type",
                     "Recode Kind",
@@ -373,14 +360,13 @@ app_ui <- function(request) {
                       "recode_as_na_if"
                     ),
                     selected = "recode_as_na"
-                  )
-                ),
+                  ),
                 
                 
-                column(3, textInput("value_to_recode", "Value")),
-                
-                column(
-                  3,
+              fluidRow(column(6,
+                              textInput("value_to_recode", "Value")),
+            column(
+                  6,
                   selectInput(
                     "criteria",
                     "Criteria",
@@ -391,68 +377,68 @@ app_ui <- function(request) {
                   )
                 )
               ),
-              fluidRow(column(
-                6,
-                selectInput(
-                  "subset_cols",
-                  "Subset",
-                  choices = c("A", "B"),
-                  multiple = TRUE
-                )
-              ),
-              column(
-                6,
-                selectInput(
-                  "keep_columns",
-                  "Keep Cols",
-                  choices = c("A", 'B'),
-                  multiple = TRUE
-                )
-              )),
-              # need pattern_type and subset_cols not both so need
-              # to set one to NULL
-              # This in shiny is done like so
-              # see stackoverflow.com/a/53698788/10323798
-              fluidRow(column(
-                6,
-                selectInput(
-                  "pattern_type",
-                  "Pattern type",
-                  choices = c("starts_with",
-                              "ends_with", "contains",
-                              "regex"),
-                  selected = FALSE,
-                  selectize = FALSE,
-                  size = 4
-                )
-              ),
-              column(
-                6,
-                textInput("pattern", "Pattern", value = NULL)
-              ))
+            fluidRow(column(
+              7,
+              selectInput(
+                "pattern_type",
+                "Pattern type",
+                choices = c("starts_with",
+                            "ends_with", 
+                            "contains",
+                            "regex"),
+                selected = FALSE,
+                selectize = FALSE,
+                size = 4
+              )
+            ),
+            column(
+              5,
+              textInput("pattern", "Pattern", value = NULL)
+            ))),
+       br(),
+   shinyWidgets::dropdown(
+                       style = "bordered",
+                       width = "240px",
+                       animate = shinyWidgets::animateOptions(
+                          enter = "fadeInLeft", 
+                          exit = "fadeOut"),
+                       icon = icon("filter"),
+                       label = "SUBSET",
+                       selectInput(
+                         "subset_cols",
+                         "Subset",
+                         choices = c("A", "B"),
+                         multiple = TRUE
+                       ),
+                       selectInput(
+                         "keep_columns",
+                         "Keep Cols",
+                         choices = c("A", 'B'),
+                         multiple = TRUE
+                       )
+                       
+                       
+                       
+                     ), 
               
-            )
-          ),
-          column(
-            6,
+   br(), 
+  # need pattern_type and subset_cols not both so need
+  # to set one to NULL
+ # This in shiny is done like so
+ # see stackoverflow.com/a/53698788/10323798
             shinyWidgets::downloadBttn(
               "downloadfile_recode",
               "Download this report",
               style = "bordered",
               color = "default"
             )
+            
+          ),
+          mainPanel(
+            
+            shinycssloaders::withSpinner(dataTableOutput("recode_values"))
           )
-        ),
-        
-        br(),
-        br(),
-        
-        
-        shinycssloaders::withSpinner(dataTableOutput("recode_values"))
-        
-        
-        
-      ),
+        ) ),
       
       tabItem(
         tabName = "drop_values",
@@ -654,35 +640,41 @@ app_ui <- function(request) {
               )
             )
           ),
-          column(3,
-                 shinyWidgets::dropdown(
-                   label="Theming",
-                   style = "bordered",
-                   animate = shinyWidgets::animateOptions(
-                     enter="fadeInleft",
-                     exit = "fadeOut"
-                   ),
-                   icon = icon("cog"),
-                   
-                   fluidRow(
-                     fluidRow(
-                     column(6,
-                          selectizeInput("theme", "Plot theme", 
-                                         selected = "theme_minimal",
-                                         choices = c("theme_minimal",
-                                                     "theme_classic"))),
-                     column(6, textInput("pkg",
-                                         "Source package",
-                                         value = "ggplot2"))
-                   ),
-                   shinyWidgets::actionBttn(
-                     inputId = "confirm_pkg",
-                     label = "Confirm",
-                     style = "bordered",
-                     color = "default",
-                     icon = icon("check")
-                   ))
-                 )),
+          column(
+            3,
+            shinyWidgets::dropdown(
+              label = "Theming",
+              style = "bordered",
+              animate = shinyWidgets::animateOptions(enter = "fadeInleft",
+                                                     exit = "fadeOut"),
+              icon = icon("cog"),
+              
+              fluidRow(
+                fluidRow(column(
+                  6,
+                  selectizeInput(
+                    "theme",
+                    "Plot theme",
+                    selected = "theme_minimal",
+                    choices = c("theme_minimal",
+                                "theme_classic")
+                  )
+                ),
+                column(
+                  6, textInput("pkg",
+                               "Source package",
+                               value = "ggplot2")
+                )),
+                shinyWidgets::actionBttn(
+                  inputId = "confirm_pkg",
+                  label = "Confirm",
+                  style = "bordered",
+                  color = "default",
+                  icon = icon("check")
+                )
+              )
+            )
+          ),
           column(
             3,
             shinyWidgets::dropdown(
