@@ -239,20 +239,10 @@ app_ui <- function(request) {
               
               sidebarLayout(
                 sidebarPanel(
-                  width = 4,
-
-                fluidRow(
-                
-                  column(6,
-                         shinyWidgets::dropdown(
-                           label = "SORT",
-                           icon = icon("sort"),
-                           animate = shinyWidgets::animateOptions(
-                             enter = "fadeInLeft",
-                             exit = "fadeOut"),
-                           style = "bordered",
-                           width = "260px",
-                           uiOutput("sort_by"),
+               width = 4, 
+                        
+                fluidRow(column(6,uiOutput("sort_by")),
+                         column(6, 
                            selectInput(
                              "sort_order",
                              "Sort Order",
@@ -261,47 +251,8 @@ app_ui <- function(request) {
                              selected = "descending"
                            )
                            
-                         )
-                         ),
-                  column(6,
-                         shinyWidgets::dropdown(
-                           animate = shinyWidgets::animateOptions(
-                             enter = "fadeInLeft",
-                             exit = "fadeOut"
-                           ),
-                           label = "FILTER",
-                           icon = icon("filter"),
-                           style = "bordered",
-                           
-                           width = "260px",
-                           
-                           selectInput(
-                             "select_kind",
-                             "Selection Kind",
-                             choices = c("exclusion",
-                                         "inclusion"),
-                             selected = FALSE,
-                             selectize = FALSE,
-                             size = 2
-                           )
-                           ,
-                           selectInput(
-                             "pattern_type_summary",
-                             label = "Pattern type",
-                             choices = c("contains", "starts_with",
-                                         "ends_with", "regex"),
-                             selected = FALSE,
-                             selectize = FALSE,
-                             size = 4
-                           )
-                           ,
-                           
-                           textInput("pattern_summary",
-                                     label = "Pattern",
-                                     value = NULL)
-                         )
-                         )
-                ) ,
+                         ))
+                        ,
                     
                   fluidRow(column(
                     5,
@@ -318,12 +269,54 @@ app_ui <- function(request) {
                     )
                   )),
                 br(),
-                shinyWidgets::downloadBttn(
-                  "downloadfile",
-                  "Download this report",
-                  style = "bordered",
-                  color = "default"
-                )
+               fluidRow(
+                 column(5,
+                        shinyWidgets::dropdown(
+                          animate = shinyWidgets::animateOptions(
+                            enter = "fadeInLeft",
+                            exit = "fadeOut"
+                          ),
+                          label = "FILTER",
+                          icon = icon("filter"),
+                          style = "bordered",
+                          
+                          width = "260px",
+                          
+                          selectInput(
+                            "select_kind",
+                            "Selection Kind",
+                            choices = c("exclusion",
+                                        "inclusion"),
+                            selected = FALSE,
+                            selectize = FALSE,
+                            size = 2
+                          )
+                          ,
+                          selectInput(
+                            "pattern_type_summary",
+                            label = "Pattern type",
+                            choices = c("contains", "starts_with",
+                                        "ends_with", "regex"),
+                            selected = FALSE,
+                            selectize = FALSE,
+                            size = 4
+                          )
+                          ,
+                          
+                          textInput("pattern_summary",
+                                    label = "Pattern",
+                                    value = NULL)
+                        ) ),
+                 column(7,
+                        shinyWidgets::downloadBttn(
+                          "downloadfile",
+                          "Download this report",
+                          style = "bordered",
+                          color = "default"
+                        )
+                        )
+               )
+                
                   
                   
                  ),
@@ -341,16 +334,7 @@ app_ui <- function(request) {
         
         sidebarLayout(
           sidebarPanel(
-       shinyWidgets::dropdown(
-              style = "bordered",
-              width = "240px",
-              animate = shinyWidgets::animateOptions(
-                enter = "fadeInLeft", 
-                exit = "fadeOut"),
-              icon = icon("exchange-alt"),
-              label = "RECODE",
-    
-                  selectInput(
+    selectInput(
                     "recode_type",
                     "Recode Kind",
                     choices = c(
@@ -394,44 +378,51 @@ app_ui <- function(request) {
             column(
               5,
               textInput("pattern", "Pattern", value = NULL)
-            ))),
+            )),
        br(),
-   shinyWidgets::dropdown(
-                       style = "bordered",
-                       width = "240px",
-                       animate = shinyWidgets::animateOptions(
-                          enter = "fadeInLeft", 
-                          exit = "fadeOut"),
-                       icon = icon("filter"),
-                       label = "SUBSET",
-                       selectInput(
-                         "subset_cols",
-                         "Subset",
-                         choices = c("A", "B"),
-                         multiple = TRUE
-                       ),
-                       selectInput(
-                         "keep_columns",
-                         "Keep Cols",
-                         choices = c("A", 'B'),
-                         multiple = TRUE
-                       )
-                       
-                       
-                       
-                     ), 
-              
-   br(), 
-  # need pattern_type and subset_cols not both so need
-  # to set one to NULL
- # This in shiny is done like so
- # see stackoverflow.com/a/53698788/10323798
-            shinyWidgets::downloadBttn(
-              "downloadfile_recode",
-              "Download this report",
-              style = "bordered",
-              color = "default"
-            )
+    
+    fluidRow(
+      column(5,
+             shinyWidgets::dropdown(
+               style = "bordered",
+               width = "240px",
+               animate = shinyWidgets::animateOptions(
+                 enter = "fadeInLeft", 
+                 exit = "fadeOut"),
+               icon = icon("filter"),
+               label = "SUBSET",
+               selectInput(
+                 "subset_cols",
+                 "Subset",
+                 choices = c("A", "B"),
+                 multiple = TRUE
+               ),
+               selectInput(
+                 "keep_columns",
+                 "Keep Cols",
+                 choices = c("A", 'B'),
+                 multiple = TRUE
+               )
+               
+               
+               
+             )
+             ),
+      column(7,
+             # need pattern_type and subset_cols not both so need
+             # to set one to NULL
+             # This in shiny is done like so
+             # see stackoverflow.com/a/53698788/10323798
+             shinyWidgets::downloadBttn(
+               "downloadfile_recode",
+               "Download this report",
+               style = "bordered",
+               color = "default"
+             )
+             )
+    )
+
+ 
             
           ),
           mainPanel(
@@ -540,14 +531,6 @@ app_ui <- function(request) {
         tabName = "visual_summary",
         sidebarLayout(
           sidebarPanel(
-      shinyWidgets::dropdown(
-                     icon = icon("cog"),
-                     style = "bordered",
-                     animate = shinyWidgets::animateOptions(enter = "fadeInLeft",
-                                                            exit = "fadeOut"),
-                     label = "Plot Settings",
-                     
-                     
                      fluidRow(
                        column(
                          6,
@@ -563,12 +546,11 @@ app_ui <- function(request) {
                          6,
                          conditionalPanel(
                            condition = "input.plot_type=='bar'",
-                           selectInput(
+                           shinyWidgets::materialSwitch(
                              "show_text",
                              "Show Text?",
-                             choices = c("yes",
-                                         "no"),
-                             selected = "no"
+                             value = FALSE,
+                             status = "primary"
                            )
                          ),
                          conditionalPanel(
@@ -621,7 +603,7 @@ app_ui <- function(request) {
                        )),
                        style = "width:300px;"
                      )
-                   )
+                   
                    ,
                    br(), 
                    br(),

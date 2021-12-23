@@ -633,13 +633,11 @@ updateSelectizeInput(session=session,
   visual_plot <- reactive({
     base_plot() +
       geom_col() -> res
-    if (input$plot_type == "bar") {
-      res <- switch(input$show_text,
-                    "yes" = res + geom_label(aes(
+    if (input$plot_type == "bar" & input$show_text) {
+      res <- res + geom_label(aes(
                       label = round(.data[[input$y_variable]],
                                     input$round_to_visual)
-                    )),
-                    "no" = res)
+                    ))
     }
     
     return(res)
