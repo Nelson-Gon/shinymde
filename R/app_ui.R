@@ -444,95 +444,78 @@ app_ui <- function(request) {
         tabName = "drop_values",
         div(
           id = "drop_zone",
-          
-          fluidRow(
-            column(
-              6,
-              shinyWidgets::dropdown(
-                label = "Drop",
-                style = "bordered",
-                width = "400px",
-                animate = shinyWidgets::animateOptions(enter = "fadeInLeft", exit = "fadeOut"),
-                icon = icon("cog"),
-                
-                fluidRow(
-                  column(
-                    4,
-                    selectInput(
-                      "drop_type",
-                      "Kind of drop",
-                      width = "180px",
-                      choices = c("drop_all_na",
-                                  "drop_na_if",
-                                  "drop_na_at"),
-                      selected = "drop_na_if"
-                    )
-                  ),
-                  column(4,
-                         numericInput("percent_na_drop",
-                                      "Percent NA", value = 20)),
-                  column(
-                    4,
-                    selectInput(
-                      "sign",
-                      "Sign",
-                      choices = c("gt", "gteq", "lt", "lteq", "eq"),
-                      selected = "gt",
-                      multiple = FALSE
-                    )
-                  )
-                ),
-                
-                fluidRow(
-                  column(
-                    4,
-                    selectInput(
-                      "group_by_drop",
-                      "Group BY",
-                      choices = c("A", "B"),
-                      multiple = TRUE
-                    )
-                  ),
-                  column(
-                    4,
-                    selectInput(
-                      "keep_columns_drop",
-                      "Keep Cols",
-                      choices = c("A", "B"),
-                      multiple = TRUE
-                    )
-                  ),
-                  column(
-                    4,
-                    selectInput(
-                      "target_cols",
-                      "Target Cols",
-                      choices = c("A", "B"),
-                      multiple = TRUE
-                    )
-                  )
-                ),
-                fluidRow(column(
-                  6,
-                  selectInput(
-                    "pattern_type_drop",
-                    "Pattern type",
-                    choices = c("starts_with",
-                                "ends_with", "contains",
-                                "regex"),
-                    selected = FALSE,
-                    selectize = FALSE,
-                    size = 4
-                  )
-                ),
+          sidebarLayout(
+            sidebarPanel(
+              selectInput(
+                "drop_type",
+                "Kind of drop",
+                width = "180px",
+                choices = c("drop_all_na",
+                            "drop_na_if",
+                            "drop_na_at"),
+                selected = "drop_na_if"
+              ),
+              fluidRow(
+                column(6,
+                       numericInput("percent_na_drop",
+                                    "Percent NA", value = 20)
+                       ),
+                column(6,
+                       selectInput(
+                         "sign",
+                         "Sign",
+                         choices = c("gt", "gteq", "lt", "lteq", "eq"),
+                         selected = "gt",
+                         multiple = FALSE
+                       )
+                       )
+              ),
+              fluidRow(
+                column(9,selectInput(
+                "group_by_drop",
+                "Group BY",
+                choices = c("A", "B"),
+                multiple = TRUE
+              ))),
+              fluidRow(
+
+                column(6,
+                       selectInput(
+                         "keep_columns_drop",
+                         "Keep Cols",
+                         choices = c("A", "B"),
+                         multiple = TRUE
+                       )
+                       ),
                 column(
                   6,
-                  textInput("pattern_drop", "Pattern", value = NULL)
-                ))
-              )
-            ),
-            column(
-              6,
+                  selectInput(
+                    "target_cols",
+                    "Target Cols",
+                    choices = c("A", "B"),
+                    multiple = TRUE
+                  )
+                )
+                
+              ),
+              fluidRow(column(
+                6,
+                selectInput(
+                  "pattern_type_drop",
+                  "Pattern type",
+                  choices = c("starts_with",
+                              "ends_with", "contains",
+                              "regex"),
+                  selected = FALSE,
+                  selectize = FALSE,
+                  size = 4
+                )
+              ),
+              column(
+                6,
+                textInput("pattern_drop", "Pattern", value = NULL)
+              )),
+              br(),
               
               shinyWidgets::downloadBttn(
                 "downloadfile_drop",
@@ -540,191 +523,184 @@ app_ui <- function(request) {
                 style = "bordered",
                 color = "default"
               )
+              
+            ),
+            mainPanel(
+              shinycssloaders::withSpinner(dataTableOutput("drop_na"))
+              
             )
-          ),
-          br(),
-          br(),
+          )
           
-          
-          shinycssloaders::withSpinner(dataTableOutput("drop_na"))
-          
+
           
         )
       ),
       
       tabItem(
         tabName = "visual_summary",
-        fluidRow(
-          column(
-            6,
-            shinyWidgets::dropdown(
-              icon = icon("cog"),
-              style = "bordered",
-              animate = shinyWidgets::animateOptions(enter = "fadeInLeft",
-                                                     exit = "fadeOut"),
-              label = "Plot Settings",
-              
-              
-              fluidRow(
-                column(
-                  6,
-                  selectInput(
-                    "plot_type",
-                    "Type of plot",
-                    choices = c("bar",
-                                "lollipop"),
-                    selected = "bar"
-                  )
-                ),
-                column(
-                  6,
-                  conditionalPanel(
-                    condition = "input.plot_type=='bar'",
-                    selectInput(
-                      "show_text",
-                      "Show Text?",
-                      choices = c("yes",
-                                  "no"),
-                      selected = "no"
-                    )
-                  ),
-                  conditionalPanel(
-                    condition = "input.plot_type=='lollipop'",
-                    sliderInput(
-                      "size",
-                      "Size",
-                      min = 0,
-                      max = 5,
-                      step = 0.2,
-                      value = 2
-                    )
-                  )
-                )
-              ),
-              
-              div(
-                id = "plot_inputs_panel",
-                fluidRow(column(
-                  3,
-                  selectInput(
-                    "y_variable",
-                    "Y",
-                    choices = c("A", "B"),
-                    selected = "A"
-                  )
-                ),
-                column(
-                  6,
-                  selectInput(
-                    "x_variable",
-                    "X",
-                    choices = c("A", "B"),
-                    selected = "B"
-                  )
-                )),
-                fluidRow(column(
-                  6,
-                  selectInput(
-                    "fill_variable",
-                    "Fill",
-                    choices = c("A", "B"),
-                    selected = "A"
-                  )
-                ),
-                column(
-                  6,
-                  numericInput("round_to_visual", "Round to",
-                               value = 2)
-                )),
-                style = "width:300px;"
-              )
-            )
-          ),
-          column(
-            3,
-            shinyWidgets::dropdown(
-              label = "Theming",
-              style = "bordered",
-              animate = shinyWidgets::animateOptions(enter = "fadeInleft",
-                                                     exit = "fadeOut"),
-              icon = icon("cog"),
-              
-              fluidRow(
-                fluidRow(column(
-                  6,
-                  selectizeInput(
-                    "theme",
-                    "Plot theme",
-                    selected = "theme_minimal",
-                    choices = c("theme_minimal",
-                                "theme_classic")
-                  )
-                ),
-                column(
-                  6, textInput("pkg",
-                               "Source package",
-                               value = "ggplot2")
-                )),
-                shinyWidgets::actionBttn(
-                  inputId = "confirm_pkg",
-                  label = "Confirm",
-                  style = "bordered",
-                  color = "default",
-                  icon = icon("check")
-                )
-              )
-            )
-          ),
-          column(
-            3,
-            shinyWidgets::dropdown(
-              label = "save",
-              style = "bordered",
-              animate = shinyWidgets::animateOptions(enter = "fadeInleft",
-                                                     exit = "fadeOut"),
-              icon = icon("save"),
-              fluidRow(column(
-                6,
-                textInput("extension", "Save Format",
-                          value = "png")
-              ),
-              column(
-                6,
-                textInput("dims", "Dimensions",
-                          value = "1137x720")
-              )),
-              
-              shinyWidgets::downloadBttn(
-                "download_plot",
-                "Save Plot",
-                style = "bordered",
-                color = "default"
-              )
-              
-            )
-          ),
-          column(
-            3,
-            shinyWidgets::actionBttn(
-              inputId = "plot_reset_button",
-              label = "Reset",
-              style = "bordered",
-              color = "default"
-            )
+        sidebarLayout(
+          sidebarPanel(
+      shinyWidgets::dropdown(
+                     icon = icon("cog"),
+                     style = "bordered",
+                     animate = shinyWidgets::animateOptions(enter = "fadeInLeft",
+                                                            exit = "fadeOut"),
+                     label = "Plot Settings",
+                     
+                     
+                     fluidRow(
+                       column(
+                         6,
+                         selectInput(
+                           "plot_type",
+                           "Type of plot",
+                           choices = c("bar",
+                                       "lollipop"),
+                           selected = "bar"
+                         )
+                       ),
+                       column(
+                         6,
+                         conditionalPanel(
+                           condition = "input.plot_type=='bar'",
+                           selectInput(
+                             "show_text",
+                             "Show Text?",
+                             choices = c("yes",
+                                         "no"),
+                             selected = "no"
+                           )
+                         ),
+                         conditionalPanel(
+                           condition = "input.plot_type=='lollipop'",
+                           sliderInput(
+                             "size",
+                             "Size",
+                             min = 0,
+                             max = 5,
+                             step = 0.2,
+                             value = 2
+                           )
+                         )
+                       )
+                     ),
+                     
+                     div(
+                       id = "plot_inputs_panel",
+                       fluidRow(column(
+                         6,
+                         selectInput(
+                           "y_variable",
+                           "Y",
+                           choices = c("A", "B"),
+                           selected = "A"
+                         )
+                       ),
+                       column(
+                         6,
+                         selectInput(
+                           "x_variable",
+                           "X",
+                           choices = c("A", "B"),
+                           selected = "B"
+                         )
+                       )),
+                       fluidRow(column(
+                         6,
+                         selectInput(
+                           "fill_variable",
+                           "Fill",
+                           choices = c("A", "B"),
+                           selected = "A"
+                         )
+                       ),
+                       column(
+                         6,
+                         numericInput("round_to_visual", "Round to",
+                                      value = 2)
+                       )),
+                       style = "width:300px;"
+                     )
+                   )
+                   ,
+                   br(), 
+                   br(),
+                   shinyWidgets::dropdown(
+                     label = "Theming",
+                     style = "bordered",
+                     width = "340px",
+                     animate = shinyWidgets::animateOptions(enter = "fadeInleft",
+                                                            exit = "fadeOut"),
+                     icon = icon("cog"),
+                     
+                     fluidRow(
+                       fluidRow(column(
+                         6,
+                         selectizeInput(
+                           "theme",
+                           "Plot theme",
+                           selected = "theme_minimal",
+                           choices = c("theme_minimal",
+                                       "theme_classic")
+                         )
+                       ),
+                       column(
+                         6, textInput("pkg",
+                                      "Source package",
+                                      value = "ggplot2")
+                       )),
+                       shinyWidgets::actionBttn(
+                         inputId = "confirm_pkg",
+                         label = "Confirm",
+                         style = "bordered",
+                         color = "default",
+                         icon = icon("check")
+                       )
+                     )
+                   ),
+          br(),
+          br(),
+      fluidRow(
+        column(6,
+               shinyWidgets::dropdown(
+                 label = "save",
+                 style = "bordered",
+                 animate = shinyWidgets::animateOptions(enter = "fadeInleft",
+                                                        exit = "fadeOut"),
+                 icon = icon("save"),
+                 fluidRow(column(
+                   6,
+                   textInput("extension", "Save Format",
+                             value = "png")
+                 ),
+                 column(
+                   6,
+                   textInput("dims", "Dimensions",
+                             value = "1137x720")
+                 )),
+                 shinyWidgets::downloadBttn(
+                   "download_plot",
+                   "Save Plot",
+                   style = "bordered",
+                   color = "default"
+                 ))
+               ),
+        column(6,
+               shinyWidgets::actionBttn(
+                 inputId = "plot_reset_button",
+                 label = "Reset",
+                 style = "bordered",
+                 color = "default"
+               )
+               )
+      ) ),
+
+          mainPanel(
+          shinycssloaders::withSpinner(plotOutput("visual_summary"))
           )
-        ),
-        
-        br(),
-        
-        shinycssloaders::withSpinner(plotOutput("visual_summary")),
-        
-        
-        
-        
-        
-        
-        
-        
+        )
+       
+
       )
     )
         )

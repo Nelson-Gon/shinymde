@@ -525,8 +525,8 @@ app_server <- function(input, output, session) {
       return(
         mde::drop_na_at(
           df = in_data(),
-          pattern_type = input$pattern_type_drop,
-          pattern = input$pattern_drop
+          pattern_type = req(input$pattern_type_drop),
+          pattern = req(input$pattern_drop)
         )
       )
     }
@@ -623,7 +623,8 @@ updateSelectizeInput(session=session,
       ))  + 
       guides(fill = "none") +
       labs(x = req(input$x_variable)) +
-      get_theme()
+      theme_minimal()
+      # get_theme()
       
   )
 
