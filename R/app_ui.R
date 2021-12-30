@@ -1,3 +1,49 @@
+menu_render <- function(text, tab_name, use_icon,...){
+  titles = c("Home", "Input Data", "Summarise Missingness",
+             "Recode Values", "Drop Values", "Visualize Missingness")
+  tab_names <- c("home", "input", "missingness_summary",
+                 "recode_values", "drop_values", "visual_summary")
+  icons = c("home", "database", "table", "exchange-alt", "eraser",
+            "chart-bar")
+ Map(function(title, use_lab, use_ico) 
+           shinydashboard::menuItem(text=title,tabName=use_lab,
+                                    icon=shiny::icon(use_ico)),
+           titles, tab_names, icons)
+}
+
+info_box <- function(title, value, use_icon, 
+                       href = "https://nelson-gon.github.io/shinymde",
+                       width = 6,
+                       color = "blue",
+                       ...){
+infoBox(
+    title = title,
+    value = value,
+    href = href,
+    icon = shiny::icon(use_icon),
+    color = color,
+    width = width,
+    ...
+  )  
+}
+
+selectize_input <- function(id, label, choices, selected,...){
+  shiny::selectizeInput(inputId = id,
+                        label = label,
+                        choices = choices, selected = selected,
+                        ...)
+}
+
+text_input <- function(id, label, value, ...){
+  shiny::textInput(inputId = id, label = label, value = value,...)
+}
+
+numeric_input <- function(id, label, value, ...){
+  shiny::numericInput(inputId = id, label = label, value = value,...)
+}
+
+
+
 #' The application User-Interface
 #' @import shinydashboard
 #' @importFrom utils packageVersion
@@ -15,42 +61,16 @@ app_ui <- function(request) {
       shinydashboard::dashboardPage(
         skin = "red",
         header = shinydashboard::dashboardHeader(title =
-                                                   paste0(
-                                                     "shinymde ",
-                                                     "v",
-                                                     packageVersion("shinymde")
+                                  paste0( "shinymde ",
+                                            "v",
+                                       packageVersion("shinymde")
                                                    )),
         sidebar = shinydashboard::dashboardSidebar(
           sidebarMenu(
-            # This id allows us to access the currently active tab as in tabsetpanel
             id = "shiny_mde",
-            menuItem("Home", tabName = "home", icon = shiny::icon("home")),
-            menuItem(
-              "Input Data",
-              tabName = "input",
-              icon = shiny::icon("database")
-            ),
-            menuItem(
-              "Summarise Missingness",
-              tabName = "missingness_summary",
-              icon = shiny::icon("table")
-            ),
-            menuItem(
-              "Recode Values",
-              tabName = "recode_values",
-              icon = shiny::icon("exchange-alt")
-            ),
-            menuItem(
-              "Drop Values",
-              tabName = "drop_values",
-              icon = shiny::icon("eraser")
-            ),
-            menuItem(
-              "Visualise Missingness",
-              tabName = "visual_summary",
-              icon = shiny::icon("chart-bar")
-            )
             
+            menu_render()
+           
           )
           
         ),
@@ -96,23 +116,13 @@ app_ui <- function(request) {
             )),
         tags$br(),
         fluidRow(
-          infoBox(
-            title = "Documentation",
-            value = "Read Project Documentation",
-            href = "https://nelson-gon.github.io/shinymde",
-            icon = shiny::icon("book"),
-            color = "blue",
-            width = 6
-          ),
           
-          infoBox(
-            title = "Contribute",
-            value = "Nelson-Gon/shinymde",
-            href = "https://github.com/Nelson-Gon/shinymde",
-            icon = shiny::icon("laptop"),
-            color = "blue",
-            width = 5
-          )
+          Map(function(title, val, ico) info_box(title = title,
+                                            value = val,
+                                            use_icon = ico),
+              c("Documentation", "Contribute"),
+              c("Read Project Documentation", "Nelson-Gon/shinymde"),
+              c("book", "laptop"))
         )
         ,
         fluidRow(
@@ -120,23 +130,17 @@ app_ui <- function(request) {
           tags$br(),
           tags$br(),
           
-          infoBox(
-            title = "Author",
-            value = "Nelson Gonzabato",
-            icon = shiny::icon("robot"),
-            href = "https://nelson-gon.github.io",
-            color = "blue",
-            width = 6
-          ),
+          Map(function(title, val, ico, url) info_box(title = title,
+                                                 value = val,
+                                                 use_icon = ico,
+                                                 href = url),
+              c("Author", "Related Projects"),
+              c("Nelson Gonzabato", "View Related Projects"),
+              c("robot", "tools"),
+              c("https://nelson-gon.github.io/about",
+                "https://nelson-gon.github.io/projects"))
           
-          infoBox(
-            title = "Related projects",
-            value = "View related projects",
-            href = "https://nelson-gon.github.io/projects",
-            icon = shiny::icon("tools"),
-            color = "blue",
-            width = 5
-          )
+       
           
         )
         
@@ -165,12 +169,9 @@ app_ui <- function(request) {
                   conditionalPanel(
                     condition =
                       "input.data_source=='inbuilt'",
-                    selectInput(
-                      "dataset",
-                      "Dataset",
-                      choices = c("mtcars", "airquality"),
-                      selected = "airquality"
-                    )
+                    selectize_input(id="dataset", label="Dataset",
+                                    choices = c("mtcars", "airquality"),
+                                    selected = "airquality")
                   ),
                   conditionalPanel(condition =
                                      "input.data_source == 'remote'",
@@ -180,9 +181,9 @@ app_ui <- function(request) {
                   conditionalPanel(
                     condition =
                       "input.data_source == 'remote'",
-                    selectInput(
-                      "file_type",
-                      "File Type",
+                    selectize_input(
+                      id="file_type",
+                      label="File Type",
                       choices = c("csv", "tsv"),
                       selected = "csv"
                     )
@@ -243,9 +244,9 @@ app_ui <- function(request) {
                         
                 fluidRow(column(6,uiOutput("sort_by")),
                          column(6, 
-                           selectInput(
-                             "sort_order",
-                             "Sort Order",
+                           selectize_input(
+                            id= "sort_order",
+                             label = "Sort Order",
                              choices = c("ascending",
                                          "descending"),
                              selected = "descending"
@@ -256,16 +257,17 @@ app_ui <- function(request) {
                     
                   fluidRow(column(
                     5,
-                    numericInput("round_to", "Round to",
+                    numeric_input("round_to", "Round to",
                                  value = options("digits"))
                   ),
                   column(
                     7,
-                    selectInput(
-                      "group_by",
-                      "Group BY",
+                    selectize_input(
+                     id = "group_by",
+                      label = "Group BY",
                       choices = c("A", "B"),
-                      multiple = TRUE
+                      multiple = TRUE,
+                     selected = FALSE
                     )
                   )),
                 br(),

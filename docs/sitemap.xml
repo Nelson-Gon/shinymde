@@ -1,15 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://nelson-gon.github.io/shinymde//index.html</loc>
+    <loc>https://nelson-gon.github.io/shinymde/404.html</loc>
   </url>
   <url>
-    <loc>https://nelson-gon.github.io/shinymde//reference/pipe.html</loc>
+    <loc>https://nelson-gon.github.io/shinymde/articles/index.html</loc>
   </url>
   <url>
-    <loc>https://nelson-gon.github.io/shinymde//reference/run_app.html</loc>
+    <loc>https://nelson-gon.github.io/shinymde/articles/shinymde_introduction.html</loc>
   </url>
   <url>
-    <loc>https://nelson-gon.github.io/shinymde//articles/shinymde_introduction.html</loc>
+    <loc>https://nelson-gon.github.io/shinymde/authors.html</loc>
+  </url>
+  <url>
+    <loc>https://nelson-gon.github.io/shinymde/CODE_OF_CONDUCT.html</loc>
+  </url>
+  <url>
+    <loc>https://nelson-gon.github.io/shinymde/CONTRIBUTING.html</loc>
+  </url>
+  <url>
+    <loc>https://nelson-gon.github.io/shinymde/index.html</loc>
+  </url>
+  <url>
+    <loc>https://nelson-gon.github.io/shinymde/LICENSE-text.html</loc>
+  </url>
+  <url>
+    <loc>https://nelson-gon.github.io/shinymde/LICENSE.html</loc>
+  </url>
+  <url>
+    <loc>https://nelson-gon.github.io/shinymde/news/index.html</loc>
+  </url>
+  <url>
+    <loc>https://nelson-gon.github.io/shinymde/reference/index.html</loc>
+  </url>
+  <url>
+    <loc>https://nelson-gon.github.io/shinymde/reference/launch_app.html</loc>
+  </url>
+  <url>
+    <loc>https://nelson-gon.github.io/shinymde/reference/pipe.html</loc>
+  </url>
+  <url>
+    <loc>https://nelson-gon.github.io/shinymde/reference/run_app.html</loc>
+  </url>
+  <url>
+    <loc>https://nelson-gon.github.io/shinymde/reference/shinymde_server.html</loc>
+  </url>
+  <url>
+    <loc>https://nelson-gon.github.io/shinymde/reference/shinymde_ui.html</loc>
   </url>
 </urlset>

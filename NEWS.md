@@ -6,6 +6,8 @@ title: "Changes to shinymde"
 
 **shinymde 0.1.2**
 
+* UI elements are now rendered programmatically to make tests easier. 
+
 * The UI has been redesigned to make exploration even more fun. 
 
 * There is now an option to customize plot designs for examples themes.

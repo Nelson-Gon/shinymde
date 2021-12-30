@@ -1,10 +1,10 @@
 pandoc: 2.14.0.3
-pkgdown: 1.6.1
+pkgdown: 2.0.1
 pkgdown_sha: ~
 articles:
   shinymde_introduction: shinymde_introduction.html
-last_built: 2021-12-23T09:56Z
+last_built: 2021-12-30T20:20Z
 urls:
-  reference: https://nelson-gon.github.io/shinymde//reference
-  article: https://nelson-gon.github.io/shinymde//articles
+  reference: https://nelson-gon.github.io/shinymde/reference
+  article: https://nelson-gon.github.io/shinymde/articles
 
