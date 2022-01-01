@@ -50,7 +50,9 @@ missingness_ui <- function(){
                                                           "starts_with",
                                                           "ends_with",
                                                           "regex")),
-                                         size = c(2, 4))
+                                         size = c(2, 4),
+                                         selected = FALSE,
+                                         selectize = FALSE)
                   
                      
                          ,

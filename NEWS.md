@@ -1,10 +1,13 @@
 ---
-date: "18/12/2021"
+date: "1/1/2022"
 author: "Nelson Gonzabato"
 title: "Changes to shinymde"
 ---
 
 **shinymde 0.1.2**
+
+* The app as broken into several UIs and helper functions created to make it
+easier to build repetitive UIs. See [#15](https://github.com/Nelson-Gon/shinymde/issues/15).  
 
 * UI elements are now rendered programmatically to make tests easier. 
 

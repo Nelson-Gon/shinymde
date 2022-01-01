@@ -86,7 +86,10 @@ on_off_toggle <- function(elements, kind = "hide") {
   )
 }
 
-multi_selectize <- function(ids, titles, choices,size){
+multi_selectize <- function(ids, titles, choices,size,
+                            selected=NULL,
+                            selectize = TRUE,
+                            multiple = FALSE){
   
   # Using selectInput instead of selectize
   # See why at https://stackoverflow.com/q/70551373/10323798
@@ -96,8 +99,9 @@ multi_selectize <- function(ids, titles, choices,size){
       selectInput(inputId = id,
         label = lab,
         choices = choices,
-        selected = FALSE,
-        selectize = FALSE,
+        selected = selected,
+        selectize = selectize,
+        multiple = multiple, 
         size = size
       )
     ,
@@ -107,4 +111,8 @@ multi_selectize <- function(ids, titles, choices,size){
     size
   )
 
+}
+
+two_columns <- function(...){
+  lapply(list(...), function(x) column(6, x))
 }
