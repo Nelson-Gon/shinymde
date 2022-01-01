@@ -1,49 +1,3 @@
-menu_render <- function(text, tab_name, use_icon,...){
-  titles = c("Home", "Input Data", "Summarise Missingness",
-             "Recode Values", "Drop Values", "Visualize Missingness")
-  tab_names <- c("home", "input", "missingness_summary",
-                 "recode_values", "drop_values", "visual_summary")
-  icons = c("home", "database", "table", "exchange-alt", "eraser",
-            "chart-bar")
- Map(function(title, use_lab, use_ico) 
-           shinydashboard::menuItem(text=title,tabName=use_lab,
-                                    icon=shiny::icon(use_ico)),
-           titles, tab_names, icons)
-}
-
-info_box <- function(title, value, use_icon, 
-                       href = "https://nelson-gon.github.io/shinymde",
-                       width = 6,
-                       color = "blue",
-                       ...){
-infoBox(
-    title = title,
-    value = value,
-    href = href,
-    icon = shiny::icon(use_icon),
-    color = color,
-    width = width,
-    ...
-  )  
-}
-
-selectize_input <- function(id, label, choices, selected,...){
-  shiny::selectizeInput(inputId = id,
-                        label = label,
-                        choices = choices, selected = selected,
-                        ...)
-}
-
-text_input <- function(id, label, value, ...){
-  shiny::textInput(inputId = id, label = label, value = value,...)
-}
-
-numeric_input <- function(id, label, value, ...){
-  shiny::numericInput(inputId = id, label = label, value = value,...)
-}
-
-
-
 #' The application User-Interface
 #' @import shinydashboard
 #' @importFrom utils packageVersion
@@ -69,7 +23,7 @@ app_ui <- function(request) {
           sidebarMenu(
             id = "shiny_mde",
             
-            menu_render()
+           menu_render()
            
           )
           
@@ -107,135 +61,11 @@ app_ui <- function(request) {
     
     
     tabItems(
-      tabItem(
-        tabName = "home",
-        div(id = "welcome",
-            strong(
-              tags$p("Welcome to shinymde!",
-                     style = "font-size:20px;")
-            )),
-        tags$br(),
-        fluidRow(
-          
-          Map(function(title, val, ico) info_box(title = title,
-                                            value = val,
-                                            use_icon = ico),
-              c("Documentation", "Contribute"),
-              c("Read Project Documentation", "Nelson-Gon/shinymde"),
-              c("book", "laptop"))
-        )
-        ,
-        fluidRow(
-          tags$br(),
-          tags$br(),
-          tags$br(),
-          
-          Map(function(title, val, ico, url) info_box(title = title,
-                                                 value = val,
-                                                 use_icon = ico,
-                                                 href = url),
-              c("Author", "Related Projects"),
-              c("Nelson Gonzabato", "View Related Projects"),
-              c("robot", "tools"),
-              c("https://nelson-gon.github.io/about",
-                "https://nelson-gon.github.io/projects"))
-          
-       
-          
-        )
-        
-      ),
-      tabItem(tabName = "input",
-              sidebarLayout(
-                sidebarPanel(
-                  shinyWidgets::awesomeRadio(
-                    "data_source",
-                    "Data Source",
-                    choices = c("inbuilt",
-                                "remote",
-                                "user_data"),
-                    selected = "inbuilt"
-                  ),
-                  conditionalPanel(
-                    condition =
-                      "input.data_source == 'user_data'",
-                    fileInput("input_file",
-                              label = "Input File",
-                              placeholder =  "Please provide a file path")
-                  ),
-                  conditionalPanel(condition = "input.data_source == 'user_data'",
-                                   numericInput("sheet", "Sheet", value =
-                                                  1)),
-                  conditionalPanel(
-                    condition =
-                      "input.data_source=='inbuilt'",
-                    selectize_input(id="dataset", label="Dataset",
-                                    choices = c("mtcars", "airquality"),
-                                    selected = "airquality")
-                  ),
-                  conditionalPanel(condition =
-                                     "input.data_source == 'remote'",
-                                   textInput("remote",
-                                             "Remote",
-                                             value = "")),
-                  conditionalPanel(
-                    condition =
-                      "input.data_source == 'remote'",
-                    selectize_input(
-                      id="file_type",
-                      label="File Type",
-                      choices = c("csv", "tsv"),
-                      selected = "csv"
-                    )
-                  ),
-                  shinyWidgets::actionBttn(
-                    "confirm_in",
-                    label = "confirm",
-                    color = "default",
-                    style = "bordered",
-                    icon = icon("check")
-                  )
-                  
-                  ,
-                  shinyWidgets::actionBttn(
-                    "reset_input",
-                    label = "Reset",
-                    style = "bordered",
-                    icon = icon("undo"),
-                    color = "default"
-                  )
-                  
-                  
-                ),
-                mainPanel(
-                  div(
-                    id = "sys_details",
-                    
-                    infoBox(
-                      title = "Date of Analysis",
-                      icon = shiny::icon("calendar"),
-                      value = format(Sys.Date(), "%A %b %d %Y"),
-                      width = 12
-                    ),
-                    infoBox(
-                      title = "R version",
-                      value =
-                        R.version.string,
-                      icon = shiny::icon("cog"),
-                      width = 12
-                    ),
-                    infoBox(
-                      title = "mde version",
-                      value =
-                        as.character(packageVersion("mde")),
-                      icon = shiny::icon("tools"),
-                      width = 12
-                    )
-                  ),
-                  verbatimTextOutput("data_summary")
-                  
-                )
-              )),
+      
+      home_ui()
+     ,
+     input_ui()
+      ,
       tabItem(tabName = "missingness_summary",
               
               sidebarLayout(
