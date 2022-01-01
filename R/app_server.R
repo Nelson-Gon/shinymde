@@ -10,17 +10,7 @@
 #' @import shiny
 #' @noRd
 app_server <- function(input, output, session) {
-  on_off_toggle <- function(elements, kind = "hide") {
-    switch(
-      kind,
-      hide = lapply(elements, shinyjs::hide),
-      toggle = lapply(elements, shinyjs::toggle),
-      show = lapply(elements, shinyjs::show)
-    )
-  }
-  
-  
- 
+
   # Get only data.frame objects since that's all mde supports.
   observe({
     updateSelectInput(session,
@@ -33,13 +23,13 @@ app_server <- function(input, output, session) {
   
   observe({
     updateTextInput(session,
-      "remote",
-      "Remote Source",
-      value = "https://github.com/Nelson-Gon/shinymde/blob/c6cd1b8b3acc28225a907e00f80ac4031b755966/testdata/airquality.csv?raw=TRUE"
+                    "remote",
+                    "Remote Source",
+                    value = 
+                      "https://github.com/Nelson-Gon/shinymde/blob/c6cd1b8b3acc28225a907e00f80ac4031b755966/testdata/airquality.csv?raw=TRUE"
     )
   })
   
-
   observe(
     {
       updateSelectInput(session,
@@ -49,10 +39,6 @@ app_server <- function(input, output, session) {
                         selected = "csv")
     }
   )
-  
-
-
-  
   
   
   on_off_toggle("sheet", kind = "hide")
@@ -75,12 +61,6 @@ app_server <- function(input, output, session) {
     }
     
   })
-  
-  
-  
-  
-  
-  
   
   
   in_data <- reactive({
@@ -108,7 +88,7 @@ app_server <- function(input, output, session) {
     }
     
     if (input$data_source == "user_data") {
-   
+      
       if (!guess_input() %in% c(".csv", ".xlsx", ".tsv")) {
         stop(
           paste0(
@@ -142,8 +122,6 @@ app_server <- function(input, output, session) {
       
     }
   })
-  
-  
   
   on_off_toggle("data_summary", kind = "hide")
   
