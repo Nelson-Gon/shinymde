@@ -76,3 +76,35 @@ text_input <- function(id, label, value, ...){
 numeric_input <- function(id, label, value, ...){
   shiny::numericInput(inputId = id, label = label, value = value,...)
 }
+
+on_off_toggle <- function(elements, kind = "hide") {
+  switch(
+    kind,
+    hide = lapply(elements, shinyjs::hide),
+    toggle = lapply(elements, shinyjs::toggle),
+    show = lapply(elements, shinyjs::show)
+  )
+}
+
+multi_selectize <- function(ids, titles, choices,size){
+  
+  # Using selectInput instead of selectize
+  # See why at https://stackoverflow.com/q/70551373/10323798
+  Map(
+    function(id, lab, choices,
+             size) 
+      selectInput(inputId = id,
+        label = lab,
+        choices = choices,
+        selected = FALSE,
+        selectize = FALSE,
+        size = size
+      )
+    ,
+    ids,
+    titles,
+    choices,
+    size
+  )
+
+}
