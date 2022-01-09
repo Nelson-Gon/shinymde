@@ -6,7 +6,9 @@ title: "Changes to shinymde"
 
 **shinymde 0.1.2**
 
-* The app as broken into several UIs and helper functions created to make it
+* The UI no longer depends on out-of-the-box side by side view. 
+
+* The app was broken into several UIs and helper functions created to make it
 easier to build repetitive UIs. See [#15](https://github.com/Nelson-Gon/shinymde/issues/15).  
 
 * UI elements are now rendered programmatically to make tests easier. 
