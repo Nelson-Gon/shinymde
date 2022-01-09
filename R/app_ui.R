@@ -39,8 +39,10 @@ app_ui <- function(request) {
     .option:hover, .odd:hover, .even:hover{
     background-color: #d73925 !important;
     color: white;
+    
     }
-
+    #input_controls {float: left; width:30%}
+    #data_summarise, #sys_details {float:right; width:70%;}
 
     .bttn-bordered:hover{
     background: #fff;
