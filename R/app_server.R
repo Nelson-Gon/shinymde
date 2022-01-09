@@ -63,7 +63,11 @@ app_server <- function(input, output, session) {
   })
   
   
-  in_data <- reactive({
+  in_data <- eventReactive(input$confirm_in, {
+    
+    on_off_toggle("sys_details", kind = "hide")
+    on_off_toggle("data_summary", kind = "show")
+    
     if (input$data_source == "inbuilt") {
       return(get(req(input$dataset), "package:datasets"))
       
@@ -129,12 +133,7 @@ app_server <- function(input, output, session) {
     summary(in_data())
   })
   
-  # Hide sys_details on click of button
-  observeEvent(input$confirm_in,
-               {
-                 on_off_toggle("sys_details", kind = "hide")
-                 on_off_toggle("data_summary", kind = "show")
-               })
+ 
 
   observeEvent(input$reset_input, {
     # TODO: Only reset data at current location not the entire UI
@@ -156,44 +155,35 @@ app_server <- function(input, output, session) {
     
   })
   
-  output$sort_by <- renderUI({
-    selectInput(
-      "sort_by",
-      "Sort by",
-      choices = names(na_summary(in_data())),
-      selected = "percent_missing"
-    )
-  })
-  
+ 
   
   
   observe({
-    updateSelectInput(session, 
+    updateSelectizeInput(session = session, 
+                         
+                         inputId =  "sort_by",
+                         label = "Sort by",
+                         choices = names(na_summary(in_data())),
+                         selected = NULL,
+                         server = TRUE
+    )
+    
+    updateSelectizeInput(session, 
       "group_by",
       "Group BY",
-      choices = names(in_data())
+      choices = names(in_data()),
+      server = TRUE
     )
   })
-  # Hide on app start
-  # on_off_toggle(c("pattern_type_summary", "pattern_summary",
-  #                 "select_kind"),
-  #               kind = "hide")
-  # observeEvent(input$regex_based,
-  #              {
-  #                if (input$regex_based == "yes") {
-  #                  on_off_toggle("select_kind", kind = "show")
-  #                  on_off_toggle("pattern_type_summary", kind = "show")
-  #                  on_off_toggle("pattern_summary", kind = "show")
-  #                  
-  #                }
-  #              })
+ 
   
   
   observe({
-    updateSelectInput(session, 
+    updateSelectizeInput(session, 
       "exclude_columns",
       "Exclude Cols",
-      choices = names(in_data())
+      choices = names(in_data()),
+      server = TRUE
     )
   
   })
@@ -204,7 +194,7 @@ app_server <- function(input, output, session) {
  
   summary_na <- reactive(
     if(is.null(input$select_kind)){
-      return(   na_summary(
+      return( na_summary(
         in_data(),
         sort_by = input$sort_by,
         grouping_cols = input$group_by,
@@ -275,8 +265,6 @@ app_server <- function(input, output, session) {
       choices = names(in_data())
       
     )
-  })
-  observe({
     updateSelectInput(
       session,
       "keep_columns",
@@ -284,7 +272,7 @@ app_server <- function(input, output, session) {
       choices = names(in_data())
     )
   })
-  
+
 
   
  

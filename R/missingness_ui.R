@@ -1,13 +1,16 @@
 missingness_ui <- function(){
   tabItem(tabName = "missingness_summary",
           
-          sidebarLayout(
-            sidebarPanel(
-              width = 4, 
+         tags$div(id = "summarise_controls", 
               
               fluidRow(
                 
-        lapply(list(uiOutput("sort_by"),
+        lapply(list(selectizeInput(
+          "sort_by",
+          "Sort by",
+          choices = c("percent_missing", "variable"),
+          selected = "percent_missing"
+        ),
           selectize_input(id= "sort_order",label = "Sort Order",
                         choices = c("ascending","descending"),
                         selected = "descending"
@@ -27,9 +30,8 @@ missingness_ui <- function(){
                 )
               )),
               br(),
-              fluidRow(
-                column(5,
-                       shinyWidgets::dropdown(
+          
+                    shinyWidgets::dropdown(
                          animate = shinyWidgets::animateOptions(
                            enter = "fadeInLeft",
                            exit = "fadeOut"
@@ -58,27 +60,23 @@ missingness_ui <- function(){
                          ,
                          
                          textInput("pattern_summary", label = "Pattern",
-                                   value = NULL)
-                       ) ),
-                column(7,
+                                   value = NULL)),
+                    br(),
                        shinyWidgets::downloadBttn(
                          "downloadfile",
                          "Download this report",
                          style = "bordered",
                          color = "default"
                        )
-                )
-              )
-              
-              
-              
-            ),
-            mainPanel(
+                
+              ), 
+        tags$div(id = "summary_na_table",
+          
               shinycssloaders::withSpinner(dataTableOutput("summary_na"))
               
               
             )
             
             
-          ))
+          )
 }
