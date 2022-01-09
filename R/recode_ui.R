@@ -1,10 +1,8 @@
 recode_ui<- function() {
   tabItem(
   tabName = "recode_values",
-  
-  sidebarLayout(
-    sidebarPanel(
-      selectInput(
+  div(id= "recode_controls",
+      selectizeInput(
         "recode_type",
         "Recode Kind",
         choices = c(
@@ -51,8 +49,6 @@ recode_ui<- function() {
       )),
       br(),
       
-      fluidRow(
-        column(5,
                shinyWidgets::dropdown(
                  style = "bordered",
                  width = "240px",
@@ -73,28 +69,19 @@ recode_ui<- function() {
                    c("Subset", "Keep Cols"),
                    list(c("A", "B"), c("A", "B")))
  
-               )
-        ),
-        column(7,
-               # need pattern_type and subset_cols not both so need
-               # to set one to NULL
-               # This in shiny is done like so
-               # see stackoverflow.com/a/53698788/10323798
+               ), 
+               br(), 
+             
                shinyWidgets::downloadBttn(
                  "downloadfile_recode",
                  "Download this report",
                  style = "bordered",
                  color = "default"
                )
-        )
-      )
-      
-      
-      
-    ),
-    mainPanel(
+        ) ,
+    div( id = "recode_table",
       
       shinycssloaders::withSpinner(dataTableOutput("recode_values"))
     )
-  ) )
+  ) 
 }

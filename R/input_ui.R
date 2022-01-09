@@ -1,7 +1,7 @@
 input_ui <- function() {
   tabItem(tabName = "input",
-        sidebarLayout(
-          sidebarPanel(
+          tags$div(id = "input_controls",
+                   
             shinyWidgets::awesomeRadio(
               "data_source",
               "Data Source",
@@ -45,16 +45,17 @@ input_ui <- function() {
             
             
         input_action_buttons()
-            
-            
-          ),
-          mainPanel(
+        ),
+          
             div(
               id = "sys_details",sys_info_boxes()
-            ),
+            )
+            ,
+            div(id = "data_summarise",
             verbatimTextOutput("data_summary")
+            )
             
-          )
-        ))
+          
+        )
   
 }

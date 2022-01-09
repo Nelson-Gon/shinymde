@@ -2,8 +2,7 @@ visual_ui <- function() {
   
   tabItem(
   tabName = "visual_summary",
-  sidebarLayout(
-    sidebarPanel(
+   div(id="visual_controls",
       fluidRow(
         
         two_columns( selectInput(
@@ -37,8 +36,6 @@ visual_ui <- function() {
         )
       ),
       
-      div(
-        id = "plot_inputs_panel",
         fluidRow(
           
           two_columns(
@@ -68,9 +65,7 @@ visual_ui <- function() {
           
           numericInput("round_to_visual", "Round to",
                        value = 2)
-        )),
-        style = "width:300px;"
-      )
+        ))
       
       ,
       br(), 
@@ -143,12 +138,12 @@ visual_ui <- function() {
         )
       ) ),
     
-    mainPanel(
+    div( id = "summary_plot", 
       shinycssloaders::withSpinner(plotOutput("visual_summary"))
     )
   )
   
   
-)
+
   
 }

@@ -3,8 +3,7 @@ drop_ui <- function() {
   tabName = "drop_values",
   div(
     id = "drop_zone",
-    sidebarLayout(
-      sidebarPanel(
+      
         selectInput(
           "drop_type",
           "Kind of drop",
@@ -77,7 +76,7 @@ drop_ui <- function() {
         )
         
       ),
-      mainPanel(
+      div(id="drop_table",
         shinycssloaders::withSpinner(dataTableOutput("drop_na"))
         
       )
@@ -85,6 +84,4 @@ drop_ui <- function() {
     
     
     
-  )
-)
 }
