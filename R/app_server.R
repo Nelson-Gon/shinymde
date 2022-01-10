@@ -26,7 +26,7 @@ app_server <- function(input, output, session) {
                     "remote",
                     "Remote Source",
                     value = 
-                      "https://github.com/Nelson-Gon/shinymde/blob/c6cd1b8b3acc28225a907e00f80ac4031b755966/testdata/airquality.csv?raw=TRUE"
+                      "https://github.com/Nelson-Gon/shinymde/blob/c6cd1b8b3acc28250a907e00f80ac4031b755966/testdata/airquality.csv?raw=TRUE"
     )
   })
   
@@ -162,7 +162,7 @@ app_server <- function(input, output, session) {
     updateSelectizeInput(session = session, 
                          
                          inputId =  "sort_by",
-                         label = "Sort by",
+                         label = "By",
                          choices = names(na_summary(in_data())),
                          selected = NULL,
                          server = TRUE
@@ -231,7 +231,7 @@ app_server <- function(input, output, session) {
   
   
   output$summary_na <- renderDataTable(summary_na(),
-                                       options = list(pageLength = 25))
+                                       options = list(pageLength = 50))
   
   delimiters <- reactive({
     switch(
@@ -361,7 +361,7 @@ app_server <- function(input, output, session) {
                                           
                                           
                                           ,
-                                          options = list(pageLength = 25))
+                                          options = list(pageLength = 50))
   
   
   
@@ -521,7 +521,7 @@ app_server <- function(input, output, session) {
   
   output$drop_na <- renderDataTable(drop_switch(),
                                     
-                                    options = list(pageLength = 25))
+                                    options = list(pageLength = 50))
   
   # Visual summaries
   observe({

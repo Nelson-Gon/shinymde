@@ -1,7 +1,8 @@
 input_ui <- function() {
   tabItem(tabName = "input",
           tags$div(id = "input_controls",
-                   
+            inputPanel(
+              
             shinyWidgets::awesomeRadio(
               "data_source",
               "Data Source",
@@ -43,10 +44,22 @@ input_ui <- function() {
               )
             ),
             
-            
-        input_action_buttons()
-        ),
-          
+       fluidRow(
+         column(6, 
+                shinyWidgets::actionBttn(inputId = "confirm_in",
+                                         label = "Confirm",
+                                         color = "default",
+                                         icon = shiny::icon("check"),
+                                         style = "fill")),
+         column(6,shinyWidgets::actionBttn(inputId = "reset_input",
+                                           label = "Reset",
+                                           color = "default",
+                                           icon = shiny::icon("undo"),
+                                           style = "fill") )
+       )     
+        
+        )),
+           br(),
             div(
               id = "sys_details",sys_info_boxes()
             )

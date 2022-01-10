@@ -44,23 +44,7 @@ sys_info_boxes <- function(width = 12, ...){
     ), titles, icons, values)
 }
 
-input_action_buttons <- function(color = "default",
-                                 style = "bordered",
-                                 ...){
-  
-  input_ids <- c("confirm_in", "reset_input")
-  labels <- c("Confirm", "Reset")
-  icons <- c("check", "undo")
-  Map(function(use_id, use_lab, use_ico)
-    shinyWidgets::actionBttn(inputId = use_id,
-                             label = use_lab,
-                             color = color,
-                             icon = shiny::icon(use_ico),
-                             style = style,
-                             ...), input_ids, labels, icons)
-  
 
-}
 
 selectize_input <- function(id, label, choices, selected,...){
   shiny::selectizeInput(inputId = id,

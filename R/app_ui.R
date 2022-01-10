@@ -46,7 +46,14 @@ app_ui <- function(request) {
     #data_summarise, #sys_details, #summary_na_table,
     #recode_table, #drop_table, #summary_plot {float:right; width:70%;}
     #summary_plot.img {width:500px; height:600px;}
-
+    #input_controls, #summarise_controls .shiny-input-panel{
+    width:260px;
+    background-color: #f5f6f7; 
+    }
+     #summarise_controls .well {
+     width:260px;
+    background-color: #f5f6f7; 
+     }
     .bttn-bordered:hover{
     background: #fff;
     color:#d73925;
