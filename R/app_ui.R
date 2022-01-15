@@ -41,7 +41,7 @@ app_ui <- function(request) {
     color: white;
     
     }
-    #input_controls, #summarise_controls,
+    #input_controls, #summarise_controls, 
     #recode_controls, #drop_zone, #visual_controls {float: left; width:30%}
     #data_summarise, #sys_details, #summary_na_table,
     #recode_table, #drop_table, #summary_plot {float:right; width:70%;}
@@ -50,7 +50,7 @@ app_ui <- function(request) {
     width:260px;
     background-color: #f5f6f7; 
     }
-     #summarise_controls .well {
+     #summarise_controls .well{
      width:260px;
     background-color: #f5f6f7; 
      }
