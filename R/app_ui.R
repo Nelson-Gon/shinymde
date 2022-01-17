@@ -42,9 +42,9 @@ app_ui <- function(request) {
     
     }
     #input_controls, #summarise_controls, 
-    #recode_controls, #drop_zone, #visual_controls {float: left; width:30%}
+    #recode_controls, #drop_zone {float: left; width:30%}
     #data_summarise, #sys_details, #summary_na_table,
-    #recode_table, #drop_table, #summary_plot {float:right; width:70%;}
+    #recode_table, #drop_table  {float:right; width:70%;}
     #summary_plot.img {width:500px; height:600px;}
     #input_controls, #summarise_controls .shiny-input-panel{
     width:260px;
@@ -84,7 +84,7 @@ app_ui <- function(request) {
       ,
       drop_ui()
       ,
-      
+   
      visual_ui()
     )
         )

@@ -553,7 +553,7 @@ observe({
                     
 })
 
-get_all_themes <- eventReactive(input$confirm_pkg,
+get_all_themes <- eventReactive(input$pkg,
                                 {
   if(!req(input$pkg) %in% loadedNamespaces()){
     
@@ -659,10 +659,7 @@ updateSelectizeInput(session=session,
   )
   
   
-  observeEvent(input$plot_reset_button,
-               {
-                 shinyjs::reset("plot_area")
-               })
+
   
   # Hide text labels if plot_type is set to lollipop
   observeEvent(input$plot_type, {
