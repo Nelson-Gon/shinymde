@@ -6,7 +6,7 @@ title: "Changes to shinymde"
 
 **shinymde 0.1.2**
 
-* The UI no longer depends on out-of-the-box side by side view. 
+* Plots now fill the entire page. 
 
 * The app was broken into several UIs and helper functions created to make it
 easier to build repetitive UIs. See [#15](https://github.com/Nelson-Gon/shinymde/issues/15).  
