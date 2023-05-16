@@ -568,7 +568,7 @@ get_all_themes <- eventReactive(input$pkg,
 })
 get_theme <- reactive(
   # akrun credit:https://stackoverflow.com/q/70414757/10323798
-  getFunction(get_all_themes()[grep(req(input$theme), get_all_themes())])()
+  methods::getFunction(get_all_themes()[grep(req(input$theme), get_all_themes())])()
 )
 # Update available themes based on the above
 observe(
