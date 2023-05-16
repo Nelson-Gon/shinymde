@@ -1,6 +1,6 @@
 shinymde: A shiny interface to mde, the missing data explorer
 ================
-2021-12-18
+2023-05-16
 
 [![R-CMD-check](https://github.com/Nelson-Gon/shinymde/actions/workflows/rcheck.yaml/badge.svg)](https://github.com/Nelson-Gon/shinymde/actions/workflows/rcheck.yaml)
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
@@ -51,39 +51,43 @@ Thank you!
 
 # Currently Implemented features
 
--   [x] Summary of missingness
+- [x] Summary of missingness
 
 This uses [mde](https://nelson-gon.github.io/mde)’s `na_summary`
 function to generate a simple missingness report. The user can also
 download this report for use in other purposes.
 
--   [x] Recoding as NA and recoding NA as
+- [x] Recoding as NA and recoding NA as
 
 This allows a user to recode a given value as `NA`, R’s handler of
 missing values or convert `NA`s to some other value. It uses `mde`’s
 `recode_*` functions.
 
--   [x] Conditional recoding
+- [x] Conditional recoding
 
 This allows one to recode values conditionally. This supports
 `recode_as_na_for`, `recode_as_na_if`, and other conditional recoding
 functions.
 
--   [x] Drop based on missingness
+- [x] Drop based on missingness
 
 This uses `mde`’s `drop_na_*` functions.
 
--   [x] Missingness plots
+- [x] Missingness plots
 
--   [ ] Gear icon that allows users to customize plot options e.g. plot
-    themes, axis labels, legends, etc.
+- [ ] Gear icon that allows users to customize plot options e.g. plot
+  themes, axis labels, legends, etc.
 
 # `shinymde` in action
 
 Below is a screenshot showing current functionality.
 
-![shinymde in
-action](https://github.com/Nelson-Gon/shinymde/blob/main/images/sample_ui.png?raw=true)
+<figure>
+<img
+src="https://github.com/Nelson-Gon/shinymde/blob/main/images/sample_ui.png?raw=true"
+alt="shinymde in action" />
+<figcaption aria-hidden="true">shinymde in action</figcaption>
+</figure>
 
 View the full app at <https://nelson-gon.shinyapps.io/shinymde/>.
 
@@ -92,27 +96,26 @@ View the full app at <https://nelson-gon.shinyapps.io/shinymde/>.
 If you would like to work on this project, here is a features list that
 could be a good place to start.
 
--   [x] Add user guides in the form of tooltips wherever possible.
+- [x] Add user guides in the form of tooltips wherever possible.
 
--   [ ] Add unit tests.
+- [ ] Add unit tests.
 
--   [x] Add hovers to user input
+- [x] Add hovers to user input
 
--   [ ] Switchable dark mode
+- [ ] Switchable dark mode
 
--   [x] Control `pattern_type`/`subset_cols` choice in `na_summary`.
+- [x] Control `pattern_type`/`subset_cols` choice in `na_summary`.
 
--   [ ] Use cached filename in input filename if a user quits the
-    program.
+- [ ] Use cached filename in input filename if a user quits the program.
 
--   [ ] Add user help pages that link to `mde` documentation on click or
-    as an independent tab.
+- [ ] Add user help pages that link to `mde` documentation on click or
+  as an independent tab.
 
--   [x] Allow user to choose plot type.
+- [x] Allow user to choose plot type.
 
--   [x] Support dates in [mde](https://nelson-gon.github.io/mde)
+- [x] Support dates in [mde](https://nelson-gon.github.io/mde)
 
--   [x] Allow control over visible text on visual summaries.
+- [x] Allow control over visible text on visual summaries.
 
 ------------------------------------------------------------------------
 
@@ -120,7 +123,7 @@ Thank you and keep building,
 
 Nelson
 
-2021-12-18
+2023-05-16
 
 Please note that the ‘shinymde’ project is released with a [Contributor
 Code of Conduct](CODE_OF_CONDUCT.md). By contributing to this project,
