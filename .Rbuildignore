@@ -29,3 +29,5 @@ testdata/
 ^R/rsconnect$
 ^app\.R$
 ^dev$
+^\.dockerignore$
+^Dockerfile$
