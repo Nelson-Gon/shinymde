@@ -1,0 +1,23 @@
+name: Publish-Docker
+on: 
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+      - develop
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3.5.2
+    - name: Publish to Registry
+      uses: elgohr/Publish-Docker-Github-Action@v5
+      with:
+        name: {{ github.repository }}
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+        registry: ghcr.io
+        default_branch: main
+        workdir: .
+        tags: ${{ github.ref_name }}
+        tag_semver: true
