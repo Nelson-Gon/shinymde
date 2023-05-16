@@ -19,7 +19,7 @@ RUN Rscript -e 'remotes::install_version("golem",upgrade="never", version = "0.4
 RUN Rscript -e 'remotes::install_version("ggplot2",upgrade="never", version = "3.4.2")'
 RUN Rscript -e 'remotes::install_version("forcats",upgrade="never", version = "1.0.0")'
 RUN Rscript -e 'remotes::install_version("shinydashboard",upgrade="never", version = "0.7.2")'
-RUN Rscript -e 'remotes::install_github("Nelson-Gon/mde@fa92e7eea6b176ae3f3a38d242ec024c23c83b21")'
+RUN Rscript -e 'remotes::install_cran("mde")'
 RUN mkdir /build_zone
 ADD . /build_zone
 WORKDIR /build_zone
