@@ -1,10 +1,23 @@
 ---
-date: "1/1/2022"
+date: "5/16/2023"
 author: "Nelson Gonzabato"
 title: "Changes to shinymde"
 ---
 
-**shinymde 0.1.2**
+# shinymde 0.1.3
+
+Contributed by [@jimbrig](https://github.com/jimbrig):
+
+* Added Docker support to package
+
+* Fixed `mde` package dependency in DESCRIPTION
+
+* Added dependencies.R script
+
+* Added dev/docker.sh Shell script
+
+
+# shinymde 0.1.2
 
 * Plots now fill the entire page. 
 
@@ -18,7 +31,8 @@ easier to build repetitive UIs. See [#15](https://github.com/Nelson-Gon/shinymde
 * There is now an option to customize plot designs for examples themes.
 See https://github.com/Nelson-Gon/shinymde/issues/14
 
-**shinymde 0.1.1**
+
+# shinymde 0.1.1
 
 * UI overhaul to ensure a much better user experience. Specifically, inputs were decluttered to make it easier to do analyses with minimal interference. 
 
@@ -48,9 +62,9 @@ See https://github.com/Nelson-Gon/shinymde/issues/14
 
 * Non-needed directories for build were removed from the shipped package/app. 
 
----
+# shinymde 0.1.0
 
-**shinymde 0.1.0**
+* Added a `NEWS.md` file to track changes to the package.
 
 * shinymde can now be browsed at https://nelson-gon.shinyapps.io/shinymde.
 
@@ -107,7 +121,6 @@ documentation, and author homepage.
 
 * User feedback is now provided via `shinyFeedback` which is a more helpful way for users to view feedback directly within the application. 
 
-
 * A reset button now exists to enable a user to restore default values for plot save preferences. 
 
 * Grouped summaries now support exclusion following a fix in [mde](https://nelson-gon.github.io/mde). 
@@ -120,20 +133,18 @@ documentation, and author homepage.
 
 * Visual summaries are now shown in a sidebar layout. 
 
-
 * It is now possible to download a summary of missingness, a data set with values recoded as requested, or one where values have been dropped. 
 
 * Initially supported operations
 
-- Data input supports either user data, an inbuilt data set, or a remote data set provided as a web link. For user data, only ".csv", ".xlsx", and ".tsv" are supported. 
+* Data input supports either user data, an inbuilt data set, or a remote data set provided as a web link. For user data, only ".csv", ".xlsx", and ".tsv" are supported. 
 
-- A tabular missingness summary is provided that can be downloaded by the user. The file format to write to is guessed from the user's input. 
+* A tabular missingness summary is provided that can be downloaded by the user. The file format to write to is guessed from the user's input. 
 
+* Recoding values supports `recode_as_na`, `recode_na_as`, `recode_na_if`, `recode_as_na_for` and other recode functions from package `mde`.
 
-- Recoding values supports `recode_as_na`, `recode_na_as`, `recode_na_if`, `recode_as_na_for` and other recode functions from package `mde`.
+* Dropping values using `drop_` from `mde`. 
 
-- Dropping values using `drop_` from `mde`. 
-
-- A visual summary of missingness is also available. This is currently "just" a visual alternative to the tabular summary of missingness.  
+* A visual summary of missingness is also available. This is currently "just" a visual alternative to the tabular summary of missingness.  
 
 * Added a `NEWS.md` file to track changes to the package.
